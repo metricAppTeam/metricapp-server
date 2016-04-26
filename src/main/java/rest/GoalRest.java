@@ -1,6 +1,7 @@
 package rest;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,19 +9,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import hello.Application;
-import hello.Goal_json;
+import dto.GoalDTO;
+import service.Application;
+
 @RestController
 @RequestMapping("/goal")
 public class GoalRest {
-
-	    @RequestMapping("/get_goal")
-	    public Goal_json get_goal(@RequestParam(value="id") String id) {
-	        return new Goal_json(id, "descrizione goal");
+    
+	
+		@RequestMapping("/getGoal")
+	    public GoalDTO getGoal(@RequestParam(value="id") String id) {
+	        return new GoalDTO(id, "descrizione goal");
+	    }
+	    
+	    @RequestMapping(method  = RequestMethod.GET)
+	    public GoalDTO index(){
+	    	return new GoalDTO();
 	    }
 	    
 	    @RequestMapping(method  = RequestMethod.POST)
-	    public ResponseEntity<?> new_goal( @RequestBody Goal_json goal){
+	    public ResponseEntity<?> new_goal( @RequestBody GoalDTO goal){
 	    	System.out.println("un goal è stato ricevuto dal server:" + goal.getDef());
 	    	return null;
 	    }
