@@ -1,51 +1,49 @@
-package service;
+package metricator.service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
-import dto.MeasurementGoalCrudDTO;
-import entity.measurementGoal.InterpretationModel;
-import entity.measurementGoal.MeasurementGoal;
 import lombok.Data;
-import service.spec.AssumptionRepository;
-import service.spec.ContextRepository;
-import service.spec.InterpretationModelRepository;
-import service.spec.MeasurementGoalCRUDController;
-import service.spec.MeasurementGoalRepository;
-import service.spec.MetricRepository;
-import service.spec.VariationFactorsRepository;
+import metricator.dto.MeasurementGoalCrudDTO;
+import metricator.entity.measurementGoal.InterpretationModel;
+import metricator.entity.measurementGoal.MeasurementGoal;
+import metricator.service.spec.AssumptionRepository;
+import metricator.service.spec.ContextRepository;
+import metricator.service.spec.InterpretationModelRepository;
+import metricator.service.spec.MeasurementGoalCRUDController;
+import metricator.service.spec.MeasurementGoalRepository;
+import metricator.service.spec.MetricRepository;
+import metricator.service.spec.VariationFactorsRepository;
 
+@ComponentScan
 @Data
 @Service("MeasurementGoalCRUDController")
 public class MeasurementGoalCRUDControllerImpl implements MeasurementGoalCRUDController{
 
-	// TODO check user rights
+	// TODO check user rights in requests
+	
 	
 	@Autowired
 	private MeasurementGoalRepository measurementGoalRepository;
 	
-	@SuppressWarnings("unused")
 	@Autowired
 	private MetricRepository metricRepository;
 
-	@SuppressWarnings("unused")
 	@Autowired
 	private ContextRepository contextRepository;
 
-	@SuppressWarnings("unused")
 	@Autowired
 	private VariationFactorsRepository variationFactorsRepository;
 	
-	@SuppressWarnings("unused")
 	@Autowired
 	private AssumptionRepository assumptionRepository;
 	
-	@SuppressWarnings("unused")
 	@Autowired
 	private InterpretationModelRepository intepretationModelRepository;
 	
@@ -70,7 +68,6 @@ public class MeasurementGoalCRUDControllerImpl implements MeasurementGoalCRUDCon
 	
 	
 	public MeasurementGoal createMeasurementGoal(MeasurementGoal goal){
-		measurementGoalRepository.count();
 		return measurementGoalRepository.save(goal);
 	}
 	

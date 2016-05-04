@@ -1,8 +1,8 @@
-package service.spec;
+package metricator.service.spec;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import entity.measurementGoal.Context;
+import metricator.entity.measurementGoal.Context;
 
 public interface ContextRepository extends MongoRepository<Context, String>{
 

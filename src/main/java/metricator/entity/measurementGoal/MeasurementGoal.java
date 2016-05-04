@@ -1,13 +1,13 @@
-package entity.measurementGoal;
+package metricator.entity.measurementGoal;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import entity.AbstractGoal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import metricator.entity.AbstractGoal;
 
 @Document
 @Data

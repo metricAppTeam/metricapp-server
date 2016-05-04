@@ -1,9 +1,11 @@
-package service.spec;
+package metricator.service.spec;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import entity.measurementGoal.MeasurementGoal;
+import metricator.entity.measurementGoal.MeasurementGoal;
 
 public interface MeasurementGoalRepository extends MongoRepository<MeasurementGoal, String>{
-
+	
+	
+	
 }

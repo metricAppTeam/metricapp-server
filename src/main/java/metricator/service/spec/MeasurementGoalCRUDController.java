@@ -1,8 +1,7 @@
-package service.spec;
+package metricator.service.spec;
 
-
-import dto.MeasurementGoalCrudDTO;
-import entity.measurementGoal.MeasurementGoal;
+import metricator.dto.MeasurementGoalCrudDTO;
+import metricator.entity.measurementGoal.MeasurementGoal;
 
 public interface MeasurementGoalCRUDController {
 	

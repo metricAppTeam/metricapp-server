@@ -1,4 +1,4 @@
-package configuration;
+package metricator.configuration;
 
 
 import java.util.Arrays;

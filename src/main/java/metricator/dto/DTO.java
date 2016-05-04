@@ -1,4 +1,4 @@
-package dto;
+package metricator.dto;
 
 import java.io.Serializable;
 
