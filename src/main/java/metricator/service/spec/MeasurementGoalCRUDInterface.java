@@ -3,7 +3,7 @@ package metricator.service.spec;
 import metricator.dto.MeasurementGoalCrudDTO;
 import metricator.entity.measurementGoal.MeasurementGoal;
 
-public interface MeasurementGoalCRUDController {
+public interface MeasurementGoalCRUDInterface {
 	
 	public MeasurementGoal getMeasurementGoalById(String id);
 	

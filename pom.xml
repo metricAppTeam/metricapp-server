@@ -61,4 +61,5 @@
 	
 
 	<name>Metricator Server</name>
+	<packaging>war</packaging>
 </project>

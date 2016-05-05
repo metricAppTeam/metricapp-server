@@ -6,6 +6,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
         <property name="java-output-path" value="/MetricatorServer/target/classes"/>
-        <property name="context-root" value="MetricatorServer"/>
+        <property name="context-root" value="gs-rest-service"/>
     </wb-module>
 </project-modules>

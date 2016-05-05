@@ -16,15 +16,15 @@ import metricator.entity.measurementGoal.MeasurementGoal;
 import metricator.service.spec.AssumptionRepository;
 import metricator.service.spec.ContextRepository;
 import metricator.service.spec.InterpretationModelRepository;
-import metricator.service.spec.MeasurementGoalCRUDController;
+import metricator.service.spec.MeasurementGoalCRUDInterface;
 import metricator.service.spec.MeasurementGoalRepository;
 import metricator.service.spec.MetricRepository;
 import metricator.service.spec.VariationFactorsRepository;
 
-@ComponentScan
+
 @Data
 @Service("MeasurementGoalCRUDController")
-public class MeasurementGoalCRUDControllerImpl implements MeasurementGoalCRUDController{
+public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterface{
 
 	// TODO check user rights in requests
 	

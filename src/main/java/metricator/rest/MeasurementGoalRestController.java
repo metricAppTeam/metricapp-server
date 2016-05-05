@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricator.dto.MeasurementGoalCrudDTO;
 import metricator.dto.ResponseDTO;
-import metricator.service.MeasurementGoalCRUDControllerImpl;
-import metricator.service.spec.MeasurementGoalCRUDController;
+import metricator.service.MeasurementGoalCRUDController;
+import metricator.service.spec.MeasurementGoalCRUDInterface;
 
 @Controller
 @RequestMapping("/measurementgoal")
@@ -22,7 +22,7 @@ public class MeasurementGoalRestController {
 	// TODO errorcheck and try catch blocks
 	
 	@Autowired
-	private MeasurementGoalCRUDController controller;	
+	private MeasurementGoalCRUDInterface controller;	
 
 	
 	@RequestMapping(method = RequestMethod.GET)
