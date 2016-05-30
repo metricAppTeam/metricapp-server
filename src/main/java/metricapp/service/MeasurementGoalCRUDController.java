@@ -68,8 +68,9 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	public MeasurementGoalCrudDTO createMeasurementGoal(MeasurementGoalCrudDTO dto){
 		if(userCanModify(dto.getUserId())){
 			MeasurementGoal goal = new MeasurementGoal();
-			BeanUtils.copyProperties(dto, goal);
+			
 			goal = createMeasurementGoal(goal);
+			goal.setObject("Ciaone");
 			
 			return measurementGoalToDTO(goal);
 		}	
@@ -84,7 +85,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalCrudDTO dto){
 		if(userCanModify(dto.getUserId())){
 			MeasurementGoal goal = getMeasurementGoalById(dto.getId());
-			BeanUtils.copyProperties(dto, goal);
+			goal.setObject("Ciaone modificato");
 			
 			return measurementGoalToDTO(updateMeasurementGoal(goal));
 		}

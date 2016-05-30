@@ -17,9 +17,8 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 
-@Configuration
-@EnableWebMvc
-class SampleMongoConfiguration extends AbstractMongoConfiguration {
+
+class LocalMongoConfiguration extends AbstractMongoConfiguration {
 
 	protected String user = null;
 	protected String password = null;
@@ -34,7 +33,7 @@ class SampleMongoConfiguration extends AbstractMongoConfiguration {
 
 	@Override
 	public Mongo mongo() throws Exception {
-		return new Mongo();
+		return new MongoClient();
 	}
 
 	@Bean
