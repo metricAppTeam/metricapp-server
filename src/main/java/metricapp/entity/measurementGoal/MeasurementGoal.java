@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import metricapp.entity.AbstractGoal;
+import metricapp.entity.OrganizationalGoal;
 import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
 import metricapp.entity.stakeholders.Metricator;
@@ -17,8 +18,8 @@ import metricapp.entity.stakeholders.Questioner;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class MeasurementGoal extends AbstractGoal{
-	
-	
+	@DBRef
+	private OrganizationalGoal organizationalGoal;
 	
 	private String object;
 	
@@ -35,6 +36,10 @@ public class MeasurementGoal extends AbstractGoal{
 	private Iterable<Assumption> assumptions;
 	
 	private InterpretationModel interpretationModel;
+	
+	private Iterable<String> metricsIdList;
+	
+	private Iterable<String> questionIdList;
 	
 	@DBRef
 	private Iterable<Metric> metrics;
