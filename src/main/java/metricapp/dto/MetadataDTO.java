@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
+import metricapp.entity.State;
 @Data
 public class MetadataDTO implements Serializable{
 	/**
@@ -16,6 +17,6 @@ public class MetadataDTO implements Serializable{
 	public String creationDate;
 	public String lastVersionDate;
 	public String creatorId;
-	public String state;
+	public State state;
 	public String releaseNote;
 }

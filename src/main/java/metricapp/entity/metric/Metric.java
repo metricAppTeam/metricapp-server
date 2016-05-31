@@ -3,30 +3,32 @@ package metricapp.entity.metric;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Data;
-import metricapp.entity.Element;
-import metricapp.entity.stakeholders.Metricator;
+import lombok.AllArgsConstructor;
 
-@Data
+import lombok.Getter;
+
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import metricapp.entity.Element;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@ToString
 @Document
 public class Metric extends Element{
 	
 	private String name;
 	private String description;
-	
-	@DBRef
-	private Metricator metricator;
-	
+	private String metricatorId;
 	private boolean hasMax;
 	private boolean hasMin;
 	private boolean hasUserDefinedList;
 	private boolean isOrdered;
-	
 	private double max;
 	private double min;
 	private List<String> userDefinedList;
@@ -41,8 +43,8 @@ public class Metric extends Element{
 		}
 		this.userDefinedList=userList;
 	}
-	
-	
-	
+
+
+
 	
 }

@@ -8,4 +8,6 @@ public interface ModelMapperFactoryInterface {
 	
 	public ModelMapper getStandardModelMapper();
 	
+	public ModelMapper getStrictModelMapper();
+	
 }

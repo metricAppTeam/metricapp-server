@@ -1,7 +1,9 @@
 package metricapp.entity;
 
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -26,19 +28,33 @@ public class Element {
 	private State state;
 	private String creatorId;
 	@CreatedDate
-	private Date creationData;
+	private SimpleDateFormat creationDate;
 	@LastModifiedDate
-	private Date lastVersionData;
+	private SimpleDateFormat lastVersionDate;
 	
-	//TODO: use metadata attribute for this
 	
-	public void setTags(String ...strings){
+	
+	public void setTagsByList(String ...strings){
 		ArrayList<String> tagList = new ArrayList<String>();
 		for(String tag : strings){
 			tagList.add(tag);
 		}
 		this.tags=tagList;
 	}
+	
+	public void setTags(List<String> tags) {
+		this.tags = tags;	
+	}
+	
+	public void setCreationDate(String date){
+		this.creationDate = new SimpleDateFormat(date);
+
+	}
+	
+	public void setLastVersionDate(String date){
+		this.lastVersionDate = new SimpleDateFormat(date);
+	}
+
 	
 	
 }

@@ -5,7 +5,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import metricapp.dto.MetricDTO;
+import metricapp.dto.metric.MetricDTOMap;
+import metricapp.dto.metric.MetricMap;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 
 @Service
@@ -23,8 +24,15 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		return modelMapper;
 	}
 	
+	public ModelMapper getStrictModelMapper(){
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		return modelMapper;
+	}
+	
 	@Autowired
 	private void ModelMapperFactoryInit(){
 		this.modelMapper = new ModelMapper();
+		modelMapper.addMappings(new MetricMap()); 
+		modelMapper.addMappings(new MetricDTOMap());
 	}
 }
