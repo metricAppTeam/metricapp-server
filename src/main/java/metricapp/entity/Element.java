@@ -1,5 +1,8 @@
 package metricapp.entity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,11 +32,12 @@ public class Element {
 	private State state;
 	
 	@CreatedDate
-	private Date creationData;
-	
+	//private Date creationDate;
+	private LocalDate creationDate = LocalDate.now();
 	@LastModifiedDate
-	private Date lastVersionData;
-	
+	//private Date lastVersionDate;
+	private LocalDate lastVersionDate = LocalDate.now();
+
 	//TODO: use metadata attribute for this
 	
 	

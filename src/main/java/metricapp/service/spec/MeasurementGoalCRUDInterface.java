@@ -1,24 +1,24 @@
 package metricapp.service.spec;
 
-import metricapp.dto.MeasurementGoalCrudDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.dto.MeasurementGoalDTO;
 
 public interface MeasurementGoalCRUDInterface {
 	
 	public MeasurementGoal getMeasurementGoalById(String id);
 	
-	public MeasurementGoalCrudDTO getMeasurementGoal(MeasurementGoalCrudDTO dto);
+	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto);
 	
 	public MeasurementGoal createMeasurementGoal(MeasurementGoal goal);
 		
-	public MeasurementGoalCrudDTO createMeasurementGoal(MeasurementGoalCrudDTO dto);
+	public MeasurementGoalDTO createMeasurementGoal(MeasurementGoalDTO dto);
 	
 	public MeasurementGoal updateMeasurementGoal(MeasurementGoal goal);
 		
-	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalCrudDTO dto);
+	public MeasurementGoalDTO updateMeasurementGoal(MeasurementGoalDTO dto);
 	
 	public void deleteMeasurementGoalById(String id);
 		
-	public void deleteMeasurementGoal(MeasurementGoalCrudDTO dto);
+	public void deleteMeasurementGoal(MeasurementGoalDTO dto);
 		
 }

@@ -2,7 +2,18 @@ package metricapp.dto;
 
 import java.util.List;
 
-public class MeasurementGoalDTO {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+
+@Data
+@EqualsAndHashCode(callSuper=false)
+public class MeasurementGoalDTO extends GoalDTO{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String id;
 	public String name;
 	public String object;
 	public String viewPoint;
@@ -17,8 +28,9 @@ public class MeasurementGoalDTO {
 	public InterpretationModelDTO interpretationModel;
 	public MetadataDTO metadata;
 	
+	@Data
 	public class InterpretationModelDTO{
 		public String functionJavascript;
-		public String queryParameter;
+		public String queryNoSQL;
 	}
 }

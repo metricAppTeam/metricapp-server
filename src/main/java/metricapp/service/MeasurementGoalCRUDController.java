@@ -1,6 +1,12 @@
 package metricapp.service;
 
 import org.springframework.beans.BeanUtils;
+
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.config.Configuration.AccessLevel;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
-import metricapp.dto.MeasurementGoalCrudDTO;
+import metricapp.dto.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.AssumptionRepository;
@@ -45,9 +51,14 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return true;
 	}
 	
-	private MeasurementGoalCrudDTO measurementGoalToDTO(MeasurementGoal goal){
-		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
-		BeanUtils.copyProperties(goal, dto);
+	private MeasurementGoalDTO measurementGoalToDTO(MeasurementGoal goal){
+		//MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		System.out.println("\n\n--- Using Model mapper ---\n\n");
+
+		ModelMapper modelMapper = new ModelMapper();
+		MeasurementGoalDTO dto = modelMapper.map(goal, MeasurementGoalDTO.class);
+		//BeanUtils.copyProperties(goal, dto);
+		System.out.println("\n\n--- Model mapper in use ---\n\n");
 		return dto;
 	}
 	
@@ -56,7 +67,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.findOne(id);
 	}
 	@Override
-	public MeasurementGoalCrudDTO getMeasurementGoal(MeasurementGoalCrudDTO dto){
+	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto){
 		return measurementGoalToDTO(getMeasurementGoalById(dto.getId())); 
 	}
 	
@@ -65,13 +76,67 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.save(goal);
 	}
 	
-	public MeasurementGoalCrudDTO createMeasurementGoal(MeasurementGoalCrudDTO dto){
+	public MeasurementGoalDTO createMeasurementGoal(MeasurementGoalDTO dto){
 		if(userCanModify(dto.getUserId())){
-			MeasurementGoal goal = new MeasurementGoal();
+			//MeasurementGoal goal = new MeasurementGoal();
+			System.out.println("\n\n--- Using Model mapper ---\n\n");
 			
+			System.out.println("id: " + dto.getId() + "\n");
+			System.out.println("object: " + dto.getObject() + "\n");
+			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
+			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
+			System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
+			//System.out.println("purpose: " + goal.getPurpose + "\n");
+			System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
+			System.out.println("creationDate: " + dto.getMetadata().getCreationDate() + "\n");
+			System.out.println("lastVersionDate: " + dto.getMetadata().getLastVersionDate() + "\n");
+			System.out.println("metricsIdList: " + dto.getMetricIdList() + "\n");
+			System.out.println("questionIdList: " + dto.getQuestionIdList() + "\n");
+			
+			/*
+			PropertyMap<MeasurementGoalDTO, MeasurementGoal> measurementGoalDTOMap = new PropertyMap<MeasurementGoalDTO, MeasurementGoal>() {
+			  protected void configure() {
+			    map().getInterpretationModel().setFunctionJavascript(source.getInterpretationModel().getFunctionJavascript());
+			    map(source.getAddress().city, destination.city);
+			  }
+			};
+
+			modelMapper.addMappings(personMap);
+			*/
+			
+			ModelMapper modelMapper = new ModelMapper();
+			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE).setFieldAccessLevel(AccessLevel.PRIVATE);
+			MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
+			
+			
+			
+			System.out.println("\n\n--- Model mapper in use ---\n\n");
+			
+			System.out.println("id: " + goal.getId() + "\n");
+			System.out.println("object: " + goal.getObject() + "\n");
+			System.out.println("purpose: " + goal.getPurpose() + "\n");
+			System.out.println("qualityFocus: " + goal.getQualityFocus() + "\n");
+			System.out.println("releaseNote: " + goal.getReleaseNote() + "\n");
+			System.out.println("version: " + goal.getVersion() + "\n");
+			System.out.println("viewPoint: " + goal.getViewPoint() + "\n");
+			System.out.println("creationDate: " + goal.getCreationDate() + "\n");
+			System.out.println("lastVersionDate: " + goal.getLastVersionDate() + "\n");
+			System.out.println("metricsIdList: " + goal.getMetricIdList() + "\n");
+			System.out.println("questionIdList: " + goal.getQuestionIdList() + "\n");
+			System.out.println("tags: " + goal.getTags() + "\n");
+			System.out.println("organizationalGoalId: " + goal.getOrganizationalGoal().getId() + "\n");
+			
+			System.out.println("functionJavaScript: " + goal.getInterpretationModel().getFunctionJavascript() +  "\n");
+			System.out.println("queryNoSQL: " + goal.getInterpretationModel().getQueryNoSQL() + "\n");
+			
+			System.out.println("metricatorId: " + goal.getMetricator().getId() + "\n");
+			
+			
+
+
 			goal = createMeasurementGoal(goal);
-			goal.setObject("Ciaone");
 			
+			//goal.setObject("Ciaone");
 			return measurementGoalToDTO(goal);
 		}	
 		return null;
@@ -82,7 +147,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.save(goal);
 	}
 	@Override
-	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalCrudDTO dto){
+	public MeasurementGoalDTO updateMeasurementGoal(MeasurementGoalDTO dto){
 		if(userCanModify(dto.getUserId())){
 			MeasurementGoal goal = getMeasurementGoalById(dto.getId());
 			goal.setObject("Ciaone modificato");
@@ -97,7 +162,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		measurementGoalRepository.delete(id);
 	}
 	@Override
-	public void deleteMeasurementGoal(MeasurementGoalCrudDTO dto){
+	public void deleteMeasurementGoal(MeasurementGoalDTO dto){
 		if(userCanModify(dto.getUserId())){
 			deleteMeasurementGoalById(dto.getId());
 		}	

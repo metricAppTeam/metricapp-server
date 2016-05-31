@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
-@EqualsAndHashCode(callSuper=false)
-public class MeasurementGoalCrudDTO extends GoalDTO {
+public class MeasurementGoalCrudDTO {
 
 	/**
 	 * 
@@ -18,7 +16,6 @@ public class MeasurementGoalCrudDTO extends GoalDTO {
 	
 	
 	@JsonInclude(Include.NON_NULL)
-	private String userId;	//id of the user managing CRUD
 	
 	private String id;
 	

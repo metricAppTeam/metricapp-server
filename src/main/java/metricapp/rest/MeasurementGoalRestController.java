@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.MeasurementGoalCrudDTO;
+import metricapp.dto.MeasurementGoalDTO;
 import metricapp.dto.ResponseDTO;
 import metricapp.service.MeasurementGoalCRUDController;
 import metricapp.service.spec.MeasurementGoalCRUDInterface;
@@ -24,18 +24,17 @@ public class MeasurementGoalRestController {
 	@Autowired
 	private MeasurementGoalCRUDInterface controller;	
 
-	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<MeasurementGoalCrudDTO> getMeasurementGoalDTO(@RequestParam(value="id") String id){
-		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+	public ResponseEntity<MeasurementGoalDTO> getMeasurementGoalDTO(@RequestParam(value="id") String id){
+		MeasurementGoalDTO dto = new MeasurementGoalDTO();
 		dto.setId(id);
 		
-		return new ResponseEntity<MeasurementGoalCrudDTO>(controller.getMeasurementGoal(dto),HttpStatus.OK);
+		return new ResponseEntity<MeasurementGoalDTO>(controller.getMeasurementGoal(dto),HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseDTO> deleteMeasurementGoalDTO(@RequestParam String id){
-		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		MeasurementGoalDTO dto = new MeasurementGoalDTO();
 		dto.setId(id);
 		controller.deleteMeasurementGoal(dto);
 		
@@ -44,13 +43,13 @@ public class MeasurementGoalRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<ResponseDTO> putMeasurementGoalDTO(@RequestBody MeasurementGoalCrudDTO dto){
+	public ResponseEntity<ResponseDTO> putMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto){
 		controller.updateMeasurementGoal(dto);
 		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> postMeasurementGoalDTO(@RequestBody MeasurementGoalCrudDTO dto){
+	public ResponseEntity<ResponseDTO> postMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto){
 		controller.createMeasurementGoal(dto);
 		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
 	}

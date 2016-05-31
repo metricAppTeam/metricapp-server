@@ -1,5 +1,7 @@
 package metricapp.entity.measurementGoal;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -18,6 +20,16 @@ import metricapp.entity.stakeholders.Questioner;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class MeasurementGoal extends AbstractGoal{
+	
+	public MeasurementGoal(){
+		this.interpretationModel = new InterpretationModel();
+		//this.contexts = new ArrayList<Context>();
+		//this.assumptions = new ArrayList<Assumption>();
+		//this.metrics = new ArrayList<Metric>();
+		//this.questioners = new ArrayList<Questioner>();
+		this.metricator = new Metricator();
+	}
+	
 	@DBRef
 	private OrganizationalGoal organizationalGoal;
 	
@@ -37,7 +49,7 @@ public class MeasurementGoal extends AbstractGoal{
 	
 	private InterpretationModel interpretationModel;
 	
-	private Iterable<String> metricsIdList;
+	private Iterable<String> metricIdList;
 	
 	private Iterable<String> questionIdList;
 	
