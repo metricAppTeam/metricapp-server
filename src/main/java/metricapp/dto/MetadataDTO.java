@@ -15,8 +15,10 @@ import metricapp.entity.question.Question;
 import metricapp.entity.stakeholders.Metricator;
 import metricapp.entity.stakeholders.Questioner;
 
+import metricapp.entity.State;
 @Data
 @EqualsAndHashCode(callSuper=false)
+
 public class MetadataDTO implements Serializable{
 	/**
 	 * 
@@ -28,6 +30,6 @@ public class MetadataDTO implements Serializable{
 	public String creationDate;
 	public String lastVersionDate;
 	public String creatorId;
-	public String state;
+	public State state;
 	public String releaseNote;
 }

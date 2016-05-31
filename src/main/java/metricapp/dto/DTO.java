@@ -12,7 +12,7 @@ public class DTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String userId;	//id of the user managing CRUD
+	public String userId;
 	public String message;
 	public String error;
 }

@@ -15,7 +15,7 @@ import metricapp.dto.ResponseDTO;
 import metricapp.service.MeasurementGoalCRUDController;
 import metricapp.service.spec.MeasurementGoalCRUDInterface;
 
-@Controller
+@RestController
 @RequestMapping("/measurementgoal")
 public class MeasurementGoalRestController {
 	

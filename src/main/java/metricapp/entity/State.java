@@ -12,4 +12,5 @@ public enum State {
 	OnUpdate_QuestionerEndpoint,
 	OnUpdate_InternalRefinement,
 	Pending;
+	
 }

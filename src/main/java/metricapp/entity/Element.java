@@ -1,9 +1,15 @@
 package metricapp.entity;
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -21,26 +27,43 @@ public class Element {
 	
 	@Id
 	private String id;
-	
 	@Version
 	private String version;
-	
 	private List<String> tags;
-	
 	private String releaseNote;
-	
 	private State state;
-	
+	private String creatorId;
 	@CreatedDate
-	//private Date creationDate;
-	private LocalDate creationDate = LocalDate.now();
+	private SimpleDateFormat creationDate;
 	@LastModifiedDate
 	//private Date lastVersionDate;
-	private LocalDate lastVersionDate = LocalDate.now();
 
 	//TODO: use metadata attribute for this
+	private SimpleDateFormat lastVersionDate;
 	
 	
+	
+	public void setTagsByList(String ...strings){
+		ArrayList<String> tagList = new ArrayList<String>();
+		for(String tag : strings){
+			tagList.add(tag);
+		}
+		this.tags=tagList;
+	}
+	
+	public void setTags(List<String> tags) {
+		this.tags = tags;	
+	}
+	
+	public void setCreationDate(String date){
+		this.creationDate = new SimpleDateFormat(date);
+
+	}
+	
+	public void setLastVersionDate(String date){
+		this.lastVersionDate = new SimpleDateFormat(date);
+	}
+
 	
 	
 }
