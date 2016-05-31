@@ -3,6 +3,8 @@ package metricapp.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class MetadataDTO implements Serializable{
 	/**
 	 * 

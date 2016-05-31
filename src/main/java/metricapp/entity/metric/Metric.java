@@ -1,5 +1,6 @@
 package metricapp.entity.metric;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -32,6 +33,14 @@ public class Metric extends Element{
 	private String unit;
 	private ScaleType scaleType;
 	private Set set;
+	
+	public void setUserDefinedList(String ...strings){
+		ArrayList<String> userList = new ArrayList<String>();
+		for(String el : strings){
+			userList.add(el);
+		}
+		this.userDefinedList=userList;
+	}
 	
 	
 	

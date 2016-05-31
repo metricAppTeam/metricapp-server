@@ -1,36 +1,29 @@
-package metricapp.dto;
-
-import java.io.Serializable;
-import java.util.List;
+package metricapp.service;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import lombok.Data;
+import metricapp.dto.MetricDTO;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
 import metricapp.entity.metric.Set;
 import metricapp.entity.stakeholders.Metricator;
+import metricapp.service.spec.MetricCRUDInterface;
+import metricapp.service.spec.MetricRepository;
+import metricapp.service.spec.ModelMapperFactoryInterface;
 
-@Data
-public class MetricDTO implements Serializable{
-
-	private static final long serialVersionUID = -2073939437602304884L;
-	public String name;
-	public String description;
-	public String metricatorId;
-	public boolean hasMax;
-	public boolean hasMin;
-	public double max;
-	public double min;
-	public boolean hasUserDefinedList;
-	public List<String> userDefinedList;
-	public String unit;
-	public boolean isOrdered;
-	public String set;
-	public MetadataDTO metadata;
+@Service
+public class MetricCRUDController implements MetricCRUDInterface{
 	
-	public static void main(String[] args) {
+	@Autowired
+	private MetricRepository metricRepository;
+	
+	@Autowired
+	private ModelMapperFactoryInterface modelMapperFactory;
+	
+	public MetricDTO prova(){
 		Metric metrica = new Metric();
 		metrica.setHasMax(true);
 		metrica.setHasMin(false);
@@ -50,14 +43,11 @@ public class MetricDTO implements Serializable{
 		metrica.setDescription("prova");
 		metrica.setCreatorId("33");
 		metrica.setUserDefinedList("1","3");
+		metricRepository.save(metrica);
 		
-		
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		MetricDTO metricDTO = modelMapper.map(metrica, MetricDTO.class);
 		System.out.println(metricDTO.toString());
-		
-		
+		return metricDTO;
 	}
-	
 }
