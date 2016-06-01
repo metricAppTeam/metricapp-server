@@ -105,8 +105,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	@Override
 	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto){
-		getMeasurementGoalById(dto.getId());
-		return null; 
+		return measurementGoalToDTO(getMeasurementGoalById(dto.getId()));
 	}
 	
 	

@@ -30,9 +30,17 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 	}
 	
 	@Autowired
-	private void ModelMapperFactoryInit(){
-		this.modelMapper = new ModelMapper();
+	private void modelMapperFactoryInit(){
+		if(this.modelMapper == null){
+			this.modelMapper = new ModelMapper();
+		}
 		modelMapper.addMappings(new MetricMap()); 
 		modelMapper.addMappings(new MetricDTOMap());
+	}
+	
+	public void modelMapperFactoryExternalInit(){
+		if(this.modelMapper == null){
+			this.modelMapper = new ModelMapper();
+		}
 	}
 }

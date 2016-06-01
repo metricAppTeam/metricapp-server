@@ -3,7 +3,6 @@ package metricapp.dto.measurementgoal;
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -30,9 +29,29 @@ public class MeasurementGoalDTO extends GoalDTO{
 	public List<String> questionerIdList;
 	public List<String> contextFactorIdList;
 	public List<String> assumptionIdList;
-	public InterpretationModelDTO interpretationModel;
+	private InterpretationModelDTO interpretationModel;
 	public MetadataDTO metadata;
 
+	public void setFunctionJavascript(String javascript){
+		try{
+			this.getInterpretationModel().setFunctionJavascript(javascript);
+		}
+		catch(NullPointerException exception){
+			this.setInterpretationModel(new InterpretationModelDTO());
+			this.getInterpretationModel().setFunctionJavascript(javascript);
+		}
+	}
+	
+	public void setQueryNoSQL(String query){
+		try{
+			this.getInterpretationModel().setQueryNoSQL(query);
+		}
+		catch(NullPointerException exception){
+			this.setInterpretationModel(new InterpretationModelDTO());
+			this.getInterpretationModel().setQueryNoSQL(query);
+		}
+	}
+	
 	@Data
 	@NoArgsConstructor
 	public class InterpretationModelDTO implements Serializable{
@@ -48,4 +67,6 @@ public class MeasurementGoalDTO extends GoalDTO{
 	public void setInterpretationModel(InterpretationModelDTO interpretationModelDTO){
 		this.interpretationModel = new InterpretationModelDTO();
 	}
+	
+	
 }
