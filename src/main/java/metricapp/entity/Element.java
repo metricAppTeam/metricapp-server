@@ -34,14 +34,15 @@ public class Element {
 	private State state;
 	private String creatorId;
 	@CreatedDate
-	private SimpleDateFormat creationDate;
+	private LocalDate creationDate;
+	//private Date creationDate;
+	//private SimpleDateFormat creationDate;
 	@LastModifiedDate
+	private LocalDate lastVersionDate;
 	//private Date lastVersionDate;
-
+	
 	//TODO: use metadata attribute for this
-	private SimpleDateFormat lastVersionDate;
-	
-	
+	//private SimpleDateFormat lastVersionDate;
 	
 	public void setTagsByList(String ...strings){
 		ArrayList<String> tagList = new ArrayList<String>();
@@ -50,19 +51,20 @@ public class Element {
 		}
 		this.tags=tagList;
 	}
-	
+	/*
 	public void setTags(List<String> tags) {
 		this.tags = tags;	
-	}
-	
+	}*/
+	/*
 	public void setCreationDate(String date){
 		this.creationDate = new SimpleDateFormat(date);
 
-	}
+	}*/
 	
+	/*
 	public void setLastVersionDate(String date){
 		this.lastVersionDate = new SimpleDateFormat(date);
-	}
+	}*/
 
 	
 	

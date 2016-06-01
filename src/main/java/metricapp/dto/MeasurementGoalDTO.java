@@ -1,9 +1,12 @@
 package metricapp.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 
 @Data
@@ -27,10 +30,20 @@ public class MeasurementGoalDTO extends GoalDTO{
 	public List<String> assumptionIdList;
 	public InterpretationModelDTO interpretationModel;
 	public MetadataDTO metadata;
-	
+
 	@Data
-	public class InterpretationModelDTO{
+	@NoArgsConstructor
+	public class InterpretationModelDTO implements Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public String functionJavascript;
 		public String queryNoSQL;
+	
+	}
+	
+	public void setInterpretationModel(InterpretationModelDTO interpretationModelDTO){
+		this.interpretationModel = new InterpretationModelDTO();
 	}
 }
