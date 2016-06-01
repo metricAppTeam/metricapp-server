@@ -4,10 +4,8 @@ package metricapp.dto.measurementGoal;
 import java.util.List;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import metricapp.dto.GoalDTO;
 import metricapp.dto.MetadataDTO;
 import metricapp.dto.measurementGoal.InterpretationModelDTO;

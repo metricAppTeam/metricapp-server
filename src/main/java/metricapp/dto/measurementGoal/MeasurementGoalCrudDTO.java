@@ -1,17 +1,25 @@
 package metricapp.dto.measurementGoal;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-public class MeasurementGoalCrudDTO {
+@Data
+@EqualsAndHashCode(callSuper=false)
+public class MeasurementGoalCrudDTO implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1980306938916100958L;
+
+	/**
+	 * 
+	 */
 	
 	
 	
