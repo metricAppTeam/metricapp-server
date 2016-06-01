@@ -44,6 +44,11 @@ public class Metric extends Element{
 		this.userDefinedList=userList;
 	}
 
+	public void setUserDefinedList(ArrayList<String> strings) {
+		this.userDefinedList = strings;
+		
+	}
+
 
 
 	
