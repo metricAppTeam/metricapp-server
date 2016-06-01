@@ -1,4 +1,4 @@
-package metricapp.dto.measurementgoal;
+package metricapp.dto.measurementGoal;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

@@ -1,4 +1,4 @@
-package metricapp.dto.measurementgoal;
+package metricapp.dto.measurementGoal;
 
 import java.io.Serializable;
 import lombok.Data;
