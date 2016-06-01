@@ -1,4 +1,4 @@
-package metricapp.dto;
+package metricapp.dto.measurementgoal;
 
 
 import org.modelmapper.PropertyMap;

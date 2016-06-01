@@ -1,7 +1,7 @@
 package metricapp.service.spec;
 
+import metricapp.dto.measurementgoal.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.dto.MeasurementGoalDTO;
 
 public interface MeasurementGoalCRUDInterface {
 	

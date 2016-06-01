@@ -16,8 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
-import metricapp.dto.MeasurementGoalDTO;
-import metricapp.dto.MeasurementGoalMap;
+import metricapp.dto.measurementgoal.MeasurementGoalDTO;
+import metricapp.dto.measurementgoal.MeasurementGoalMap;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.AssumptionRepository;
@@ -105,7 +105,8 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	@Override
 	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto){
-		return measurementGoalToDTO(getMeasurementGoalById(dto.getId())); 
+		getMeasurementGoalById(dto.getId());
+		return null; 
 	}
 	
 	

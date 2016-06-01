@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.MeasurementGoalDTO;
 import metricapp.dto.ResponseDTO;
+import metricapp.dto.measurementgoal.MeasurementGoalDTO;
 import metricapp.service.MeasurementGoalCRUDController;
 import metricapp.service.spec.MeasurementGoalCRUDInterface;
 
