@@ -1,5 +1,6 @@
 package mappingTest;
 
+
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ import metricapp.service.ModelMapperFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)
-public class metricTest {
+public class MetricToDTOTest {
 	
 	@Autowired
 	public ModelMapperFactory modelMapperFactory;
@@ -58,8 +59,6 @@ public class metricTest {
 	ArrayList<String> strings;
 	String version;
 	
-	boolean resultMetricToDTO;
-	boolean resultDTOToMetric;
 	
 	//it's safe use a uuid like a random strings(we assume there're no 
 	//problems specifically with simbols or chars over F)
@@ -80,12 +79,14 @@ public class metricTest {
 		int n=rnd.nextInt(50);
 		while(n>0){
 			list.add(randomString());
+			n--;
 		}
 		return list;
 	}
 	
 	
 	public void randomizeAttributes(){
+
 		creatorId = randomString();
 		description = randomString();
 		id = randomString();
@@ -106,23 +107,20 @@ public class metricTest {
 		
 		max=randomDouble();
 		min=randomDouble();
-		
+
 		scaleType = ScaleType.ordinalScale;
 		set = Set.reals;
 		state = State.OnUpdate;
-		
+
 		tags = randomArrayList();
 		strings = randomArrayList();
 
 	}
 	
-	@Before
-	public void initializeElement(){
-		
-		randomizeAttributes();
-		
+	public void initializeElementMetric(){
+
 		this.metric1 = new Metric();
-		
+
 		this.metric1.setCreationDate(creationDate);
 		this.metric1.setCreatorId(creatorId);
 		this.metric1.setDescription(description);
@@ -144,81 +142,135 @@ public class metricTest {
 		this.metric1.setUnit(unit);
 		this.metric1.setUserDefinedList(strings);
 		this.metric1.setVersion(version);
+
+	}
+	
+	
+	
+	
+	@Before
+	public void mappingMetricToDTO() {
+		randomizeAttributes();
+		initializeElementMetric();
+		ModelMapper modelMapper= modelMapperFactory.getLooseModelMapper();
+		dto = modelMapper.map(metric1, MetricDTO.class);
 	}
 	
 	
 	@Test
-	public void mapping() {
-		metricToDTOTest();
-		dTOtoMetricTest();
-		
-		assertTrue(metric1.toString() + "\n\n\n" + dto.toString(), resultDTOToMetric && resultMetricToDTO);
+	public void testCreationDate(){
+		assertTrue(	dto.getMetadata().getCreationDate().toString() + creationDate.toString(),
+				dto.getMetadata().getCreationDate().equals(creationDate.toString()) );
 	}
 	
-	public void metricToDTOTest(){
-		ModelMapper modelMapper= modelMapperFactory.getLooseModelMapper();
-		dto = modelMapper.map(metric1, MetricDTO.class);
-		
-		if(
-			dto.getMetadata().getCreationDate().equals(creationDate.toString()) &&
-			dto.getMetadata().getCreatorId().equals(creatorId) &&
-			dto.getDescription().equals(description) &&
-			dto.isHasMax() == hasMax &&
-			dto.isHasMin() == hasMin &&
-			dto.isHasUserDefinedList() == hasUserDefinedList &&
-			dto.getMetadata().getId().equals(id) &&
-			dto.getMetadata().getLastVersionDate().equals(lastVersionDate.toString()) &&
-			dto.getMax() == max &&
-			dto.getMetricatorId().equals(metricatorId) &&
-			dto.getMin() == min &&
-			dto.getName().equals(name) &&
-			dto.isOrdered() == isOrdered &&
-			dto.getMetadata().getReleaseNote().equals(releaseNote) &&
-			dto.getScaleType().toString().equals(scaleType.toString()) &&
-			dto.getSet().toString().equals(set.toString()) &&
-			dto.getMetadata().getTags().equals(tags) &&
-			dto.getUnit().equals(unit) &&
-			dto.getUserDefinedList().equals(strings) &&
-			dto.getMetadata().getVersion().equals(version)
-			){
-			resultMetricToDTO = true;
-		}
-		else{
-			resultMetricToDTO = false;
-		}
+	@Test
+	public void testDescription(){
+		assertTrue(	dto.getDescription()+(description),
+				dto.getDescription().equals(description) );
 	}
 	
-	public void dTOtoMetricTest(){
-		ModelMapper modelMapper= modelMapperFactory.getLooseModelMapper();
-		metric2 = modelMapper.map(dto, Metric.class);
-		
-		if(
-				metric2.getCreationDate().toString().equals(dto.getMetadata().getCreationDate()) &&
-				metric2.getCreatorId().equals(dto.getMetadata().getCreatorId()) &&
-				metric2.getDescription().equals(dto.getDescription()) &&
-				metric2.isHasMax() == dto.isHasMax() &&
-				metric2.isHasMin() == dto.isHasMin() &&
-				metric2.isHasUserDefinedList() == dto.isHasUserDefinedList() &&
-				metric2.getId().equals(dto.getMetadata().getId()) &&
-				metric2.getLastVersionDate().toString().equals(dto.getMetadata().getLastVersionDate()) &&
-				metric2.getMax() == dto.getMax() &&
-				metric2.getMetricatorId().equals(dto.getMetricatorId()) &&
-				metric2.getMin() == dto.getMin() &&
-				metric2.getName().equals(dto.getName()) &&
-				metric2.isOrdered() == dto.isOrdered() &&
-				metric2.getReleaseNote().equals(dto.getMetadata().getReleaseNote()) &&
-				metric2.toString().equals(dto.getScaleType()) &&
-				metric2.getSet().toString().equals(dto.getSet()) &&
-				metric2.getTags().equals(dto.getMetadata().getTags()) &&
-				metric2.getUnit().equals(dto.getUnit()) &&
-				metric2.getUserDefinedList().equals(dto.getUserDefinedList()) &&
-				metric2.getVersion().equals(dto.getMetadata().getVersion())
-				){
-				resultDTOToMetric = true;
-			}
-			else{
-				resultDTOToMetric = false;
-			}
+	@Test
+	public void testHasMax(){
+		assertTrue(	dto.isHasMax()+"," + hasMax,
+				dto.isHasMax() == hasMax );
 	}
+	
+	@Test
+	public void testHasMin(){
+		assertTrue(	dto.isHasMin() +","+ hasMin,
+				dto.isHasMin() == hasMin );
+	}
+	
+	@Test
+	public void testHasUserDefinedList(){
+		assertTrue(	dto.isHasUserDefinedList() +","+hasUserDefinedList,
+				dto.isHasUserDefinedList() == hasUserDefinedList );
+	}
+	
+	@Test
+	public void testId(){
+		assertTrue(	dto.getMetadata().getId()+(id),
+				dto.getMetadata().getId().equals(id) );
+	}
+	
+	@Test
+	public void testMax(){
+		assertTrue(	dto.getMax() +","+ max,
+				dto.getMax() == max );
+	}
+	
+	@Test
+	public void testMin(){
+		assertTrue(	dto.getMin() +","+ min,
+				dto.getMin() == min );
+	}
+	
+	@Test
+	public void testMetricatorId(){
+		assertTrue(	dto.getMetricatorId()+","+(metricatorId),
+				dto.getMetricatorId().equals(metricatorId));
+	}
+	
+	@Test
+	public void testName(){
+		assertTrue(	dto.getName()+","+name,
+				dto.getName().equals(name));
+	}
+	
+	@Test
+	public void testIsOrdered(){
+		assertTrue(	dto.isOrdered() +","+ isOrdered ,
+				dto.isOrdered() == isOrdered);
+	}
+	
+	@Test
+	public void testReleaseNote(){
+		assertTrue(	dto.getMetadata().getReleaseNote()+","+(releaseNote),
+				dto.getMetadata().getReleaseNote().equals(releaseNote));
+	}
+	
+	@Test
+	public void testScaleType(){
+		assertTrue(	dto.getScaleType().toString()+","+(scaleType.toString()),
+				dto.getScaleType().toString().equals(scaleType.toString()));
+	}
+	
+	@Test
+	public void testSet(){
+		assertTrue(	dto.getSet().toString()+","+(set.toString()),
+				dto.getSet().toString().equals(set.toString()));
+	}
+	
+	@Test
+	public void testTags(){
+		assertTrue(	dto.getMetadata().getTags()+","+tags,
+				dto.getMetadata().getTags().equals(tags));
+	}
+	
+	@Test
+	public void testUnit(){
+		assertTrue(	dto.getUnit()+","+(unit),
+				dto.getUnit().equals(unit));
+	}
+	
+	@Test
+	public void testUserDefinedList(){
+		assertTrue(	dto.getUserDefinedList()+","+(strings),
+				dto.getUserDefinedList().equals(strings));
+	}
+	
+	@Test
+	public void testVersion(){
+		assertTrue(	dto.getMetadata().getVersion()+","+(version),
+				dto.getMetadata().getVersion().equals(version));
+	}
+	
+	@Test
+	public void testLastVersionDate(){
+		assertTrue(	dto.getMetadata().getLastVersionDate()+","+(lastVersionDate.toString()),
+				dto.getMetadata().getLastVersionDate().equals(lastVersionDate.toString()));
+	}
+	
+	
 
 }

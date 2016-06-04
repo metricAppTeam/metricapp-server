@@ -26,6 +26,10 @@ public class MetricDTO implements Serializable{
 	public String set;
 	public MetadataDTO metadata;
 	public ScaleType scaleType;
+	
+	public MetricDTO() {
+		setMetadata(new MetadataDTO());
+	}
 
 	
 }
