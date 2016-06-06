@@ -1,15 +1,12 @@
 package metricapp.service.controller;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration.AccessLevel;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.service.ModelMapperUtility;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.AssumptionRepository;
@@ -23,8 +20,7 @@ import metricapp.service.spec.repository.MetricRepository;
 public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterface{
 
 	// TODO check user rights in requests
-	
-	
+		
 	@Autowired
 	private MeasurementGoalRepository measurementGoalRepository;
 	
@@ -75,8 +71,6 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
-		modelMapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE);
-		modelMapper.addConverter(ModelMapperUtility.localDateToString());
 		//modelMapper.addMappings(new MeasurementGoalMap());
 		MeasurementGoalDTO dto = modelMapper.map(goal, MeasurementGoalDTO.class);
 
@@ -140,9 +134,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			modelMapper.addMappings(personMap);
 			*/
 			
-			ModelMapper modelMapper = new ModelMapper();
-			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE).setFieldAccessLevel(AccessLevel.PRIVATE);
-			modelMapper.addConverter(ModelMapperUtility.stringToLocalDate());
+			ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 			MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
 			
 			if(debug){
