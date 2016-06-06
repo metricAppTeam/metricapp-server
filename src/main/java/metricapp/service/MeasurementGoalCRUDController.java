@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.service.spec.AssumptionRepository;
-import metricapp.service.spec.ContextRepository;
-import metricapp.service.spec.MeasurementGoalCRUDInterface;
-import metricapp.service.spec.MeasurementGoalRepository;
-import metricapp.service.spec.MetricRepository;
-import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
+import metricapp.service.spec.controller.ModelMapperFactoryInterface;
+import metricapp.service.spec.repository.AssumptionRepository;
+import metricapp.service.spec.repository.ContextRepository;
+import metricapp.service.spec.repository.MeasurementGoalRepository;
+import metricapp.service.spec.repository.MetricRepository;
 
 
 @Data

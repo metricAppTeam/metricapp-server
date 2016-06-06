@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.ResponseDTO;
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
-import metricapp.service.spec.MetricCRUDInterface;
+import metricapp.service.spec.controller.MetricCRUDInterface;
 
 @RestController
 @RequestMapping(("/metric"))

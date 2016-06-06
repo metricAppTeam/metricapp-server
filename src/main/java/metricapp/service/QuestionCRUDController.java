@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.question.Question;
-import metricapp.service.spec.ModelMapperFactoryInterface;
-import metricapp.service.spec.QuestionCRUDInterface;
-import metricapp.service.spec.QuestionRepository;
+import metricapp.service.spec.controller.ModelMapperFactoryInterface;
+import metricapp.service.spec.controller.QuestionCRUDInterface;
+import metricapp.service.spec.repository.QuestionRepository;
 
 @Service
 public class QuestionCRUDController implements QuestionCRUDInterface {

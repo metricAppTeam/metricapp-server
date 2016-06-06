@@ -1,4 +1,4 @@
-package metricapp.service.spec;
+package metricapp.service.spec.controller;
 
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;

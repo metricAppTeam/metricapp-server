@@ -1,4 +1,4 @@
-package metricapp.service.spec;
+package metricapp.service.spec.repository;
 
 import java.util.ArrayList;
 

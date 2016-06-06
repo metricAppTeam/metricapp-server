@@ -18,7 +18,7 @@ import metricapp.entity.OrganizationalGoal;
 import metricapp.entity.State;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)
