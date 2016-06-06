@@ -8,20 +8,16 @@ import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration.AccessLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
-import metricapp.dto.MetadataDTO;
-import metricapp.dto.measurementGoal.InterpretationModelDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.OrganizationalGoal;
 import metricapp.entity.State;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.service.ModelMapperUtility;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -82,8 +78,6 @@ public class measurementGoalTest {
 		this.measurementGoal.setLastVersionDate(LocalDate.now());
 
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
-		modelMapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE);
-		modelMapper.addConverter(ModelMapperUtility.localDateToString());
 		this.measurementGoalDTO = modelMapper.map(this.measurementGoal, MeasurementGoalDTO.class);
 
 		assertEquals(this.measurementGoal.getId(), this.measurementGoalDTO.getId());

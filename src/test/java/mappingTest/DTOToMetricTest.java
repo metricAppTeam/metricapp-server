@@ -3,6 +3,7 @@ package mappingTest;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -117,14 +118,14 @@ public class DTOToMetricTest {
 
 		this.dto = new MetricDTO();
 
-		this.dto.getMetadata().setCreationDate(creationDate.toString());
+		this.dto.getMetadata().setCreationDate(creationDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		this.dto.getMetadata().setCreatorId(creatorId);
 		this.dto.setDescription(description);
 		this.dto.setHasMax(hasMax);
 		this.dto.setHasMin(hasMin);
 		this.dto.setHasUserDefinedList(hasUserDefinedList);
 		this.dto.getMetadata().setId(id);
-		this.dto.getMetadata().setLastVersionDate(lastVersionDate.toString());
+		this.dto.getMetadata().setLastVersionDate(lastVersionDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		this.dto.setMax(max);
 		this.dto.setMetricatorId(metricatorId);
 		this.dto.setMin(min);

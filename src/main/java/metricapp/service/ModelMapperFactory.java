@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import metricapp.dto.metric.MetricDTOMap;
-import metricapp.dto.metric.MetricMap;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 
 @Service
@@ -34,13 +33,13 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		if(this.modelMapper == null){
 			this.modelMapper = new ModelMapper();
 		}
-		modelMapper.addMappings(new MetricMap()); 
+		//modelMapper.addMappings(new MetricMap()); 
 		modelMapper.addMappings(new MetricDTOMap());
+		modelMapper.addConverter(ModelMapperUtility.localDateToString());
+		modelMapper.addConverter(ModelMapperUtility.stringToLocalDate());
 	}
 	
 	public void modelMapperFactoryExternalInit(){
-		if(this.modelMapper == null){
-			this.modelMapper = new ModelMapper();
-		}
+		modelMapperFactoryInit();
 	}
 }
