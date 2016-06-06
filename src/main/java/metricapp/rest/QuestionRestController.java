@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.ResponseDTO;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
-import metricapp.service.QuestionCRUDController;
+import metricapp.service.controller.QuestionCRUDController;
 
 @RestController
 @RequestMapping(("/question"))

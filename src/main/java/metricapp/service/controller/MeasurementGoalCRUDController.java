@@ -1,4 +1,4 @@
-package metricapp.service;
+package metricapp.service.controller;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.service.ModelMapperUtility;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.AssumptionRepository;

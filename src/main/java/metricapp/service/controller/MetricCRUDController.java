@@ -1,4 +1,4 @@
-package metricapp.service;
+package metricapp.service.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
