@@ -96,8 +96,6 @@ public class measurementGoalTest {
 		*/
 
 		ModelMapper modelMapperDTO = modelMapperFactory.getLooseModelMapper();
-		modelMapperDTO.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE);
-		modelMapperDTO.addConverter(ModelMapperUtility.stringToLocalDate());
 		this.measurementGoal = null;
 		this.measurementGoal = modelMapperDTO.map(this.measurementGoalDTO, MeasurementGoal.class);
 		
