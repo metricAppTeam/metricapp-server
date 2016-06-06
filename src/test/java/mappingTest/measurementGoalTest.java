@@ -1,7 +1,6 @@
 package mappingTest;
 
 import static org.junit.Assert.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public class measurementGoalTest {
 	public LocalDate generateLocalDate(){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		//return LocalDate.parse("2016-01-04", formatter);
-		return LocalDate.parse(LocalDate.now().format(formatter),formatter);
+		return LocalDate.parse("2000-09-09",formatter);//LocalDate.now().format(formatter),formatter);
 	}
 	
 	@Test
@@ -60,15 +59,15 @@ public class measurementGoalTest {
 		organizationalGoal.setRelationship(randomString());
 		organizationalGoal.setReleaseNote(randomString());
 		organizationalGoal.setOrganizationalScope(randomString());
-		organizationalGoal.setCreationDate(generateLocalDate());
-		organizationalGoal.setLastVersionDate(generateLocalDate());
+		organizationalGoal.setCreationDate(LocalDate.now());//generateLocalDate());
+		organizationalGoal.setLastVersionDate(LocalDate.now());//generateLocalDate());
 		//organizationalGoal.setTags(new List<String>());
 		organizationalGoal.setState(State.Created);
 		organizationalGoal.setTimeframe(randomString());
 		organizationalGoal.setVersion(randomString());
 		
 		this.measurementGoal = new MeasurementGoal();
-		
+
 		this.measurementGoal.setCreatorId(randomString());
 		this.measurementGoal.setId(randomString());
 		this.measurementGoal.setInterpretationModel(interpretationModel);
@@ -79,9 +78,9 @@ public class measurementGoalTest {
 		this.measurementGoal.setReleaseNote(randomString());
 		this.measurementGoal.setVersion(randomString());
 		this.measurementGoal.setViewPoint(randomString());
-		this.measurementGoal.setCreationDate(generateLocalDate());
-		this.measurementGoal.setLastVersionDate(generateLocalDate());
-		
+		this.measurementGoal.setCreationDate(LocalDate.now());
+		this.measurementGoal.setLastVersionDate(LocalDate.now());
+
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		modelMapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE);
 		modelMapper.addConverter(ModelMapperUtility.localDateToString());
@@ -99,13 +98,7 @@ public class measurementGoalTest {
 		assertEquals(this.measurementGoal.getCreationDate().toString(), this.measurementGoalDTO.getMetadata().getCreationDate());
 		assertEquals(this.measurementGoal.getVersion(), this.measurementGoalDTO.getMetadata().getVersion());
 		assertEquals(this.measurementGoal.getLastVersionDate().toString(), this.measurementGoalDTO.getMetadata().getCreationDate());
-
-		
-		
 		
 	}
-	
-
-	
 
 }
