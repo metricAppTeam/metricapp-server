@@ -159,8 +159,8 @@ public class MetricToDTOTest {
 	
 	@Test
 	public void testCreationDate(){
-		assertTrue(	dto.getMetadata().getCreationDate().toString() + creationDate.toString(),
-				dto.getMetadata().getCreationDate().equals(creationDate.toString()) );
+		assertEquals(	dto.getMetadata().getCreationDate() + creationDate.toString(),
+				dto.getMetadata().getCreationDate(),creationDate.toString() );
 	}
 	
 	@Test
@@ -267,7 +267,7 @@ public class MetricToDTOTest {
 	
 	@Test
 	public void testLastVersionDate(){
-		assertTrue(	dto.getMetadata().getLastVersionDate()+","+(lastVersionDate.toString()),
+		assertTrue(	dto.getMetadata().getLastVersionDate()+","+lastVersionDate.toString(),
 				dto.getMetadata().getLastVersionDate().equals(lastVersionDate.toString()));
 	}
 	

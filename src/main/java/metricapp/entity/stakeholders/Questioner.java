@@ -1,5 +1,7 @@
 package metricapp.entity.stakeholders;
 
-public class Questioner extends User{
 
+public class Questioner extends User{
+	
+	
 }

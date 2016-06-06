@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.ResponseDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
-import metricapp.service.spec.MeasurementGoalCRUDInterface;
+import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 
 @RestController
 @RequestMapping("/measurementgoal")

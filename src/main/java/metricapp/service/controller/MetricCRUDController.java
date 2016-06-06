@@ -1,4 +1,4 @@
-package metricapp.service;
+package metricapp.service.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,9 +12,9 @@ import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
 import metricapp.entity.metric.Set;
-import metricapp.service.spec.MetricCRUDInterface;
-import metricapp.service.spec.MetricRepository;
-import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.service.spec.controller.MetricCRUDInterface;
+import metricapp.service.spec.controller.ModelMapperFactoryInterface;
+import metricapp.service.spec.repository.MetricRepository;
 
 @Service
 public class MetricCRUDController implements MetricCRUDInterface{
