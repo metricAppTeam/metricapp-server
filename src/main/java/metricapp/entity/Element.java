@@ -2,6 +2,7 @@ package metricapp.entity;
 
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 
 import java.util.List;
@@ -50,17 +51,24 @@ public class Element {
 	public void setTags(List<String> tags) {
 		this.tags = tags;	
 	}*/
-	/*
-	public void setCreationDate(String date){
-		this.creationDate = new SimpleDateFormat(date);
-
-	}*/
 	
-	/*
+	public void setCreationDate(String date){
+		this.creationDate = LocalDate.parse(date);
+	}
+	
+	
 	public void setLastVersionDate(String date){
-		this.lastVersionDate = new SimpleDateFormat(date);
-	}*/
+		this.lastVersionDate = LocalDate.parse(date);
+	}
 
+	public void setCreationDate(LocalDate date){
+		this.creationDate = date;
+	}
+	
+	
+	public void setLastVersionDate(LocalDate date){
+		this.lastVersionDate = date;
+	}
 	
 	
 }

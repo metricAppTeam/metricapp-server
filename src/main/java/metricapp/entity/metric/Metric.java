@@ -48,8 +48,5 @@ public class Metric extends Element{
 		this.userDefinedList = strings;
 		
 	}
-
-
-
 	
 }

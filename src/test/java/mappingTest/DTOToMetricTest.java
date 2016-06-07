@@ -2,8 +2,8 @@ package mappingTest;
 
 import static org.junit.Assert.*;
 
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -17,7 +17,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
-import metricapp.dto.MetadataDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
@@ -140,7 +139,7 @@ public class DTOToMetricTest {
 		this.dto.setUnit(unit);
 		this.dto.setUserDefinedList(strings);
 		this.dto.getMetadata().setVersion(version);
-
+		
 	}
 
 	@Before
@@ -154,11 +153,16 @@ public class DTOToMetricTest {
 	
 	@Test
 	public void testCreationDate(){
-		assertTrue(	metric1.getCreationDate().toString() + creationDate.toString(),
-				metric1.getCreationDate().equals(creationDate.toString()) );
-		//assertEquals(metric1.getCreationDate().toString(), this.dto.getMetadata().getCreationDate());
+		//assertTrue(	metric1.getCreationDate().toString() + creationDate.toString(),
+		//		metric1.getCreationDate().equals(creationDate.toString()) );
+		assertEquals(metric1.getCreationDate().toString(), this.dto.getMetadata().getCreationDate());
 	}
 	
+	@Test
+	public void testFixedCreationDate(){
+		assertFalse(metric1.getCreationDate().toString().equals("0000-00-00"));
+	}
+
 	@Test
 	public void testDescription(){
 		assertTrue(	metric1.getDescription()+(description),
@@ -263,8 +267,9 @@ public class DTOToMetricTest {
 	
 	@Test
 	public void testLastVersionDate(){
-		assertTrue(	metric1.getLastVersionDate()+","+(lastVersionDate.toString()),
-				metric1.getLastVersionDate().equals(lastVersionDate.toString()));
+		//assertTrue(	metric1.getLastVersionDate()+","+(lastVersionDate.toString()),
+		//		metric1.getLastVersionDate().equals(lastVersionDate.toString()));
+		assertEquals(metric1.getLastVersionDate().toString(),this.dto.getMetadata().getLastVersionDate());
 	}
 
 }

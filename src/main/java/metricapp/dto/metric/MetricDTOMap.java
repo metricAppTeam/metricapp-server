@@ -1,23 +1,17 @@
 package metricapp.dto.metric;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import org.modelmapper.PropertyMap;
-
 import metricapp.entity.metric.Metric;
 
 public class MetricDTOMap extends PropertyMap<MetricDTO, Metric> {
-
+	
 	@Override
 	protected void configure() {
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
+			
 		map().setId(source.getMetadata().getId());
-		//map().setCreationDate(LocalDate.parse(source.getMetadata().getCreationDate(),formatter));
+		map().setCreationDate(source.getMetadata().getCreationDate());
 		map().setCreatorId(source.getMetadata().getCreatorId());
-		//map().setLastVersionDate(LocalDate.parse(source.getMetadata().getLastVersionDate(),formatter));
+		map().setLastVersionDate(source.getMetadata().getLastVersionDate());
 		map().setReleaseNote(source.getMetadata().getReleaseNote());
 		map().setVersion(source.getMetadata().getVersion());
 		map().setTags(source.getMetadata().getTags());
