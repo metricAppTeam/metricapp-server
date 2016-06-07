@@ -1,6 +1,7 @@
 package mappingTest;
 
 import static org.junit.Assert.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -22,7 +23,7 @@ import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)
-public class measurementGoalTest {
+public class MeasurementGoalToDTOTest {
 	private MeasurementGoal measurementGoal;
 	private MeasurementGoalDTO measurementGoalDTO;
 	
@@ -80,7 +81,7 @@ public class measurementGoalTest {
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		this.measurementGoalDTO = modelMapper.map(this.measurementGoal, MeasurementGoalDTO.class);
 
-		/*
+		
 		assertEquals(this.measurementGoal.getId(), this.measurementGoalDTO.getId());
 		assertEquals(this.measurementGoal.getInterpretationModel().getFunctionJavascript(), this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoal.getInterpretationModel().getQueryNoSQL(), this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL());
@@ -93,27 +94,20 @@ public class measurementGoalTest {
 		assertEquals(this.measurementGoal.getCreationDate().toString(), this.measurementGoalDTO.getMetadata().getCreationDate());
 		assertEquals(this.measurementGoal.getVersion(), this.measurementGoalDTO.getMetadata().getVersion());
 		assertEquals(this.measurementGoal.getLastVersionDate().toString(), this.measurementGoalDTO.getMetadata().getCreationDate());
-		*/
-
-		ModelMapper modelMapperDTO = modelMapperFactory.getLooseModelMapper();
-		this.measurementGoal = null;
-		this.measurementGoal = modelMapperDTO.map(this.measurementGoalDTO, MeasurementGoal.class);
 		
-		System.out.println("\n\n---- Done ----\n\n");
-		/*
-		assertEquals(this.measurementGoalDTO.getId(), this.measurementGoal.getId());
-		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());
-		assertEquals(this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL(), this.measurementGoal.getInterpretationModel().getQueryNoSQL());
-		assertEquals(this.measurementGoalDTO.getObject(), this.measurementGoal.getObject());
-		assertEquals(this.measurementGoalDTO.getOrganizationalGoalId(), this.measurementGoal.getOrganizationalGoal().getId());
-		assertEquals(this.measurementGoalDTO.getViewPoint(), this.measurementGoal.getViewPoint());
-		assertEquals(this.measurementGoalDTO.getMetadata().getReleaseNote(), this.measurementGoal.getReleaseNote());
-		assertEquals(this.measurementGoalDTO.getMetadata().getState(), this.measurementGoal.getState());
-		assertEquals(this.measurementGoalDTO.getMetadata().getVersion(), this.measurementGoal.getVersion());
-		assertEquals(this.measurementGoalDTO.getMetadata().getCreationDate(), this.measurementGoal.getCreationDate().toString());
-		assertEquals(this.measurementGoalDTO.getMetadata().getVersion(), this.measurementGoal.getVersion());
-		assertEquals(this.measurementGoalDTO.getMetadata().getCreationDate(), this.measurementGoal.getLastVersionDate().toString());
-		*/
+
+		System.out.println("id: " + this.measurementGoalDTO.getId() + "\n");
+		System.out.println("object: " + this.measurementGoalDTO.getObject() + "\n");
+		System.out.println("viewPoint: " + this.measurementGoalDTO.getViewPoint() + "\n");
+		System.out.println("qualityFocus: " + this.measurementGoalDTO.getFocus() + "\n");
+		System.out.println("releaseNote: " + this.measurementGoalDTO.getMetadata().getReleaseNote() + "\n");
+		//System.out.println("purpose: " + goal.getPurpose + "\n");
+		System.out.println("version: " + this.measurementGoalDTO.getMetadata().getVersion() + "\n");
+		System.out.println("creationDate: " + this.measurementGoalDTO.getMetadata().getCreationDate() + "\n");
+		System.out.println("lastVersionDate: " + this.measurementGoalDTO.getMetadata().getLastVersionDate() + "\n");
+		System.out.println("metricsIdList: " + this.measurementGoalDTO.getMetricIdList() + "\n");
+		System.out.println("questionIdList: " + this.measurementGoalDTO.getQuestionIdList() + "\n");
+		
 	}
 
 }
