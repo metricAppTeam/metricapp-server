@@ -17,6 +17,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
+import metricapp.dto.MetadataDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
@@ -117,15 +118,15 @@ public class DTOToMetricTest {
 	public void initializeDTO() {
 
 		this.dto = new MetricDTO();
-
-		this.dto.getMetadata().setCreationDate(creationDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+		
+		this.dto.getMetadata().setCreationDate(creationDate.toString());//.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		this.dto.getMetadata().setCreatorId(creatorId);
 		this.dto.setDescription(description);
 		this.dto.setHasMax(hasMax);
 		this.dto.setHasMin(hasMin);
 		this.dto.setHasUserDefinedList(hasUserDefinedList);
 		this.dto.getMetadata().setId(id);
-		this.dto.getMetadata().setLastVersionDate(lastVersionDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+		this.dto.getMetadata().setLastVersionDate(lastVersionDate.toString());//.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		this.dto.setMax(max);
 		this.dto.setMetricatorId(metricatorId);
 		this.dto.setMin(min);
@@ -155,6 +156,7 @@ public class DTOToMetricTest {
 	public void testCreationDate(){
 		assertTrue(	metric1.getCreationDate().toString() + creationDate.toString(),
 				metric1.getCreationDate().equals(creationDate.toString()) );
+		//assertEquals(metric1.getCreationDate().toString(), this.dto.getMetadata().getCreationDate());
 	}
 	
 	@Test

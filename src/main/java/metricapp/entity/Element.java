@@ -38,6 +38,7 @@ public class Element {
 	//TODO: use metadata attribute for this
 	//private SimpleDateFormat lastVersionDate;
 	
+
 	public void setTagsByList(String ...strings){
 		ArrayList<String> tagList = new ArrayList<String>();
 		for(String tag : strings){

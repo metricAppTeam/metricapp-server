@@ -18,6 +18,8 @@ public class ModelMapperUtility {
 					@Override
 					protected LocalDate convert(String arg0) {
 						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						
+						System.out.println(arg0 == null);
 						return arg0 == null || arg0 == "" ? null : LocalDate.parse(arg0, formatter);
 						
 					}

@@ -8,6 +8,7 @@ import metricapp.dto.question.QuestionDTOMap;
 import metricapp.dto.question.QuestionMap;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.dto.metric.MetricDTOMap;
+import metricapp.dto.metric.MetricMap;
 
 @Service
 public class ModelMapperFactory implements ModelMapperFactoryInterface{
@@ -34,7 +35,7 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		if(this.modelMapper == null){
 			this.modelMapper = new ModelMapper();
 		}
-		//modelMapper.addMappings(new MetricMap()); 
+		modelMapper.addMappings(new MetricMap()); 
 		modelMapper.addMappings(new MetricDTOMap());
 		modelMapper.addConverter(ModelMapperUtility.localDateToString());
 		modelMapper.addConverter(ModelMapperUtility.stringToLocalDate());

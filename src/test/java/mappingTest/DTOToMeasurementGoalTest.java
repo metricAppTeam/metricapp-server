@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -55,6 +56,9 @@ public class DTOToMeasurementGoalTest {
 		metadataDTO.setReleaseNote(randomString());
 		metadataDTO.setState(State.Created);
 		metadataDTO.setVersion(randomString());
+		metadataDTO.setTags(new ArrayList<String>());
+		metadataDTO.setCreationDate(LocalDate.now().toString());
+		metadataDTO.setLastVersionDate(LocalDate.now().toString());
 		
 		this.measurementGoalDTO.setId(randomString());
 		this.measurementGoalDTO.setFocus(randomString());
@@ -70,9 +74,7 @@ public class DTOToMeasurementGoalTest {
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		this.measurementGoal = modelMapper.map(this.measurementGoalDTO, MeasurementGoal.class);
-		
-		System.out.println("\n\n---- Done ----\n\n");
-		
+				
 		assertEquals(this.measurementGoalDTO.getId(), this.measurementGoal.getId());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL(), this.measurementGoal.getInterpretationModel().getQueryNoSQL());
