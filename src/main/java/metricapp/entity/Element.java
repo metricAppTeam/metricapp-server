@@ -1,6 +1,8 @@
 package metricapp.entity;
 
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -13,10 +15,11 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
+import metricapp.service.RandomGenerator;
 
 @Document
 @Data
-public class Element {
+public class Element extends Object{
 	
 	
 	@Id
@@ -62,5 +65,27 @@ public class Element {
 	}*/
 
 	
+	/*
+	 * randomAttributes fills every attribute of the entity. 
+	 * 
+	 * 
+	 * */
+	public void randomAttributes() throws IllegalArgumentException,IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException{
+		Field[] attributes = this.getClass().getDeclaredFields();
+		Class<?> actual = this.getClass();
+		//when the function reaches Element, it stops
+		while(!actual.getName().equals(Object.class.getName())){
+			for (Field field : attributes) {
+				//necessary for private fields
+				field.setAccessible(true);
+				
+				//set the attribute
+				RandomGenerator.randomAttribute(this, field);
+			}
+			actual = actual.getSuperclass();
+			attributes = this.getClass().getSuperclass().getDeclaredFields();
+		}
+		
+	}
 	
 }
