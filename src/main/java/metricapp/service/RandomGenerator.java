@@ -8,25 +8,25 @@ import java.util.UUID;
 
 public class RandomGenerator {
 	//seed is time from epoch
-	Random rnd = new Random(LocalDate.now().toEpochDay());
+	private static Random rnd = new Random(LocalDate.now().toEpochDay());
 	
-	public String randomString(){
+	static public String randomString(){
 		return UUID.randomUUID().toString();
 	}
 	
-	public boolean randomBoolean(){
+	static public boolean randomBoolean(){
 		return rnd.nextBoolean();
 	}
 	
-	public double randomDouble(){
+	static public double randomDouble(){
 		return rnd.nextDouble();
 	}
 	
-	public long randomLong(){
+	static public long randomLong(){
 		return rnd.nextLong();
 	}
 	
-	public ArrayList<String> randomArrayList(){
+	static public ArrayList<String> randomArrayList(){
 		ArrayList<String> list = new ArrayList<String>();
 		int n=rnd.nextInt(50);
 		while(n>0){
@@ -36,7 +36,7 @@ public class RandomGenerator {
 		return list;
 	}
 	
-	public LocalDate randomLocalDate(){
+	static public LocalDate randomLocalDate(){
 		return LocalDate.ofEpochDay(randomLong());
 	}
 }
