@@ -74,6 +74,7 @@ public class DTOToMeasurementGoalTest {
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		this.measurementGoal = modelMapper.map(this.measurementGoalDTO, MeasurementGoal.class);
+		
 				
 		assertEquals(this.measurementGoalDTO.getId(), this.measurementGoal.getId());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());

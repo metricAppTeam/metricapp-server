@@ -2,8 +2,8 @@ package mappingTest;
 
 import static org.junit.Assert.*;
 
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -17,7 +17,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
-import metricapp.dto.MetadataDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
@@ -140,7 +139,7 @@ public class DTOToMetricTest {
 		this.dto.setUnit(unit);
 		this.dto.setUserDefinedList(strings);
 		this.dto.getMetadata().setVersion(version);
-
+		
 	}
 
 	@Before

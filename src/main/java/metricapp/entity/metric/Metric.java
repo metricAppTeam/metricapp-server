@@ -25,6 +25,7 @@ import metricapp.service.RandomGenerator;
 @Document
 public class Metric extends Element{
 	
+	
 	private String name;
 	private String description;
 	private String metricatorId;
@@ -51,6 +52,7 @@ public class Metric extends Element{
 		this.userDefinedList = strings;
 		
 	}
+
 
 	public static Metric randomMetric(){
 		Metric metric = new Metric();
