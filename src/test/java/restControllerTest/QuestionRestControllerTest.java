@@ -1,5 +1,6 @@
 package restControllerTest;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +25,9 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import metricapp.BootApplication;
@@ -47,22 +52,19 @@ public class QuestionRestControllerTest {
 	private QuestionDTO questionDTO1;
 	private QuestionDTO questionDTO2;
 	
-//	@Autowired
-//	private RandomGenerator rndGen;
-	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
 	
-	private HttpMessageConverter<?> mappingJackson2HttpMessageConverter;
+	private HttpMessageConverter<Object> mappingJackson2HttpMessageConverter;
 	
 	@Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
+    void setConverters(HttpMessageConverter<Object>[] converters) {
 
         this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
-                new Predicate<HttpMessageConverter<?>>() {
+                new Predicate<HttpMessageConverter<Object>>() {
 					@Override
-					public boolean test(HttpMessageConverter<?> hmc) {
+					public boolean test(HttpMessageConverter<Object> hmc) {
 						return hmc instanceof MappingJackson2HttpMessageConverter;
 					}
 				}).findAny().get();
@@ -71,7 +73,10 @@ public class QuestionRestControllerTest {
                 this.mappingJackson2HttpMessageConverter);
     }
 	
-	private void initQuestionDTO(QuestionDTO questionDTO){
+	private QuestionDTO randomQuestionDTO(){
+		
+		QuestionDTO questionDTO = new QuestionDTO();
+		
 		questionDTO.getMetadata().setId(RandomGenerator.randomString());
 		questionDTO.getMetadata().setCreationDate("2016-01-01");
 		questionDTO.getMetadata().setLastVersionDate("2016-03-01");
@@ -83,6 +88,8 @@ public class QuestionRestControllerTest {
 		questionDTO.setDescription(RandomGenerator.randomString());
 		questionDTO.setFocus(RandomGenerator.randomString());
 		questionDTO.setSubject(RandomGenerator.randomString());
+		
+		return questionDTO;
 	}
 	
 	@Before
@@ -92,11 +99,17 @@ public class QuestionRestControllerTest {
 		questionDTO1 = new QuestionDTO();
 		questionDTO2 = new QuestionDTO();
 		
-		initQuestionDTO(questionDTO1);
-		initQuestionDTO(questionDTO2);
+		questionDTO1 = randomQuestionDTO();
+		questionDTO2 = randomQuestionDTO();
 		
 		questionCRUDController.createQuestion(questionDTO1);
 		questionCRUDController.createQuestion(questionDTO2);
+		
+		try {
+			System.out.println(json(questionDTO1));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -112,6 +125,80 @@ public class QuestionRestControllerTest {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testPost(){
+		try{
+			MvcResult result = this.mockMvc
+					.perform(post("/question")
+							.content(this.json(questionDTO2))
+							.contentType(contentType))
+					.andExpect(status().isOk())
+					.andReturn();
+			
+			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.BAD_REQUEST);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testPostFail(){
+		try{
+			QuestionDTO testQuestionDTO = new QuestionDTO();
+			MvcResult result = this.mockMvc
+					.perform(post("/question")
+							.content(this.json(testQuestionDTO))
+							.contentType(contentType))
+					.andExpect(status().isBadRequest())
+					.andReturn();
+			
+			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.BAD_REQUEST);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testPut(){
+		try{
+			
+			questionDTO2.getMetadata().setReleaseNote(RandomGenerator.randomString());
+			MvcResult result = this.mockMvc
+					.perform(put("/question?id=" + questionDTO2.getMetadata().getId())
+							.content(this.json(questionDTO2))
+							.contentType(contentType))
+					.andExpect(status().isOk())
+					.andReturn();
+			
+			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testDelete(){
+		try{
+			MvcResult result = this.mockMvc
+					.perform(delete("/question?id=" + questionDTO1.getMetadata().getId()))
+					.andExpect(status().isOk())
+					.andReturn();
+			
+			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
+			
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	protected String json(Object o) throws IOException {
+        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
+        this.mappingJackson2HttpMessageConverter.write(
+                o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+        return mockHttpOutputMessage.getBodyAsString();
+    }
 	
 
 }
