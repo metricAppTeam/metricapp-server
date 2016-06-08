@@ -19,7 +19,7 @@ import metricapp.service.RandomGenerator;
 
 @Document
 @Data
-public class Element {
+public class Element extends Object{
 	
 	
 	@Id
@@ -56,10 +56,10 @@ public class Element {
 		this.tags = tags;	
 	}*/
 	
+	
 	public void setCreationDate(String date){
 		this.creationDate = LocalDate.parse(date);
 	}
-	
 	
 	public void setLastVersionDate(String date){
 		this.lastVersionDate = LocalDate.parse(date);
@@ -69,10 +69,10 @@ public class Element {
 		this.creationDate = date;
 	}
 	
-	
 	public void setLastVersionDate(LocalDate date){
 		this.lastVersionDate = date;
 	}
+
 	
 	/*
 	 * randomAttributes fills every attribute of the entity. 

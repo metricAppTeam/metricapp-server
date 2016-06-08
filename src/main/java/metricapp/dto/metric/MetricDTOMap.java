@@ -9,7 +9,7 @@ public class MetricDTOMap extends PropertyMap<MetricDTO, Metric> {
 
 	@Override
 	protected void configure() {
-			
+		
 		map().setId(source.getMetadata().getId());
 		map().setCreationDate(source.getMetadata().getCreationDate());
 		map().setCreatorId(source.getMetadata().getCreatorId());

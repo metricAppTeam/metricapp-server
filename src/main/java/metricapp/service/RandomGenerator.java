@@ -1,17 +1,42 @@
 package metricapp.service;
 
 import java.lang.reflect.Field;
+
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import org.springframework.cglib.core.Local;
+
+import metricapp.dto.MetadataDTO;
+import metricapp.dto.metric.MetricDTO;
+import metricapp.entity.Element;
+
 
 
 public class RandomGenerator {
 	//seed is time from epoch
-	private static Random rnd = new Random(LocalDate.now().toEpochDay());
+	private static Random rnd = new Random();//LocalDate.now().toEpochDay());
+	
+	
+//	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
+//
+//		MetadataDTO metadata = new MetadataDTO();
+//		metadata.randomAttributes();
+//		System.out.println(metadata.getCreationDate());
+//		
+//		Element element = new Element();
+//		element.randomAttributes();
+//		System.out.println(element.getCreationDate());
+//	}
+//	
+//	private static String toCamelCase(String string){
+//		return string.substring(0, 1).toUpperCase() + string.substring(1);	
+//	}
+	
 	
 	
 	/*
@@ -20,9 +45,24 @@ public class RandomGenerator {
 	 * 
 	 * */
 	@SuppressWarnings("unchecked")
-	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException {
+	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+		
 		if (field.getType().equals(String.class)){
-			field.set(obj, RandomGenerator.randomString());
+			//System.out.println("set"+toCamelCase(field.getName()));
+			
+			//try {
+			//	if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
+			if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
+				field.set(obj, RandomGenerator.randomLocalDate().toString());
+			}
+			else{
+				field.set(obj, RandomGenerator.randomString());
+			}
+			//} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+			//	e.printStackTrace();
+			//	
+			//}
 		}
 		if (field.getType().equals(LocalDate.class)){
 			field.set(obj, RandomGenerator.randomLocalDate());
@@ -45,7 +85,8 @@ public class RandomGenerator {
 	}
 	
 	static public String randomString(){
-		return UUID.randomUUID().toString();
+		//return UUID.randomUUID().toString();
+		return "pippo23";
 	}
 	
 	static public boolean randomBoolean(){
@@ -61,7 +102,7 @@ public class RandomGenerator {
 	}
 	
 	static public long randomInt(){
-		return rnd.nextInt();
+		return rnd.nextInt(1024*128);
 	}
 	
 	static public ArrayList<String> randomArrayList(){

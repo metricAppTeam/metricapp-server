@@ -44,9 +44,9 @@ public class DTOToMetricTest {
 	
 	@Test
 	public void testCreationDate(){
-		assertTrue(	metric1.getCreationDate().toString() + dto.getMetadata().getCreationDate().toString(),
-				metric1.getCreationDate().equals(dto.getMetadata().getCreationDate().toString()) );
-		//assertEquals(metric1.getCreationDate().toString(), this.dto.getMetadata().getCreationDate());
+		//assertTrue(	metric1.getCreationDate().toString() + dto.getMetadata().getCreationDate().toString(),
+		//		metric1.getCreationDate().equals(dto.getMetadata().getCreationDate().toString()) );
+		assertEquals(metric1.getCreationDate().toString(), this.dto.getMetadata().getCreationDate());
 	}
 	
 	@Test
@@ -154,8 +154,10 @@ public class DTOToMetricTest {
 	
 	@Test
 	public void testLastVersionDate(){
-		assertTrue(	metric1.getLastVersionDate()+","+(dto.getMetadata().getLastVersionDate().toString()),
-				metric1.getLastVersionDate().equals(dto.getMetadata().getLastVersionDate().toString()));
+//		assertTrue(	metric1.getLastVersionDate()+","+(dto.getMetadata().getLastVersionDate().toString()),
+//				metric1.getLastVersionDate().equals(dto.getMetadata().getLastVersionDate().toString()));
+
+		assertEquals(metric1.getLastVersionDate().toString(), this.dto.getMetadata().getLastVersionDate());
 	}
 	
 	@Test
