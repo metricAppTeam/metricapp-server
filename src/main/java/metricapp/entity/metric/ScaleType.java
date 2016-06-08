@@ -5,6 +5,8 @@ public enum ScaleType{
 	ordinalScale,
 	intervalScale,
 	ratioScale,
-	absoluteScale
+	absoluteScale,
+	
+
 	
 }

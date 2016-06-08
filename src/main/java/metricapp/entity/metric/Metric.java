@@ -6,21 +6,25 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
-
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import metricapp.entity.Element;
+import metricapp.entity.State;
+import metricapp.service.RandomGenerator;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-@ToString
+@ToString(callSuper=true)
+@EqualsAndHashCode(callSuper=true)
 @Document
 public class Metric extends Element{
+	
 	
 	private String name;
 	private String description;
@@ -48,5 +52,35 @@ public class Metric extends Element{
 		this.userDefinedList = strings;
 		
 	}
+
+
+	public static Metric randomMetric(){
+		Metric metric = new Metric();
+
+		metric.setCreationDate(RandomGenerator.randomLocalDate());
+		metric.setCreatorId(RandomGenerator.randomString());
+		metric.setDescription(RandomGenerator.randomString());
+		metric.setHasMax(RandomGenerator.randomBoolean());
+		metric.setHasMin(RandomGenerator.randomBoolean());
+		metric.setHasUserDefinedList(RandomGenerator.randomBoolean());
+		metric.setId(RandomGenerator.randomString());
+		metric.setLastVersionDate(RandomGenerator.randomLocalDate());
+		metric.setMax(RandomGenerator.randomDouble());
+		metric.setMetricatorId(RandomGenerator.randomString());
+		metric.setMin(RandomGenerator.randomDouble());
+		metric.setName(RandomGenerator.randomString());
+		metric.setOrdered(RandomGenerator.randomBoolean());
+		metric.setReleaseNote(RandomGenerator.randomString());
+		metric.setScaleType(RandomGenerator.randomEnum(ScaleType.class));
+		metric.setSet(RandomGenerator.randomEnum(Set.class));
+		metric.setState(RandomGenerator.randomEnum(State.class));
+		metric.setTags(RandomGenerator.randomArrayList());
+		metric.setUnit(RandomGenerator.randomString());
+		metric.setUserDefinedList(RandomGenerator.randomArrayList());
+		metric.setVersion(RandomGenerator.randomString());
+
+		return metric;
+	}
+
 	
 }
