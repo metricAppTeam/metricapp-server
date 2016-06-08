@@ -66,7 +66,6 @@ public class DTOToMeasurementGoalTest {
 		this.measurementGoalDTO.setName(randomString());
 		this.measurementGoalDTO.setObject(randomString());
 		this.measurementGoalDTO.setOrganizationalGoalId(randomString());
-		this.measurementGoalDTO.setUserId(randomString());
 		this.measurementGoalDTO.setViewPoint(randomString());
 		this.measurementGoalDTO.setInterpretationModel(interpretationModelDTO);
 		this.measurementGoalDTO.setMetadata(metadataDTO);

@@ -160,6 +160,12 @@ public class MetricToDTOTest {
 				dto.getMetadata().getLastVersionDate().equals(metric1.getLastVersionDate().toString()));
 	}
 	
+	@Test
+	public void testEntity(){
+		assertTrue(	dto.getMetadata().getEntityType()+","+metric1.getEntityType().toString(),
+				dto.getMetadata().getEntityType().toString().equals(metric1.getEntityType().toString()));
+	}
+	
 	
 
 }

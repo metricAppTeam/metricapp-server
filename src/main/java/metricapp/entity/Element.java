@@ -41,6 +41,8 @@ public class Element extends Object{
 	//TODO: use metadata attribute for this
 	//private SimpleDateFormat lastVersionDate;
 	
+	private Entity entityType;
+	
 
 	public void setTagsByList(String ...strings){
 		ArrayList<String> tagList = new ArrayList<String>();
