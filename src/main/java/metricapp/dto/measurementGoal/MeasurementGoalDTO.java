@@ -6,13 +6,15 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import metricapp.dto.GoalDTO;
 import metricapp.dto.MetadataDTO;
 import metricapp.dto.measurementGoal.InterpretationModelDTO;
 
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 public class MeasurementGoalDTO extends GoalDTO{
 	/**
 	 *  */

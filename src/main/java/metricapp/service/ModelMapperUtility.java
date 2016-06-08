@@ -49,18 +49,5 @@ public class ModelMapperUtility {
 			return localDateToStringConverter;
 		}
 	}
-	
-	public static LocalDate stringToLocalDate(String arg0) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				
-		return arg0 == null || arg0 == "" ? null : LocalDate.parse(arg0, formatter);
-		
-	}
-	
-	public static String localDateToString(LocalDate arg0) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return arg0 == null ? null : arg0.format(formatter);
-		
-	}
 
 }
