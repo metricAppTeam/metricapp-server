@@ -3,15 +3,10 @@ package metricapp.dto.question;
 import java.io.Serializable;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import metricapp.dto.DTO;
 import metricapp.dto.MetadataDTO;
 
 @Data
-@EqualsAndHashCode(callSuper=true)
-@ToString(callSuper=true)
-public class QuestionDTO extends DTO implements Serializable{
+public class QuestionDTO implements Serializable{
 	
 	/**
 	 * 

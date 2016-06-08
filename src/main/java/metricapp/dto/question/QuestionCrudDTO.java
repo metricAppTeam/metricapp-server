@@ -6,12 +6,12 @@ import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import metricapp.dto.MessageDTO;
+import metricapp.dto.DTO;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=true)
-public class QuestionCrudDTO extends MessageDTO{
+public class QuestionCrudDTO extends DTO{
 	
 	/**
 	 * 
