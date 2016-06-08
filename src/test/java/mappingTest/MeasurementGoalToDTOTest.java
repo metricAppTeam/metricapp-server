@@ -2,6 +2,7 @@ package mappingTest;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -16,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import metricapp.BootApplication;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.OrganizationalGoal;
-import metricapp.entity.State;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
@@ -48,36 +48,25 @@ public class MeasurementGoalToDTOTest {
 		interpretationModel.setQueryNoSQL(randomString());
 		
 		OrganizationalGoal organizationalGoal = new OrganizationalGoal();
-		organizationalGoal.setCreatorId(randomString());
-		organizationalGoal.setFocus(randomString());
-		organizationalGoal.setId(randomString());
-		organizationalGoal.setMagnitude(randomString());
-		organizationalGoal.setObject(randomString());
-		organizationalGoal.setRelationship(randomString());
-		organizationalGoal.setReleaseNote(randomString());
-		organizationalGoal.setOrganizationalScope(randomString());
-		organizationalGoal.setCreationDate(LocalDate.now());//generateLocalDate());
-		organizationalGoal.setLastVersionDate(LocalDate.now());//generateLocalDate());
-		//organizationalGoal.setTags(new List<String>());
-		organizationalGoal.setState(State.Created);
-		organizationalGoal.setTimeframe(randomString());
-		organizationalGoal.setVersion(randomString());
+		try {
+			organizationalGoal.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			e.printStackTrace();
+			fail("random attribute creation error");
+		}
 		
 		this.measurementGoal = new MeasurementGoal();
-
-		this.measurementGoal.setCreatorId(randomString());
-		this.measurementGoal.setId(randomString());
-		this.measurementGoal.setInterpretationModel(interpretationModel);
-		//this.measurementGoal.setMetricIdList();
-		this.measurementGoal.setOrganizationalGoal(organizationalGoal);
-		this.measurementGoal.setPurpose(randomString());
-		this.measurementGoal.setQualityFocus(randomString());
-		this.measurementGoal.setReleaseNote(randomString());
-		this.measurementGoal.setVersion(randomString());
-		this.measurementGoal.setViewPoint(randomString());
-		this.measurementGoal.setCreationDate(LocalDate.now());
-		this.measurementGoal.setLastVersionDate(LocalDate.now());
-
+		try {
+			measurementGoal.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			e.printStackTrace();
+			fail("random attribute creation error");
+		}
+		measurementGoal.setOrganizationalGoal(organizationalGoal);
+		measurementGoal.setInterpretationModel(interpretationModel);
+		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		this.measurementGoalDTO = modelMapper.map(this.measurementGoal, MeasurementGoalDTO.class);
 

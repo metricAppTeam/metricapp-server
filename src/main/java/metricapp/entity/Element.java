@@ -1,8 +1,9 @@
 package metricapp.entity;
 
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 
 import java.util.List;
@@ -14,10 +15,11 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
+import metricapp.service.RandomGenerator;
 
 @Document
 @Data
-public class Element {
+public class Element extends Object{
 	
 	
 	@Id
@@ -39,6 +41,8 @@ public class Element {
 	//TODO: use metadata attribute for this
 	//private SimpleDateFormat lastVersionDate;
 	
+	private Entity entityType;
+	
 
 	public void setTagsByList(String ...strings){
 		ArrayList<String> tagList = new ArrayList<String>();
@@ -51,24 +55,39 @@ public class Element {
 	public void setTags(List<String> tags) {
 		this.tags = tags;	
 	}*/
-	
+	/*
 	public void setCreationDate(String date){
-		this.creationDate = LocalDate.parse(date);
-	}
-	
-	
-	public void setLastVersionDate(String date){
-		this.lastVersionDate = LocalDate.parse(date);
-	}
+		this.creationDate = new SimpleDateFormat(date);
 
-	public void setCreationDate(LocalDate date){
-		this.creationDate = date;
+	}*/
+	
+	/*
+	public void setLastVersionDate(String date){
+		this.lastVersionDate = new SimpleDateFormat(date);
+	}*/
+
+	
+	/*
+	 * randomAttributes fills every attribute of the entity. 
+	 * 
+	 * 
+	 * */
+	public void randomAttributes() throws IllegalArgumentException,IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException{
+		Field[] attributes = this.getClass().getDeclaredFields();
+		Class<?> actual = this.getClass();
+		//when the function reaches Element, it stops
+		while(!actual.getName().equals(Object.class.getName())){
+			for (Field field : attributes) {
+				//necessary for private fields
+				field.setAccessible(true);
+				
+				//set the attribute
+				RandomGenerator.randomAttribute(this, field);
+			}
+			actual = actual.getSuperclass();
+			attributes = this.getClass().getSuperclass().getDeclaredFields();
+		}
+		
 	}
-	
-	
-	public void setLastVersionDate(LocalDate date){
-		this.lastVersionDate = date;
-	}
-	
 	
 }

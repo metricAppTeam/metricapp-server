@@ -40,9 +40,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	
 	
 	
-	private boolean userCanModify(String userId){
-		return true;
-	}
+	
 	
 	private MeasurementGoalDTO measurementGoalToDTO(MeasurementGoal goal){
 		//MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
@@ -107,22 +105,21 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	public MeasurementGoalDTO createMeasurementGoal(MeasurementGoalDTO dto){
-		if(userCanModify(dto.getUserId())){
-			if(debug){
-				System.out.println("\n\n--- Using Model mapper ---\n\n");
-				
-				System.out.println("id: " + dto.getId() + "\n");
-				System.out.println("object: " + dto.getObject() + "\n");
-				System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
-				System.out.println("qualityFocus: " + dto.getFocus() + "\n");
-				System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
-				//System.out.println("purpose: " + goal.getPurpose + "\n");
-				System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
-				System.out.println("creationDate: " + dto.getMetadata().getCreationDate() + "\n");
-				System.out.println("lastVersionDate: " + dto.getMetadata().getLastVersionDate() + "\n");
-				System.out.println("metricsIdList: " + dto.getMetricIdList() + "\n");
-				System.out.println("questionIdList: " + dto.getQuestionIdList() + "\n");
-			}
+		if(debug){
+			System.out.println("\n\n--- Using Model mapper ---\n\n");
+			
+			System.out.println("id: " + dto.getId() + "\n");
+			System.out.println("object: " + dto.getObject() + "\n");
+			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
+			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
+			System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
+			//System.out.println("purpose: " + goal.getPurpose + "\n");
+			System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
+			System.out.println("creationDate: " + dto.getMetadata().getCreationDate() + "\n");
+			System.out.println("lastVersionDate: " + dto.getMetadata().getLastVersionDate() + "\n");
+			System.out.println("metricsIdList: " + dto.getMetricIdList() + "\n");
+			System.out.println("questionIdList: " + dto.getQuestionIdList() + "\n");
+		}
 			/*
 			PropertyMap<MeasurementGoalDTO, MeasurementGoal> measurementGoalDTOMap = new PropertyMap<MeasurementGoalDTO, MeasurementGoal>() {
 			  protected void configure() {
@@ -133,39 +130,34 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 
 			modelMapper.addMappings(personMap);
 			*/
+		
+		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
+		
+		if(debug){
+			System.out.println("\n\n--- Model mapper in use ---\n\n");
 			
-			ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
-			MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
+			System.out.println("id: " + goal.getId() + "\n");
+			System.out.println("object: " + goal.getObject() + "\n");
+			System.out.println("purpose: " + goal.getPurpose() + "\n");
+			System.out.println("qualityFocus: " + goal.getQualityFocus() + "\n");
+			System.out.println("releaseNote: " + goal.getReleaseNote() + "\n");
+			System.out.println("version: " + goal.getVersion() + "\n");
+			System.out.println("viewPoint: " + goal.getViewPoint() + "\n");
+			System.out.println("creationDate: " + goal.getCreationDate() + "\n");
+			System.out.println("lastVersionDate: " + goal.getLastVersionDate() + "\n");
+			System.out.println("metricsIdList: " + goal.getMetricIdList() + "\n");
+			System.out.println("questionIdList: " + goal.getQuestionIdList() + "\n");
+			System.out.println("tags: " + goal.getTags() + "\n");
+			System.out.println("organizationalGoalId: " + goal.getOrganizationalGoal().getId() + "\n");
 			
-			if(debug){
-				System.out.println("\n\n--- Model mapper in use ---\n\n");
-				
-				System.out.println("id: " + goal.getId() + "\n");
-				System.out.println("object: " + goal.getObject() + "\n");
-				System.out.println("purpose: " + goal.getPurpose() + "\n");
-				System.out.println("qualityFocus: " + goal.getQualityFocus() + "\n");
-				System.out.println("releaseNote: " + goal.getReleaseNote() + "\n");
-				System.out.println("version: " + goal.getVersion() + "\n");
-				System.out.println("viewPoint: " + goal.getViewPoint() + "\n");
-				System.out.println("creationDate: " + goal.getCreationDate() + "\n");
-				System.out.println("lastVersionDate: " + goal.getLastVersionDate() + "\n");
-				System.out.println("metricsIdList: " + goal.getMetricIdList() + "\n");
-				System.out.println("questionIdList: " + goal.getQuestionIdList() + "\n");
-				System.out.println("tags: " + goal.getTags() + "\n");
-				System.out.println("organizationalGoalId: " + goal.getOrganizationalGoal().getId() + "\n");
-				
-				System.out.println("functionJavaScript: " + goal.getInterpretationModel().getFunctionJavascript() +  "\n");
-				System.out.println("queryNoSQL: " + goal.getInterpretationModel().getQueryNoSQL() + "\n");
-				
-				System.out.println("metricatorId: " + goal.getMetricator().getCredential().getUsername() + "\n");
-			}			
+			System.out.println("functionJavaScript: " + goal.getInterpretationModel().getFunctionJavascript() +  "\n");
+			System.out.println("queryNoSQL: " + goal.getInterpretationModel().getQueryNoSQL() + "\n");
 			
-
-
-			goal = createMeasurementGoal(goal);
-			return measurementGoalToDTO(goal);
-		}	
-		return null;
+			System.out.println("metricatorId: " + goal.getMetricator().getCredential().getUsername() + "\n");
+		}		
+		goal = createMeasurementGoal(goal);
+		return measurementGoalToDTO(goal);
 	}
 	
 	@Override
@@ -174,13 +166,9 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	@Override
 	public MeasurementGoalDTO updateMeasurementGoal(MeasurementGoalDTO dto){
-		if(userCanModify(dto.getUserId())){
-			MeasurementGoal goal = getMeasurementGoalById(dto.getId());
-			goal.setObject("Ciaone modificato");
-			
-			return measurementGoalToDTO(updateMeasurementGoal(goal));
-		}
-		return null;
+		MeasurementGoal goal = getMeasurementGoalById(dto.getId());
+		return measurementGoalToDTO(updateMeasurementGoal(goal));
+		
 	}
 	
 	@Override
@@ -189,9 +177,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	@Override
 	public void deleteMeasurementGoal(MeasurementGoalDTO dto){
-		if(userCanModify(dto.getUserId())){
-			deleteMeasurementGoalById(dto.getId());
-		}	
+		deleteMeasurementGoalById(dto.getId());
 	}
 	
 	

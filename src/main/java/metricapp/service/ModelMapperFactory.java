@@ -37,8 +37,6 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		}
 		modelMapper.addMappings(new MetricMap()); 
 		modelMapper.addMappings(new MetricDTOMap());
-		//modelMapper.createTypeMap(String.class, LocalDate.class).setConverter(ModelMapperUtility.stringToLocalDate());
-		//modelMapper.createTypeMap(LocalDate.class, String.class).setConverter(ModelMapperUtility.localDateToString());
 		modelMapper.addConverter(ModelMapperUtility.localDateToString());
 		modelMapper.addConverter(ModelMapperUtility.stringToLocalDate());
 		modelMapper.addMappings(new QuestionMap());
