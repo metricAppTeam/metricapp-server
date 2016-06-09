@@ -13,24 +13,6 @@ import java.util.UUID;
 
 public class RandomGenerator {
 	//seed is time from epoch	
-//	
-//	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
-//
-//		MetadataDTO metadata = new MetadataDTO();
-//		metadata.randomAttributes();
-//		System.out.println(metadata.getCreationDate());
-//		
-//		Element element = new Element();
-//		element.randomAttributes();
-//		System.out.println(element.getCreationDate());
-//	}
-//	
-//	private static String toCamelCase(String string){
-//		return string.replaceFirst(string.substring(0, 1), string.substring(0, 1).toUpperCase());	
-//	}
-//	
-	
-
 	private static Random rnd = new Random(LocalTime.now().getNano());
 	
 	/*
@@ -43,7 +25,7 @@ public class RandomGenerator {
 		
 		if (field.getType().equals(String.class)){
 			//System.out.println("set"+toCamelCase(field.getName()));
-
+			//TODO replace with something that use reflection
 			//try {
 				//if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
 				if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){

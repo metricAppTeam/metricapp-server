@@ -60,8 +60,5 @@ public class MeasurementGoal extends AbstractGoal{
 
 	@DBRef
 	private Iterable<Questioner> questioners;
-	
-	
-
-	
+		
 }
