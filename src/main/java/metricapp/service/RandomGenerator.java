@@ -2,6 +2,7 @@ package metricapp.service;
 
 import java.lang.reflect.Field;
 
+
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,8 +10,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import org.hibernate.validator.internal.util.privilegedactions.GetClassLoader;
 import org.springframework.cglib.core.Local;
 
+import lombok.Lombok;
 import metricapp.dto.MetadataDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Element;
@@ -21,7 +24,7 @@ public class RandomGenerator {
 	//seed is time from epoch
 	private static Random rnd = new Random();//LocalDate.now().toEpochDay());
 	
-	
+//	
 //	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
 //
 //		MetadataDTO metadata = new MetadataDTO();
@@ -34,9 +37,9 @@ public class RandomGenerator {
 //	}
 //	
 //	private static String toCamelCase(String string){
-//		return string.substring(0, 1).toUpperCase() + string.substring(1);	
+//		return string.replaceFirst(string.substring(0, 1), string.substring(0, 1).toUpperCase());	
 //	}
-	
+//	
 	
 	
 	/*
@@ -49,19 +52,20 @@ public class RandomGenerator {
 		
 		if (field.getType().equals(String.class)){
 			//System.out.println("set"+toCamelCase(field.getName()));
-			
+
 			//try {
-			//	if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
-			if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
-				field.set(obj, RandomGenerator.randomLocalDate().toString());
-			}
-			else{
-				field.set(obj, RandomGenerator.randomString());
-			}
+				//if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
+				//if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
+					field.set(obj, RandomGenerator.randomLocalDate().toString());
+			//	}
+			//	else{
+					field.set(obj, RandomGenerator.randomString());
+			//	}
 			//} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-			//	e.printStackTrace();
-			//	
+			//    TODO Auto-generated catch block
+				//System.out.println("Warning, this method doesn't exists : "+field.getDeclaringClass()+".set"+toCamelCase(field.getName()));
+				//e.printStackTrace();
+				
 			//}
 		}
 		if (field.getType().equals(LocalDate.class)){
