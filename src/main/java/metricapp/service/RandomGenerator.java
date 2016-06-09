@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 
 public class RandomGenerator {
@@ -45,12 +46,12 @@ public class RandomGenerator {
 
 			//try {
 				//if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
-				//if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
+				if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
 					field.set(obj, RandomGenerator.randomLocalDate().toString());
-			//	}
-			//	else{
+				}
+				else{
 					field.set(obj, RandomGenerator.randomString());
-			//	}
+				}
 			//} catch (NoSuchMethodException e) {
 			//    TODO Auto-generated catch block
 				//System.out.println("Warning, this method doesn't exists : "+field.getDeclaringClass()+".set"+toCamelCase(field.getName()));
@@ -79,8 +80,7 @@ public class RandomGenerator {
 	}
 	
 	static public String randomString(){
-		//return UUID.randomUUID().toString();
-		return "pippo23";
+		return UUID.randomUUID().toString();
 	}
 	
 	static public boolean randomBoolean(){
