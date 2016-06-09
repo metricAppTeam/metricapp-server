@@ -3,27 +3,15 @@ package metricapp.service;
 import java.lang.reflect.Field;
 
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-
-import org.hibernate.validator.internal.util.privilegedactions.GetClassLoader;
-import org.springframework.cglib.core.Local;
-
-import lombok.Lombok;
-import metricapp.dto.MetadataDTO;
-import metricapp.dto.metric.MetricDTO;
-import metricapp.entity.Element;
-
 
 
 public class RandomGenerator {
-	//seed is time from epoch
-	private static Random rnd = new Random();//LocalDate.now().toEpochDay());
-	
+	//seed is time from epoch	
 //	
 //	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
 //
@@ -41,6 +29,8 @@ public class RandomGenerator {
 //	}
 //	
 	
+
+	private static Random rnd = new Random(LocalTime.now().getNano());
 	
 	/*
 	 * this function permits to fill an object 
@@ -119,8 +109,9 @@ public class RandomGenerator {
 		return list;
 	}
 	
+	//random date from 1970 and 2300
 	static public LocalDate randomLocalDate(){
-		return LocalDate.ofEpochDay(randomInt());
+		return LocalDate.ofEpochDay(randomInt()%(2300 * 360));
 	}
 	
 	/*
@@ -128,9 +119,6 @@ public class RandomGenerator {
 	 * this function uses reflections to bring you a random element of a Enumeration. 
 	 * As a parameter it takes the Enum.class element, T is my enumeration like State or ScaleType
 	 * */
-	
-	
-	
 	public static <T extends Enum<?>> T randomEnum(Class<T> myEnumClass){
         int x = rnd.nextInt(myEnumClass.getEnumConstants().length);
         return myEnumClass.getEnumConstants()[x];

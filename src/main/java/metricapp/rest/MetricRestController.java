@@ -9,57 +9,108 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.ResponseDTO;
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.service.spec.controller.MetricCRUDInterface;
+import metricapp.service.spec.exception.BadInputException;
+import metricapp.service.spec.exception.DBException;
+import metricapp.service.spec.exception.IllegalStateTransitionException;
+import metricapp.service.spec.exception.NotFoundException;
 
 @RestController
 @RequestMapping(("/metric"))
 public class MetricRestController {
 	@Autowired
 	private MetricCRUDInterface metricCRUDController;
-	
-	
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<MetricCrudDTO> getMetricDTO(@RequestParam(value="id",defaultValue="NA") String id,
-			@RequestParam(value="version",defaultValue="NA") String version, @RequestParam(value="userid",defaultValue="NA") String userId){
-		MetricCrudDTO dto=null;
-		if(!userId.equals("NA")){
-			dto = metricCRUDController.getMetricOfUser(userId);
+	public ResponseEntity<MetricCrudDTO> getMetricDTO(@RequestParam(value = "id", defaultValue = "NA") String id,
+			@RequestParam(value = "version", defaultValue = "NA") String version,
+			@RequestParam(value = "userid", defaultValue = "NA") String userId,
+			@RequestParam(value = "approved", defaultValue = "false") String approved) {
+		MetricCrudDTO dto = new MetricCrudDTO();
+		try {
+			if (!userId.equals("NA")) {
+				dto = metricCRUDController.getMetricOfUser(userId);
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!id.equals("NA") && approved.equals("true")) {
+				dto = metricCRUDController.getMetricByIdLastApprovedVersion(id);
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!version.equals("NA") && !id.equals("NA")) {
+				dto = metricCRUDController.getMetricByIdAndVersion(id, version);
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!id.equals("NA")) {
+				dto = metricCRUDController.getMetricById(id);
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<MetricCrudDTO>(HttpStatus.BAD_REQUEST);
+			}
+		} catch (BadInputException e) {
+			dto.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			dto.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			dto.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(!version.equals("NA") && !id.equals("NA")){
-			dto = metricCRUDController.getMetricByIdAndVersion(id,version);
-		}
-		if(!id.equals("NA")){
-			dto = metricCRUDController.getMetricById(id);
-		}
-		if(dto == null){
-			return new ResponseEntity<MetricCrudDTO>(HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<MetricCrudDTO>(dto,HttpStatus.OK);
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<ResponseDTO> deleteMetricDTO(@RequestParam String id){
-		metricCRUDController.deleteMetricById(id);
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+	public ResponseEntity<MetricCrudDTO> deleteMetricDTO(@RequestParam String id) {
+		MetricCrudDTO dto = new MetricCrudDTO();
+		try {
+			metricCRUDController.deleteMetricById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<MetricCrudDTO>(HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<ResponseDTO> putMetricDTO(@RequestBody MetricDTO dto){
-		metricCRUDController.updateMetric(dto);
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+	public ResponseEntity<MetricCrudDTO> putMetricDTO(@RequestBody MetricDTO dto) {
+		MetricCrudDTO rensponseDTO = new MetricCrudDTO();
+		try {
+			return new ResponseEntity<MetricCrudDTO>(metricCRUDController.updateMetric(dto), HttpStatus.OK);
+		} catch (BadInputException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
+		} catch (IllegalStateTransitionException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.CONFLICT);
+		} catch (NotFoundException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.NOT_FOUND);
+		} catch (DBException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.FORBIDDEN);
+		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> postMeasurementGoalDTO(@RequestBody MetricDTO dto){
-		metricCRUDController.createMetric(dto);
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+	public ResponseEntity<MetricCrudDTO> postMeasurementGoalDTO(@RequestBody MetricDTO dto) {
+		MetricCrudDTO rensponseDTO = new MetricCrudDTO();
+		try {
+			return new ResponseEntity<MetricCrudDTO>( metricCRUDController.createMetric(dto), HttpStatus.OK);
+		} catch (BadInputException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
+		}
 	}
-	
-	
+
 }

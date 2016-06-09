@@ -129,6 +129,12 @@ public class DTOToMetricTest {
 	}
 	
 	@Test
+	public void testState(){
+		assertTrue(	dto.getMetadata().getState().toString()+(metric1.getState()),
+				dto.getMetadata().getState().equals(metric1.getState()) );
+	}
+	
+	@Test
 	public void testTags(){
 		assertTrue(	metric1.getTags()+","+dto.getMetadata().getTags(),
 				metric1.getTags().equals(dto.getMetadata().getTags()));

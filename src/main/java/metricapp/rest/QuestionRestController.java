@@ -72,7 +72,6 @@ public class QuestionRestController {
 		else{
 			return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
 		}
-		
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

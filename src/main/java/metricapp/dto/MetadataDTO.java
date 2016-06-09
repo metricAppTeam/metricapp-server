@@ -1,11 +1,9 @@
 package metricapp.dto;
 
-import java.io.Console;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import lombok.Data;

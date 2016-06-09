@@ -1,6 +1,5 @@
 package metricapp.entity.question;
 
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
