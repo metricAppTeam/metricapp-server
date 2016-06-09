@@ -15,4 +15,6 @@ public interface MetricRepository extends MongoRepository<Metric, String>{
 	public Metric findMetricByIdAndVersion(String id, String version);
 	
 	public ArrayList<Metric> findMetricByMetricatorId(String id);
+	
+	
 }
