@@ -45,7 +45,8 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 
 	@Override
-	public MetricCrudDTO getMetricByIdAndVersion(String id, String version) throws BadInputException,NotFoundException{
+	public MetricCrudDTO getMetricByIdAndVersion(String id, String version)
+			throws BadInputException, NotFoundException {
 		if (id == null || version == null) {
 			throw new BadInputException("Metric id,version cannot be null");
 		}
@@ -79,7 +80,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 
 	@Override
-	public MetricCrudDTO getMetricOfUser(String userId) throws NotFoundException ,BadInputException {
+	public MetricCrudDTO getMetricOfUser(String userId) throws NotFoundException, BadInputException {
 		if (userId == null) {
 			throw new BadInputException("Metric userId cannot be null");
 		}
@@ -97,7 +98,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 
 	@Override
-	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException{
+	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException {
 		if (dto == null || dto.getMetadata().getCreatorId() == null) {
 			throw new BadInputException("Bad Input");
 		}
@@ -119,42 +120,47 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 
 	@Override
-	public MetricCrudDTO updateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException  {
-		if(dto == null){
+	public MetricCrudDTO updateMetric(MetricDTO dto)
+			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException {
+		if (dto == null) {
 			throw new BadInputException("Bad Input");
 		}
-		if(dto.getMetadata().getId() == null){
+		if (dto.getMetadata().getId() == null) {
 			throw new BadInputException("Metrics cannot have null ID");
 		}
 		/**
-		*
-		*Note that an Update will be executed IFF dto contains version number equals to version on MongoDB
-		*
-		**/
+		 *
+		 * Note that an Update will be executed IFF dto contains version number
+		 * equals to version on MongoDB
+		 *
+		 **/
 		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(dto, Metric.class);
 		Metric oldMetric = metricRepository.findMetricById(newMetric.getId());
 		stateTransition(oldMetric, newMetric);
-		
+
 		MetricCrudDTO dtoCrud = new MetricCrudDTO();
-		dtoCrud.setRequest("update Metric id"+dto.getMetadata().getId());
-		if(oldMetric==null){
+		dtoCrud.setRequest("update Metric id" + dto.getMetadata().getId());
+		if (oldMetric == null) {
 			throw new NotFoundException();
 		}
-		
+
 		try {
 			dtoCrud.addMetricToList(
 					modelMapperFactory.getLooseModelMapper().map(metricRepository.save(newMetric), MetricDTO.class));
 		} catch (Exception e) {
 			throw new DBException("Error in saving, tipically your version is not the last");
 		}
-		
+
 		return dtoCrud;
 	}
 
 	@Override
-	public void deleteMetricById(String id) throws BadInputException  {
+	public void deleteMetricById(String id) throws BadInputException, IllegalStateTransitionException {
 		if (id == null) {
 			throw new BadInputException("Bad Input");
+		}
+		if (!metricRepository.findMetricById(id).getState().equals(State.Suspended)) {
+			throw new IllegalStateTransitionException("A metric must be Suspended before delete");
 		}
 		metricRepository.delete(id);
 	}
@@ -189,7 +195,9 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			if (after.equals(State.Approved)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				newMetric.setLastApprovedMetric(modelMapperFactory.getLooseModelMapper().map(newMetric, MetricDTO.class));
+				// TODO send to bus the new metric
+				newMetric.setLastApprovedMetric(
+						modelMapperFactory.getLooseModelMapper().map(newMetric, MetricDTO.class));
 				return;
 			}
 			if (after.equals(State.Rejected)) {
@@ -234,6 +242,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 						"New State is not applicable: " + after.toString() + " from " + before.toString());
 			}
 		case Suspended:
+			// TODO check dependencies
 			throw new IllegalStateTransitionException(
 					"New State is not applicable: " + after.toString() + " from " + before.toString());
 		default:
