@@ -12,12 +12,12 @@ import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
+import metricapp.exception.BadInputException;
+import metricapp.exception.DBException;
+import metricapp.exception.IllegalStateTransitionException;
+import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MetricCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
-import metricapp.service.spec.exception.BadInputException;
-import metricapp.service.spec.exception.DBException;
-import metricapp.service.spec.exception.IllegalStateTransitionException;
-import metricapp.service.spec.exception.NotFoundException;
 import metricapp.service.spec.repository.MetricRepository;
 
 @Service
@@ -65,11 +65,8 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		if (id == null) {
 			throw new BadInputException("Metric id cannot be null");
 		}
-		MetricDTO lastDTO =metricRepository.findMetricById(id).getLastApprovedMetric();
-		if (lastDTO == null) {
-			throw new NotFoundException("Approved Metric with id " + id + "is not available");
-		}
-		Metric metric = modelMapperFactory.getLooseModelMapper().map(lastDTO,Metric.class);
+		Metric metric = modelMapperFactory.getLooseModelMapper()
+				.map(metricRepository.findMetricById(id).getLastApprovedMetric(), Metric.class);
 		if (metric == null) {
 			throw new NotFoundException("Approved Metric with id " + id + "is not available");
 		}
@@ -195,7 +192,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			if (after.equals(State.Approved)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				// TODO send to bus the new metric
+				// TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion
 				newMetric.setLastApprovedMetric(
 						modelMapperFactory.getLooseModelMapper().map(newMetric, MetricDTO.class));
 				return;

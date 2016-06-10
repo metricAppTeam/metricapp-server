@@ -2,10 +2,10 @@ package metricapp.service.spec.controller;
 
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
-import metricapp.service.spec.exception.BadInputException;
-import metricapp.service.spec.exception.DBException;
-import metricapp.service.spec.exception.IllegalStateTransitionException;
-import metricapp.service.spec.exception.NotFoundException;
+import metricapp.exception.BadInputException;
+import metricapp.exception.DBException;
+import metricapp.exception.IllegalStateTransitionException;
+import metricapp.exception.NotFoundException;
 
 public interface MetricCRUDInterface {
 	
