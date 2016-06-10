@@ -78,7 +78,7 @@ public class RandomGenerator {
 	}
 	
 	static public long randomInt(){
-		return rnd.nextInt(1024*128);
+		return rnd.nextInt();
 	}
 	
 	static public ArrayList<String> randomArrayList(){

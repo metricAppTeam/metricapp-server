@@ -64,7 +64,11 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		if (id == null) {
 			throw new BadInputException("Metric id cannot be null");
 		}
-		Metric metric = modelMapperFactory.getLooseModelMapper().map(metricRepository.findMetricById(id).getLastApprovedMetric(),Metric.class);
+		MetricDTO lastDTO =metricRepository.findMetricById(id).getLastApprovedMetric();
+		if (lastDTO == null) {
+			throw new NotFoundException("Approved Metric with id " + id + "is not available");
+		}
+		Metric metric = modelMapperFactory.getLooseModelMapper().map(lastDTO,Metric.class);
 		if (metric == null) {
 			throw new NotFoundException("Approved Metric with id " + id + "is not available");
 		}
