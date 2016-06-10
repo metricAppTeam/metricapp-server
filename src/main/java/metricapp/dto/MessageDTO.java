@@ -9,7 +9,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper=true)
 @EqualsAndHashCode(callSuper=true)
-public class MessageDTO extends DTO implements Serializable {
+public class MessageDTO extends ResponseDTO implements Serializable {
 	/**
 	 * 
 	 */

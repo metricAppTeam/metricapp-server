@@ -83,6 +83,12 @@ public class MetricToDTOTest {
 	}
 	
 	@Test
+	public void testState(){
+		assertTrue(	dto.getMetadata().getState().toString()+(metric1.getState()),
+				dto.getMetadata().getState().equals(metric1.getState()) );
+	}
+	
+	@Test
 	public void testMax(){
 		assertTrue(	dto.getMax() +","+ metric1.getMax(),
 				dto.getMax() == metric1.getMax() );

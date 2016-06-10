@@ -1,18 +1,19 @@
 package metricapp.service;
 
 import java.lang.reflect.Field;
+
+
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 
-
 public class RandomGenerator {
-	//seed is time from epoch
-	private static Random rnd = new Random(LocalDate.now().toEpochDay());
-	
+	//seed is time from epoch	
+	private static Random rnd = new Random(LocalTime.now().getNano());
 	
 	/*
 	 * this function permits to fill an object 
@@ -20,9 +21,25 @@ public class RandomGenerator {
 	 * 
 	 * */
 	@SuppressWarnings("unchecked")
-	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException {
+	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+		
 		if (field.getType().equals(String.class)){
-			field.set(obj, RandomGenerator.randomString());
+			//System.out.println("set"+toCamelCase(field.getName()));
+			//TODO replace with something that use reflection
+			//try {
+				//if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
+				if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
+					field.set(obj, RandomGenerator.randomLocalDate().toString());
+				}
+				else{
+					field.set(obj, RandomGenerator.randomString());
+				}
+			//} catch (NoSuchMethodException e) {
+			//    TODO Auto-generated catch block
+				//System.out.println("Warning, this method doesn't exists : "+field.getDeclaringClass()+".set"+toCamelCase(field.getName()));
+				//e.printStackTrace();
+				
+			//}
 		}
 		if (field.getType().equals(LocalDate.class)){
 			field.set(obj, RandomGenerator.randomLocalDate());
@@ -61,7 +78,7 @@ public class RandomGenerator {
 	}
 	
 	static public long randomInt(){
-		return rnd.nextInt();
+		return rnd.nextInt(1024*128);
 	}
 	
 	static public ArrayList<String> randomArrayList(){
@@ -74,8 +91,9 @@ public class RandomGenerator {
 		return list;
 	}
 	
+	//random date from 1970 and 2300
 	static public LocalDate randomLocalDate(){
-		return LocalDate.ofEpochDay(randomInt());
+		return LocalDate.ofEpochDay(randomInt()%(2300 * 360));
 	}
 	
 	/*
@@ -83,9 +101,6 @@ public class RandomGenerator {
 	 * this function uses reflections to bring you a random element of a Enumeration. 
 	 * As a parameter it takes the Enum.class element, T is my enumeration like State or ScaleType
 	 * */
-	
-	
-	
 	public static <T extends Enum<?>> T randomEnum(Class<T> myEnumClass){
         int x = rnd.nextInt(myEnumClass.getEnumConstants().length);
         return myEnumClass.getEnumConstants()[x];

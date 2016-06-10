@@ -3,6 +3,7 @@ package metricapp.entity.metric;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Element;
 import metricapp.entity.State;
 import metricapp.service.RandomGenerator;
@@ -39,6 +41,8 @@ public class Metric extends Element{
 	private String unit;
 	private ScaleType scaleType;
 	private Set set;
+	
+	private MetricDTO lastApprovedMetric;
 	
 	public void setUserDefinedList(String ...strings){
 		ArrayList<String> userList = new ArrayList<String>();

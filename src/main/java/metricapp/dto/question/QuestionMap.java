@@ -14,7 +14,8 @@ public class QuestionMap extends PropertyMap<Question, QuestionDTO>{
 		map().getMetadata().setVersion(source.getVersion());
 		map().getMetadata().setTags(source.getTags());
 		map().getMetadata().setState(source.getState());
-		
+		map().getMetadata().setLastVersionDate(source.getLastVersionDate());
+		map().getMetadata().setCreationDate(source.getCreationDate());
 		map().setFocus(source.getFocus());
 		map().setSubject(source.getSubject());
 		map().setDescription(source.getDescription());

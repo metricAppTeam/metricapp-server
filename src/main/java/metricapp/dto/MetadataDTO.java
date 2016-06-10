@@ -3,6 +3,7 @@ package metricapp.dto;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Data;
@@ -36,6 +37,23 @@ public class MetadataDTO implements Serializable{
 			RandomGenerator.randomAttribute(this, field);
 		}
 	}
+	
+	public void setCreationDate(String date){
+		this.creationDate = date;
+	}
+	
+	public void setLastVersionDate(String date){
+		this.lastVersionDate = date;
+	}
+
+	public void setCreationDate(LocalDate date){
+		this.creationDate = date.toString();
+	}
+	
+	public void setLastVersionDate(LocalDate date){
+		this.lastVersionDate = date.toString();
+	}
+	
 
 	
 }
