@@ -6,6 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
@@ -40,21 +43,25 @@ public class MetadataDTO implements Serializable{
 		}
 	}
 	
+	@JsonProperty("creationDate")
 	public void setCreationDate(String date){
 		this.creationDate = date;
 	}
 	
+	@JsonProperty("lastVersionDate")
 	public void setLastVersionDate(String date){
 		this.lastVersionDate = date;
 	}
-
+	@JsonIgnore
 	public void setCreationDate(LocalDate date){
 		this.creationDate = date.toString();
 	}
-	
+	@JsonIgnore
 	public void setLastVersionDate(LocalDate date){
 		this.lastVersionDate = date.toString();
 	}
+	
+	
 	
 
 	

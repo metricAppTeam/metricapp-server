@@ -103,9 +103,10 @@ public class MetricRestController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<MetricCrudDTO> postMeasurementGoalDTO(@RequestBody MetricDTO dto) {
+
 		MetricCrudDTO rensponseDTO = new MetricCrudDTO();
 		try {
-			return new ResponseEntity<MetricCrudDTO>( metricCRUDController.createMetric(dto), HttpStatus.OK);
+			return new ResponseEntity<MetricCrudDTO>( metricCRUDController.createMetric(dto), HttpStatus.CREATED);
 		} catch (BadInputException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();

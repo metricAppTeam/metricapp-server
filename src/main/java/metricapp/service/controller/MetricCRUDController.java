@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,20 +97,22 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 
 	@Override
-	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException {
-		if (dto == null || dto.getMetadata().getCreatorId() == null) {
+	public MetricCrudDTO createMetric(@Nonnull MetricDTO dto) throws BadInputException {
+
+		if (dto.getMetadata().getCreatorId() == null) {
 			throw new BadInputException("Bad Input");
 		}
 		if (dto.getMetadata().getId() != null) {
 			throw new BadInputException("New Metrics cannot have ID");
 		}
+		dto.getMetadata().setCreationDate(LocalDate.now());
+		dto.getMetadata().setLastVersionDate(LocalDate.now());
 		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(dto, Metric.class);
 
 		newMetric.setCreationDate(LocalDate.now());
 		newMetric.setLastVersionDate(LocalDate.now());
 		newMetric.setEntityType(Entity.Metric);
 		newMetric.setVersion("0");
-
 		MetricCrudDTO dtoCrud = new MetricCrudDTO();
 		dtoCrud.setRequest("create Metric");
 		dtoCrud.addMetricToList(
