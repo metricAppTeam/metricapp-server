@@ -29,8 +29,6 @@ public class MetadataDTO implements Serializable{
 	public State state;
 	public String releaseNote;
 	public Entity entityType;
-	private String ermesLastVersion;
-	private String secretToken;
 	
 	public void randomAttributes() throws IllegalArgumentException,IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException{
 		Field[] attributes = this.getClass().getDeclaredFields();	
