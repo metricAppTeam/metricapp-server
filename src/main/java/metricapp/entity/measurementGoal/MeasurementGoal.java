@@ -1,5 +1,9 @@
 package metricapp.entity.measurementGoal;
 
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.InvocationTargetException;
+
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +15,7 @@ import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
 import metricapp.entity.stakeholders.Metricator;
 import metricapp.entity.stakeholders.Questioner;
+import metricapp.utility.RandomGenerator;
 
 @Document
 @Data
@@ -61,4 +66,32 @@ public class MeasurementGoal extends AbstractGoal{
 	@DBRef
 	private Iterable<Questioner> questioners;
 		
+	public static MeasurementGoal randomMeasurementGoal(){
+		InterpretationModel interpretationModel = new InterpretationModel();
+		interpretationModel.setFunctionJavascript(RandomGenerator.randomString());
+		interpretationModel.setQueryNoSQL(RandomGenerator.randomString());
+		
+		OrganizationalGoal organizationalGoal = new OrganizationalGoal();
+		try {
+			organizationalGoal.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			e.printStackTrace();
+			fail("random attribute creation error");
+		}
+		
+		MeasurementGoal measurementGoal = new MeasurementGoal();
+		try {
+			measurementGoal.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			e.printStackTrace();
+			fail("random attribute creation error");
+		}
+		measurementGoal.setOrganizationalGoal(organizationalGoal);
+		measurementGoal.setInterpretationModel(interpretationModel);
+		
+		return measurementGoal;
+	}
+	
 }
