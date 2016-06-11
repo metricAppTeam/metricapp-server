@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
+import metricapp.exception.BadInputException;
+import metricapp.exception.DBException;
+import metricapp.exception.IllegalStateTransitionException;
+import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MetricCRUDInterface;
-import metricapp.service.spec.exception.BadInputException;
-import metricapp.service.spec.exception.DBException;
-import metricapp.service.spec.exception.IllegalStateTransitionException;
-import metricapp.service.spec.exception.NotFoundException;
 
 @RestController
 @RequestMapping(("/metric"))
@@ -103,9 +103,10 @@ public class MetricRestController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<MetricCrudDTO> postMeasurementGoalDTO(@RequestBody MetricDTO dto) {
+
 		MetricCrudDTO rensponseDTO = new MetricCrudDTO();
 		try {
-			return new ResponseEntity<MetricCrudDTO>( metricCRUDController.createMetric(dto), HttpStatus.OK);
+			return new ResponseEntity<MetricCrudDTO>( metricCRUDController.createMetric(dto), HttpStatus.CREATED);
 		} catch (BadInputException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();

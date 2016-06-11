@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,12 @@ import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
+import metricapp.exception.BadInputException;
+import metricapp.exception.DBException;
+import metricapp.exception.IllegalStateTransitionException;
+import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MetricCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
-import metricapp.service.spec.exception.BadInputException;
-import metricapp.service.spec.exception.DBException;
-import metricapp.service.spec.exception.IllegalStateTransitionException;
-import metricapp.service.spec.exception.NotFoundException;
 import metricapp.service.spec.repository.MetricRepository;
 
 @Service
@@ -60,20 +62,21 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		return dto;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public MetricCrudDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException {
 		if (id == null) {
 			throw new BadInputException("Metric id cannot be null");
 		}
-		Metric metric = modelMapperFactory.getLooseModelMapper()
-				.map(metricRepository.findMetricById(id).getLastApprovedMetric(), Metric.class);
+		// TODO get from bus
+		Metric metric = null;
 		if (metric == null) {
 			throw new NotFoundException("Approved Metric with id " + id + "is not available");
 		}
 		MetricCrudDTO dto = new MetricCrudDTO();
 		dto.setRequest("Metric, id=" + id + ";state=Approved");
 		dto.addMetricToList(modelMapperFactory.getLooseModelMapper().map(metric, MetricDTO.class));
-		return dto;
+		return null;
 	}
 
 	@Override
@@ -95,20 +98,22 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 
 	@Override
-	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException {
-		if (dto == null || dto.getMetadata().getCreatorId() == null) {
+	public MetricCrudDTO createMetric(@Nonnull MetricDTO dto) throws BadInputException {
+
+		if (dto.getMetadata().getCreatorId() == null) {
 			throw new BadInputException("Bad Input");
 		}
 		if (dto.getMetadata().getId() != null) {
 			throw new BadInputException("New Metrics cannot have ID");
 		}
+		dto.getMetadata().setCreationDate(LocalDate.now());
+		dto.getMetadata().setLastVersionDate(LocalDate.now());
 		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(dto, Metric.class);
 
 		newMetric.setCreationDate(LocalDate.now());
 		newMetric.setLastVersionDate(LocalDate.now());
 		newMetric.setEntityType(Entity.Metric);
 		newMetric.setVersion("0");
-
 		MetricCrudDTO dtoCrud = new MetricCrudDTO();
 		dtoCrud.setRequest("create Metric");
 		dtoCrud.addMetricToList(
@@ -182,7 +187,6 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		case OnUpdate:
 			if (after.equals(State.Pending)) {
 				// TODO alert newMetric.getCreatorId()
-				newMetric.setLastApprovedMetric(oldMetric.getLastApprovedMetric());
 				return;
 			} else {
 				throw new IllegalStateTransitionException(
@@ -192,15 +196,12 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			if (after.equals(State.Approved)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				// TODO send to bus the new metric
-				newMetric.setLastApprovedMetric(
-						modelMapperFactory.getLooseModelMapper().map(newMetric, MetricDTO.class));
+				// TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion
 				return;
 			}
 			if (after.equals(State.Rejected)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				newMetric.setLastApprovedMetric(oldMetric.getLastApprovedMetric());
 				return;
 			} else {
 				throw new IllegalStateTransitionException(
@@ -210,13 +211,11 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			if (after.equals(State.OnUpdate)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				newMetric.setLastApprovedMetric(oldMetric.getLastApprovedMetric());
 				return;
 			}
 			if (after.equals(State.Suspended)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				newMetric.setLastApprovedMetric(oldMetric.getLastApprovedMetric());
 				return;
 			} else {
 				throw new IllegalStateTransitionException(
@@ -226,13 +225,11 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			if (after.equals(State.OnUpdate)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				newMetric.setLastApprovedMetric(oldMetric.getLastApprovedMetric());
 				return;
 			}
 			if (after.equals(State.Suspended)) {
 				// TODO alert newMetric.getMetricatorId() with
 				// newMetric.getReleaseNote()
-				newMetric.setLastApprovedMetric(oldMetric.getLastApprovedMetric());
 				return;
 			} else {
 				throw new IllegalStateTransitionException(

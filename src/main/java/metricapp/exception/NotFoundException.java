@@ -1,4 +1,4 @@
-package metricapp.service.spec.exception;
+package metricapp.exception;
 
 public class NotFoundException extends Exception {
 

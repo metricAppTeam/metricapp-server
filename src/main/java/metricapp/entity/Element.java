@@ -34,6 +34,7 @@ public class Element extends Object{
 	private LocalDate creationDate;
 	@LastModifiedDate
 	private LocalDate lastVersionDate;
+	private String secretToken;
 	
 	private Entity entityType;
 	
