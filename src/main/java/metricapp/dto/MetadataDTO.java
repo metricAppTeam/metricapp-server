@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
-import metricapp.service.RandomGenerator;
+import metricapp.utility.RandomGenerator;
 
 @Data
 public class MetadataDTO implements Serializable{

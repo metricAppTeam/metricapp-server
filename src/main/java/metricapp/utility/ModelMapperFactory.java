@@ -1,4 +1,4 @@
-package metricapp.service;
+package metricapp.utility;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

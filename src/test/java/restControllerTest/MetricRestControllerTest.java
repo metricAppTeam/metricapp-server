@@ -37,8 +37,8 @@ import metricapp.BootApplication;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
-import metricapp.service.ModelMapperFactory;
 import metricapp.service.spec.repository.MetricRepository;
+import metricapp.utility.ModelMapperFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BootApplication.class)
