@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import lombok.Data;
-import metricapp.service.RandomGenerator;
+import metricapp.utility.RandomGenerator;
 
 @Data
 public class DTO implements Serializable{/**

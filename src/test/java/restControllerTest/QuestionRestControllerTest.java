@@ -37,8 +37,8 @@ import metricapp.BootApplication;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.State;
-import metricapp.service.RandomGenerator;
 import metricapp.service.controller.QuestionCRUDController;
+import metricapp.utility.RandomGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BootApplication.class)

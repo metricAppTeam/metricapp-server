@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import metricapp.BootApplication;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.metric.Metric;
-import metricapp.service.ModelMapperFactory;
+import metricapp.utility.ModelMapperFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)

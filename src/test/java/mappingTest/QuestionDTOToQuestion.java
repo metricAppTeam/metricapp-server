@@ -15,8 +15,8 @@ import metricapp.BootApplication;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.State;
 import metricapp.entity.question.Question;
-import metricapp.service.ModelMapperFactory;
-import metricapp.service.RandomGenerator;
+import metricapp.utility.ModelMapperFactory;
+import metricapp.utility.RandomGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)

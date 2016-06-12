@@ -15,7 +15,7 @@ import lombok.Setter;
 import lombok.ToString;
 import metricapp.entity.Element;
 import metricapp.entity.State;
-import metricapp.service.RandomGenerator;
+import metricapp.utility.RandomGenerator;
 
 @Setter
 @Getter
