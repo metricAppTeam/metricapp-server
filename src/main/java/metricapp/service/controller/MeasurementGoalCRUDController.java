@@ -1,11 +1,16 @@
 package metricapp.service.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
+import metricapp.entity.Entity;
 import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.exception.BadInputException;
+import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.AssumptionRepository;
@@ -85,20 +90,67 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
-	public MeasurementGoal getMeasurementGoalById(String id){
-		return measurementGoalRepository.findOne(id);
+	public MeasurementGoal getMeasurementGoalById(String id) throws BadInputException, NotFoundException{
+		if (id == null) {
+			throw new BadInputException("MeasurementGoal id cannot be null");
+		}
+		MeasurementGoal measurementGoal = measurementGoalRepository.findOne(id);
+		if (measurementGoal == null) {
+			throw new NotFoundException("MeasurementGoal with id " + id + "is not available");
+		}
+		
+		return measurementGoal;
+	
 	}
 	@Override
-	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto){
+	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, NotFoundException{
 		return measurementGoalToDTO(getMeasurementGoalById(dto.getId()));
 	}
+	
+
+	@Override
+	public MeasurementGoalDTO getMeasurementGoalByIdAndVersion(String id, String version)
+			throws BadInputException, NotFoundException {
+		if (id == null || version == null) {
+			throw new BadInputException("Metric id,version cannot be null");
+		}
+		MeasurementGoal measurementGoal = measurementGoalRepository.findByIdAndVersion(id, version);
+		if (measurementGoal == null) {
+			throw new NotFoundException("Metric with id " + id + " and version " + version + "is not available");
+		}
+		return modelMapperFactory.getLooseModelMapper().map(measurementGoal, MeasurementGoalDTO.class);
+	}
+	
+	@Override
+	public MeasurementGoalDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException {
+		if (userId == null) {
+			throw new BadInputException("MeasurementGoal userId cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByMetricatorId(userId);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("User " + userId + " has no Metrics");
+		}
+		return modelMapperFactory.getLooseModelMapper().map(measurementGoals.get(0), MeasurementGoalDTO.class);
+	}
+	
 	
 	
 	public MeasurementGoal createMeasurementGoal(MeasurementGoal goal){
 		return measurementGoalRepository.save(goal);
 	}
 	
-	public MeasurementGoalDTO createMeasurementGoal(MeasurementGoalDTO dto){
+	public MeasurementGoalDTO createMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException{
+		
+		if (dto.getMetadata().getCreatorId() == null) {
+			throw new BadInputException("Bad Input");
+		}
+		if (dto.getMetadata().getId() != null) {
+			throw new BadInputException("New Metrics cannot have ID");
+		}
+		
+		dto.getMetadata().setCreationDate(LocalDate.now());
+		dto.getMetadata().setLastVersionDate(LocalDate.now());
+		
 		if(debug){
 			System.out.println("\n\n--- Using Model mapper ---\n\n");
 			
@@ -128,6 +180,9 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
+		
+		goal.setEntityType(Entity.MeasurementGoal);
+		goal.setVersion("0");
 		
 		if(debug){
 			System.out.println("\n\n--- Model mapper in use ---\n\n");

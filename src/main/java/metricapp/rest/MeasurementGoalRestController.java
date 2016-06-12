@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.ResponseDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
+import metricapp.exception.BadInputException;
+import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 
 @RestController
@@ -27,7 +29,16 @@ public class MeasurementGoalRestController {
 		MeasurementGoalDTO dto = new MeasurementGoalDTO();
 		dto.setId(id);
 		
-		return new ResponseEntity<MeasurementGoalDTO>(controller.getMeasurementGoal(dto),HttpStatus.OK);
+		try {
+			return new ResponseEntity<MeasurementGoalDTO>(controller.getMeasurementGoal(dto),HttpStatus.OK);
+		} catch (BadInputException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
@@ -48,7 +59,13 @@ public class MeasurementGoalRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<MeasurementGoalDTO> postMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto){
-		return new ResponseEntity<MeasurementGoalDTO>(controller.createMeasurementGoal(dto),HttpStatus.CREATED);
+		try {
+			return new ResponseEntity<MeasurementGoalDTO>(controller.createMeasurementGoal(dto),HttpStatus.CREATED);
+		} catch (BadInputException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }
