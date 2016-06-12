@@ -60,28 +60,34 @@ public class QuestionRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<ResponseDTO> updateQuestionDTO(@RequestBody QuestionDTO questionDTO){
+	public ResponseEntity<QuestionCrudDTO> updateQuestionDTO(@RequestBody QuestionDTO questionDTO){
 		
 		QuestionCrudDTO questionCrudDTO = null;
+		try{
+			questionCrudDTO = questionCRUDController.updateQuestion(questionDTO);
 		
-		questionCrudDTO = questionCRUDController.updateQuestion(questionDTO);
-		
-		if(questionCrudDTO == null){
-			return new ResponseEntity<ResponseDTO>(HttpStatus.BAD_REQUEST);
+			if(questionCrudDTO == null){
+				return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.BAD_REQUEST);
+			}
+			else{
+				return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.OK);
+			}
 		}
-		else{
-			return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> createQuestionDTO(@RequestBody QuestionDTO questionDTO){
+	public ResponseEntity<QuestionCrudDTO> createQuestionDTO(@RequestBody QuestionDTO questionDTO){
+		QuestionCrudDTO questionCrudDTO = null;
 		try{
-			questionCRUDController.createQuestion(questionDTO);
-			return new ResponseEntity<ResponseDTO>(HttpStatus.OK);			
+			questionCrudDTO = questionCRUDController.createQuestion(questionDTO);
+			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.OK);			
 		}
 		catch (Exception e){
-			return new ResponseEntity<ResponseDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

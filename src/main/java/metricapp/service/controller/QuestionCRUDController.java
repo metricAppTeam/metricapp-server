@@ -1,14 +1,21 @@
 package metricapp.service.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import metricapp.dto.metric.MetricCrudDTO;
+import metricapp.dto.metric.MetricDTO;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
+import metricapp.entity.Entity;
+import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
+import metricapp.exception.BadInputException;
+import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.QuestionCRUDInterface;
 import metricapp.service.spec.repository.QuestionRepository;
@@ -93,19 +100,40 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	}
 	
 	@Override
-	public QuestionCrudDTO createQuestion(QuestionDTO questionDTO) {
-		Question newQuestion = modelMapperFactory.getLooseModelMapper().map(questionDTO, Question.class);
+	public QuestionCrudDTO createQuestion(QuestionDTO questionDTO) throws BadInputException{
 		
-		questionRepository.save(newQuestion);
+		if (questionDTO.getMetadata().getCreatorId() == null) {
+			throw new BadInputException("Bad Input");
+		}
+		if (questionDTO.getMetadata().getId() != null) {
+			throw new BadInputException("New Metrics cannot have ID");
+		}
+		questionDTO.getMetadata().setCreationDate(LocalDate.now());
+		questionDTO.getMetadata().setLastVersionDate(LocalDate.now());
+		Question newQuestion = modelMapperFactory.getLooseModelMapper().map(questionDTO, Question.class);
+
+		newQuestion.setCreationDate(LocalDate.now());
+		newQuestion.setLastVersionDate(LocalDate.now());
+		newQuestion.setEntityType(Entity.Question);
+		newQuestion.setVersion("0");
+		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
-		questionCrudDTO.addQuestionToList(questionDTO);
+		questionCrudDTO.addQuestionToList(
+				modelMapperFactory.getLooseModelMapper().map(questionRepository.save(newQuestion), QuestionDTO.class));
 		
 		return questionCrudDTO;
 	}
 
 	@Override
-	public QuestionCrudDTO updateQuestion(QuestionDTO questionDTO) {
+	public QuestionCrudDTO updateQuestion(QuestionDTO questionDTO) throws BadInputException, NotFoundException {
+		
+		if(questionDTO.getMetadata().getId() == null){
+			throw new BadInputException("Id cannot be null");
+		}
+		
+		questionDTO.getMetadata().setLastVersionDate(LocalDate.now());
+	
 		Question updatedQuestion = modelMapperFactory.getLooseModelMapper().map(questionDTO, Question.class);
 		
 		if(questionRepository.exists(updatedQuestion.getId())){
@@ -116,8 +144,9 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 			return questionCrudDTO;
 		}
 		else{
-			return null;
+			throw new NotFoundException("Question not found");
 		}
+		
 	}
 
 	@Override
