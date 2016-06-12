@@ -3,7 +3,6 @@ package metricapp.service.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
@@ -13,7 +12,6 @@ import metricapp.service.spec.repository.AssumptionRepository;
 import metricapp.service.spec.repository.ContextRepository;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
 import metricapp.service.spec.repository.MetricRepository;
-
 
 @Data
 @Service("MeasurementGoalCRUDController")
@@ -35,12 +33,8 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
-	
+		
 	private boolean debug = false;
-	
-	
-	
-	
 	
 	private MeasurementGoalDTO measurementGoalToDTO(MeasurementGoal goal){
 		//MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
@@ -80,7 +74,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
 			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
 			System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
-			//System.out.println("purpose: " + goal.getPurpose + "\n");
+			System.out.println("purpose: " + goal.getPurpose() + "\n");
 			System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
 			System.out.println("creationDate: " + dto.getMetadata().getCreationDate() + "\n");
 			System.out.println("lastVersionDate: " + dto.getMetadata().getLastVersionDate() + "\n");
@@ -113,12 +107,13 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
 			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
 			System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
-			//System.out.println("purpose: " + goal.getPurpose + "\n");
+			System.out.println("purpose: " + dto.getPurpose() + "\n");
 			System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
 			System.out.println("creationDate: " + dto.getMetadata().getCreationDate() + "\n");
 			System.out.println("lastVersionDate: " + dto.getMetadata().getLastVersionDate() + "\n");
 			System.out.println("metricsIdList: " + dto.getMetricIdList() + "\n");
 			System.out.println("questionIdList: " + dto.getQuestionIdList() + "\n");
+			System.out.println("metricatorCredentialUsername: "+dto.getMetricatorId() + "\n");
 		}
 			/*
 			PropertyMap<MeasurementGoalDTO, MeasurementGoal> measurementGoalDTOMap = new PropertyMap<MeasurementGoalDTO, MeasurementGoal>() {
@@ -154,7 +149,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("functionJavaScript: " + goal.getInterpretationModel().getFunctionJavascript() +  "\n");
 			System.out.println("queryNoSQL: " + goal.getInterpretationModel().getQueryNoSQL() + "\n");
 			
-			System.out.println("metricatorId: " + goal.getMetricator().getCredential().getUsername() + "\n");
+			System.out.println("metricatorId: " + goal.getMetricatorId() + "\n");
 		}		
 		goal = createMeasurementGoal(goal);
 		return measurementGoalToDTO(goal);
@@ -166,7 +161,10 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	@Override
 	public MeasurementGoalDTO updateMeasurementGoal(MeasurementGoalDTO dto){
-		MeasurementGoal goal = getMeasurementGoalById(dto.getId());
+		
+		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
+	
 		return measurementGoalToDTO(updateMeasurementGoal(goal));
 		
 	}

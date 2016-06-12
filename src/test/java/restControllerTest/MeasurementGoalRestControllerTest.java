@@ -1,6 +1,7 @@
 package restControllerTest;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -98,21 +99,21 @@ public class MeasurementGoalRestControllerTest {
 		// insert measurement goal into the db
 		measurementGoal1 = measurementGoalRepository.save(measurementGoal1);
 		// check if the instance was correctly in created in db
-		measurementGoal2 = measurementGoalRepository.findOne(measurementGoal1.getId());
+		measurementGoal2 = measurementGoalRepository.findById(measurementGoal1.getId());
 		if (measurementGoal2 == null) {
 			fail("error in insert, db connection fail");
 		}
 
 		// delete it from rest controller
 		try {
-			this.mockMvc.perform(delete("/measurementGoal?id=" + measurementGoal2.getId())).andExpect(status().isOk());
+			this.mockMvc.perform(delete("/measurementgoal?id=" + measurementGoal2.getId())).andExpect(status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("error in use of mock");
 		}
 
 		// check if the delete was done
-		measurementGoal3= measurementGoalRepository.findOne(measurementGoal2.getId());
+		measurementGoal3= measurementGoalRepository.findById(measurementGoal2.getId());
 		assertEquals(measurementGoal3, null);
 	}
 
@@ -129,12 +130,12 @@ public class MeasurementGoalRestControllerTest {
 		String newId = null;
 		try {
 			// create a measurement goal with rest controller
-			result = this.mockMvc.perform(post("/measurementGoal").contentType(contentType).content(json(measurementGoalDTO1)))
+			result = this.mockMvc.perform(post("/measurementgoal").contentType(contentType).content(json(measurementGoalDTO1)))
 					.andExpect(status().isCreated()).andReturn();
 
 			// get id of the new MeasurementGoal
 			JsonNode dto = new ObjectMapper().readTree(result.getResponse().getContentAsString());
-			newId = dto.path("measurementGoalssDTO").path(0).path("metadata").path("id").asText();
+			newId = dto.path("metadata").path("id").asText();//dto.path("measurementGoals").path(0).path("metadata").path("id").asText();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -142,7 +143,7 @@ public class MeasurementGoalRestControllerTest {
 		}
 
 		// check if it exists
-		Assert.assertNotEquals("assert failed on creation", null, measurementGoalRepository.findOne(newId));
+		Assert.assertNotEquals("assert failed on creation", null, measurementGoalRepository.findById(newId));
 
 		// clean db
 		measurementGoalRepository.delete(newId);
@@ -162,11 +163,13 @@ public class MeasurementGoalRestControllerTest {
 		measurementGoalDTO1 = modelMapperFactory.getLooseModelMapper().map(measurementGoal1, MeasurementGoalDTO.class);
 		// we can assert that every field is used in the same way during the
 		// update
-//		measurementGoalDTO1.setDescription("Updated Description");
+		measurementGoalDTO1.setFocus("Updated Focus");
 		measurementGoalDTO1.getMetadata().setId(measurementGoal1.getId());
+	
 		String s = setIdOnJacksonJson(json(measurementGoalDTO1), measurementGoal1.getId());
+
 		try {
-			mockMvc.perform(put("/measurementGoal").contentType(contentType).content(s))
+			mockMvc.perform(put("/measurementgoal").contentType(contentType).content(s))
 					.andExpect(status().isOk()).andReturn();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -177,9 +180,9 @@ public class MeasurementGoalRestControllerTest {
 		}
 
 		// get the new updated version
-		measurementGoal2 = measurementGoalRepository.findOne(measurementGoal1.getId());
+		measurementGoal2 = measurementGoalRepository.findById(measurementGoal1.getId());
 		// compare updated field
-//		Assert.assertNotEquals("error in update", measurementGoal1.getDescription(), measurementGoal2.getDescription());
+		Assert.assertNotEquals("error in update", measurementGoal1.getQualityFocus(), measurementGoal2.getQualityFocus());
 
 		// clean db
 		measurementGoalRepository.delete(measurementGoal1.getId());
@@ -198,12 +201,12 @@ public class MeasurementGoalRestControllerTest {
 		measurementGoalDTO1 = modelMapperFactory.getLooseModelMapper().map(measurementGoal1, MeasurementGoalDTO.class);
 		
 		try {
-			MvcResult result = mockMvc.perform(get("/measurementGoal?id="+ measurementGoal1.getId()).contentType(contentType).content(json(measurementGoalDTO1)))
+			MvcResult result = mockMvc.perform(get("/measurementgoal?id="+ measurementGoal1.getId()).contentType(contentType).content(json(measurementGoalDTO1)))
 					.andExpect(status().isOk()).andReturn();
 			
-			// get id of the new MeasurementGoal
+			// get id of the new measurement goal
 			JsonNode dto = new ObjectMapper().readTree(result.getResponse().getContentAsString());
-			Assert.assertEquals("error in get", measurementGoal1.getId(),dto.path("measurementGoalsDTO").path(0).path("metadata").path("id").asText());
+			Assert.assertEquals("error in get", measurementGoal1.getId(),dto.path("metadata").path("id").asText());//dto.path("measurementGoals").path(0).path("metadata").path("id").asText());
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("error in get");
@@ -221,7 +224,8 @@ public class MeasurementGoalRestControllerTest {
 	
 	//due to something in Jackson Implementation, field id cannot be mapped
 	private String setIdOnJacksonJson(String json, String id){
-		return json.substring(0, 19) + "\"id\":\""+id+"\","+json.substring(19);
+		return json.substring(0, 19) + "    \"id\" : \""+id+json.substring(19+"    \"id\" : \"".length()+id.length());
+		//return json.replace(json.substring(json.indexOf("\"id\": \"")+1, json.indexOf(",\n   \"version")), id);
 	}
 
 }

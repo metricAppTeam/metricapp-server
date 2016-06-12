@@ -28,7 +28,7 @@ public class MeasurementGoal extends AbstractGoal{
 		//this.assumptions = new ArrayList<Assumption>();
 		//this.metrics = new ArrayList<Metric>();
 		//this.questioners = new ArrayList<Questioner>();
-		this.metricator = new Metricator();
+		//this.metricator = new Metricator();
 	}
 	
 	@DBRef
@@ -60,8 +60,7 @@ public class MeasurementGoal extends AbstractGoal{
 	@DBRef
 	private Iterable<Question> questions;
 	
-	@DBRef 
-	private Metricator metricator;
+    private Metricator metricatorId;
 
 	@DBRef
 	private Iterable<Questioner> questioners;

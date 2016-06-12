@@ -48,7 +48,7 @@ public class MeasurementGoalRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<MeasurementGoalDTO> postMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto){
-		return new ResponseEntity<MeasurementGoalDTO>(controller.createMeasurementGoal(dto),HttpStatus.OK);
+		return new ResponseEntity<MeasurementGoalDTO>(controller.createMeasurementGoal(dto),HttpStatus.CREATED);
 	}
 	
 }

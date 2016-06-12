@@ -19,9 +19,6 @@ public class MeasurementGoalCrudDTO extends MessageDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = -1980306938916100958L;
 	
-	
-	
-	
 	private List<MeasurementGoalDTO> measurementGoals; 
 	
 	private String scope;

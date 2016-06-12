@@ -24,6 +24,7 @@ public class MeasurementGoalDTO extends GoalDTO{
 	public String object;
 	public String viewPoint;
 	public String focus;
+	public String purpose;
 	public String OrganizationalGoalId;
 	public List<String> metricIdList;
 	public List<String> questionIdList;
