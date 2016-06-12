@@ -25,11 +25,17 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	@Override
 	public QuestionCrudDTO getQuestionById(String id) {
 		Question question = questionRepository.findQuestionById(id);
-		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
+		try{
+			QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
+			
+			questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(question, QuestionDTO.class));
+			return questionCrudDTO;
+		}
+		catch(IllegalArgumentException e){
+			System.err.println("No Questions found");
+		}
 		
-		questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(question, QuestionDTO.class));
-		
-		return questionCrudDTO;
+		return null;
 	}
 
 	@Override
@@ -90,19 +96,23 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	public QuestionCrudDTO createQuestion(QuestionDTO questionDTO) {
 		Question newQuestion = modelMapperFactory.getLooseModelMapper().map(questionDTO, Question.class);
 		
+		questionRepository.save(newQuestion);
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
-		questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(questionRepository.save(newQuestion), QuestionDTO.class));
+		
+		questionCrudDTO.addQuestionToList(questionDTO);
 		
 		return questionCrudDTO;
 	}
 
 	@Override
 	public QuestionCrudDTO updateQuestion(QuestionDTO questionDTO) {
-		Question newQuestion = modelMapperFactory.getLooseModelMapper().map(questionDTO, Question.class);
+		Question updatedQuestion = modelMapperFactory.getLooseModelMapper().map(questionDTO, Question.class);
 		
-		if(questionRepository.exists(newQuestion.getId())){
+		if(questionRepository.exists(updatedQuestion.getId())){
 			QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
-			questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(questionRepository.save(newQuestion), QuestionDTO.class));
+			questionRepository.save(updatedQuestion);
+			
+			questionCrudDTO.addQuestionToList(questionDTO);
 			return questionCrudDTO;
 		}
 		else{
@@ -121,5 +131,12 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		}
 
 	}
+
+	@Override
+	public void deleteAllQuestions() {
+		questionRepository.deleteAll();
+		
+	}
+
 
 }

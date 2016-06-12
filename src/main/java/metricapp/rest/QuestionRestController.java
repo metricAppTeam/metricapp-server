@@ -76,9 +76,12 @@ public class QuestionRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> createQuestionDTO(@RequestBody QuestionDTO questionDTO){
-		
-		questionCRUDController.createQuestion(questionDTO);
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
-		
+		try{
+			questionCRUDController.createQuestion(questionDTO);
+			return new ResponseEntity<ResponseDTO>(HttpStatus.OK);			
+		}
+		catch (Exception e){
+			return new ResponseEntity<ResponseDTO>(HttpStatus.BAD_REQUEST);
+		}
 	}
 }
