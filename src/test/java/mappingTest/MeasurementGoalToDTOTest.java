@@ -84,19 +84,6 @@ public class MeasurementGoalToDTOTest {
 		assertEquals(this.measurementGoal.getVersion(), this.measurementGoalDTO.getMetadata().getVersion());
 		assertEquals(this.measurementGoal.getLastVersionDate().toString(), this.measurementGoalDTO.getMetadata().getLastVersionDate());
 		
-
-		System.out.println("id: " + this.measurementGoalDTO.getId() + "\n");
-		System.out.println("object: " + this.measurementGoalDTO.getObject() + "\n");
-		System.out.println("viewPoint: " + this.measurementGoalDTO.getViewPoint() + "\n");
-		System.out.println("qualityFocus: " + this.measurementGoalDTO.getFocus() + "\n");
-		System.out.println("releaseNote: " + this.measurementGoalDTO.getMetadata().getReleaseNote() + "\n");
-		//System.out.println("purpose: " + goal.getPurpose + "\n");
-		System.out.println("version: " + this.measurementGoalDTO.getMetadata().getVersion() + "\n");
-		System.out.println("creationDate: " + this.measurementGoalDTO.getMetadata().getCreationDate() + "\n");
-		System.out.println("lastVersionDate: " + this.measurementGoalDTO.getMetadata().getLastVersionDate() + "\n");
-		System.out.println("metricsIdList: " + this.measurementGoalDTO.getMetricIdList() + "\n");
-		System.out.println("questionIdList: " + this.measurementGoalDTO.getQuestionIdList() + "\n");
-		
 	}
 
 }

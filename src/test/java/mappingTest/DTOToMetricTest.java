@@ -123,7 +123,6 @@ public class DTOToMetricTest {
 	
 	@Test
 	public void testSet(){
-		System.out.println(	metric1.getSet()+","+(dto.getSet()));
 		assertTrue(	metric1.getSet()+","+(dto.getSet()),
 				metric1.getSet().equals(dto.getSet()));
 	}
