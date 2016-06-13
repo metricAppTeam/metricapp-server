@@ -206,7 +206,7 @@ public class MeasurementGoalRestControllerTest {
 			
 			// get id of the new measurement goal
 			JsonNode dto = new ObjectMapper().readTree(result.getResponse().getContentAsString());
-			Assert.assertEquals("error in get", measurementGoal1.getId(),dto.path("metadata").path("id").asText());//dto.path("measurementGoals").path(0).path("metadata").path("id").asText());
+			Assert.assertEquals("error in get", measurementGoal1.getId(),dto.path("measurementGoals").path(0).path("metadata").path("id").asText());
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("error in get");

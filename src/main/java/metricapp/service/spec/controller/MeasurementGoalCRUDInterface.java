@@ -10,9 +10,9 @@ import metricapp.exception.NotFoundException;
 
 public interface MeasurementGoalCRUDInterface {
 	
-	public MeasurementGoal getMeasurementGoalById(String id) throws BadInputException, NotFoundException;
+	public MeasurementGoalCrudDTO getMeasurementGoalById(String id) throws BadInputException, NotFoundException;
 	
-	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, NotFoundException;
+//	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, NotFoundException;
 	
 	public MeasurementGoal createMeasurementGoal(MeasurementGoal goal);
 		
@@ -26,9 +26,11 @@ public interface MeasurementGoalCRUDInterface {
 		
 	public void deleteMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, IllegalStateTransitionException;
 
-	MeasurementGoalDTO getMeasurementGoalByIdAndVersion(String id, String version)
+	MeasurementGoalCrudDTO getMeasurementGoalByIdAndVersion(String id, String version)
 			throws BadInputException, NotFoundException;
 
 	MeasurementGoalCrudDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException;
+
+	MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException;
 		
 }

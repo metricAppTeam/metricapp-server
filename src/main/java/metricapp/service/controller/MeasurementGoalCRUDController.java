@@ -10,7 +10,6 @@ import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.Entity;
-import metricapp.entity.State;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
@@ -95,26 +94,46 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
-	public MeasurementGoal getMeasurementGoalById(String id) throws BadInputException, NotFoundException{
+	public MeasurementGoalCrudDTO getMeasurementGoalById(String id) throws BadInputException, NotFoundException{
 		if (id == null) {
 			throw new BadInputException("MeasurementGoal id cannot be null");
 		}
-		MeasurementGoal measurementGoal = measurementGoalRepository.findOne(id);
+		MeasurementGoal measurementGoal = measurementGoalRepository.findById(id);
 		if (measurementGoal == null) {
 			throw new NotFoundException("MeasurementGoal with id " + id + "is not available");
 		}
-		
-		return measurementGoal;
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		dto.setRequest("MeasurementGoal, id=" + id);
+		dto.addMeasurementGoalToList(measurementGoalToDTO(measurementGoal));
+		return dto;
+	}
 	
-	}
 	@Override
-	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, NotFoundException{
-		return measurementGoalToDTO(getMeasurementGoalById(dto.getId()));
+	public MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException {
+		if (id == null) {
+			throw new BadInputException("MeasurementGoal id cannot be null");
+		}
+		// TODO get from bus
+		MeasurementGoal measurementGoal = null;
+		if (measurementGoal == null) {
+			throw new NotFoundException("Approved MeasurementGoal with id " + id + "is not available");
+		}
+		
+		@SuppressWarnings("unused")
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		dto.setRequest("MeasurementGoal, id=" + id + ";state=Approved");
+		dto.addMeasurementGoalToList(measurementGoalToDTO(measurementGoal));
+		return dto;
 	}
+	
+//	@Override
+//	public MeasurementGoalDTO getMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, NotFoundException{
+//		return measurementGoalToDTO(getMeasurementGoalById(dto.getId()));
+//	}
 	
 
 	@Override
-	public MeasurementGoalDTO getMeasurementGoalByIdAndVersion(String id, String version)
+	public MeasurementGoalCrudDTO getMeasurementGoalByIdAndVersion(String id, String version)
 			throws BadInputException, NotFoundException {
 		if (id == null || version == null) {
 			throw new BadInputException("Metric id,version cannot be null");

@@ -1,7 +1,6 @@
 package metricapp.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,20 +26,44 @@ public class MeasurementGoalRestController {
 	private MeasurementGoalCRUDInterface controller;	
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<MeasurementGoalDTO> getMeasurementGoalDTO(@RequestParam(value="id") String id){
-		MeasurementGoalDTO dto = new MeasurementGoalDTO();
-		dto.setId(id);
+	public ResponseEntity<MeasurementGoalCrudDTO> getMeasurementGoalDTO(@RequestParam(value="id") String id,
+			@RequestParam(value = "version", defaultValue = "NA") String version,
+			@RequestParam(value = "userid", defaultValue = "NA") String userId,
+			@RequestParam(value = "approved", defaultValue = "false") String approved){
 		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
-			return new ResponseEntity<MeasurementGoalDTO>(controller.getMeasurementGoal(dto),HttpStatus.OK);
+			if (!userId.equals("NA")) {
+				dto = controller.getMeasurementGoalByUser(userId);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!id.equals("NA") && approved.equals("true")) {
+				dto = controller.getMeasurementGoalByIdAndLastApprovedVersion(id);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!version.equals("NA") && !id.equals("NA")) {
+				dto = controller.getMeasurementGoalByIdAndVersion(userId, version);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!id.equals("NA")) {
+				dto = controller.getMeasurementGoalById(id);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<MeasurementGoalCrudDTO>(HttpStatus.BAD_REQUEST);
+			}
 		} catch (BadInputException e) {
-			// TODO Auto-generated catch block
+			dto.setError(e.getMessage());
 			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
+			dto.setError(e.getMessage());
 			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			dto.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return null;
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
