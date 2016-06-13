@@ -1,12 +1,9 @@
 package metricapp.entity.measurementGoal;
 
 import static org.junit.Assert.fail;
-
 import java.lang.reflect.InvocationTargetException;
-
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import metricapp.entity.AbstractGoal;

@@ -94,6 +94,10 @@ public class MeasurementGoalRestController {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.FORBIDDEN);
+		} catch (BadInputException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
 		}
 	}
 	
