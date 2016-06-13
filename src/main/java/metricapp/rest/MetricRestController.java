@@ -76,6 +76,10 @@ public class MetricRestController {
 			e.printStackTrace();
 			dto.setError(e.getMessage());
 			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.FORBIDDEN);
+		} catch (Exception e){
+			dto.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<MetricCrudDTO>(HttpStatus.OK);
 
@@ -102,6 +106,10 @@ public class MetricRestController {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.CONFLICT);
+		}catch (Exception e){
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -115,6 +123,10 @@ public class MetricRestController {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
+		} catch (Exception e){
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
