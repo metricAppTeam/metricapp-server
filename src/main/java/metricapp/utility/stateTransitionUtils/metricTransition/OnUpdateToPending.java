@@ -1,15 +1,25 @@
 package metricapp.utility.stateTransitionUtils.metricTransition;
 
-import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
+import metricapp.entity.Element;
 
-public class OnUpdateToPending implements StateTransitionCommand {
 
-	public OnUpdateToPending() {
+public class OnUpdateToPending extends MetricStateTransitionCommand {
+
+	
+
+	public OnUpdateToPending(Element before, Element after) {
+		super(before, after);
 	}
 
 	@Override
 	public void execute() {
-		System.out.println("onupdate a pending");		
+		super.execute();
+		
+		System.out.println("onupdate a pending");	
+		System.out.println("TODO alert newMetric.getCreatorId()");		
 	}
+
+	
+	
 
 }

@@ -1,7 +1,5 @@
 package metricapp.utility.stateTransitionUtils;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import metricapp.entity.Element;
 import metricapp.entity.Entity;
 import metricapp.exception.IllegalStateTransitionException;
@@ -12,7 +10,7 @@ import metricapp.utility.stateTransitionUtils.questionTransition.QuestionStateTr
 
 public abstract class AbstractStateTransitionFactory {
 
-	private Entity entity;
+	protected Entity entity;
 
 	public AbstractStateTransitionFactory(Entity entity) {
 		this.entity = entity;
@@ -31,13 +29,24 @@ public abstract class AbstractStateTransitionFactory {
 		}
 	}
 
-	public final StateTransitionCommand transition(Element before, Element after) throws IllegalStateTransitionException {
-		try {
-			return (StateTransitionCommand) Class.forName(AbstractStateTransitionFactory.class.getPackage().getName() + "." + entity.name().toLowerCase() + "Transition." + before.getState().name() + "To" + after.getState().name())
-					.newInstance();
-		} catch (Exception e) {
-			throw new IllegalStateTransitionException(e);
+
+	public StateTransitionCommand transition(Element before, Element after) throws IllegalStateTransitionException {
+		{
+			try {
+				
+				// another way is to indicate current package.
+				// this.class.getClass().getPackage().getName() + ...
+				return (StateTransitionCommand) Class
+						.forName(AbstractStateTransitionFactory.class.getPackage().getName() + "."
+								+ entity.name().toLowerCase() + "Transition." + before.getState().name() + "To"
+								+ after.getState().name())
+						.getConstructor(Element.class,Element.class).newInstance(before, after);
+				
+			} catch (Exception e) {
+				throw new IllegalStateTransitionException(e);
+			}
 		}
-		
 	}
+		
+	
 }
