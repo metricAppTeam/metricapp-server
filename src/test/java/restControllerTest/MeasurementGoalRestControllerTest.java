@@ -135,7 +135,7 @@ public class MeasurementGoalRestControllerTest {
 
 			// get id of the new MeasurementGoal
 			JsonNode dto = new ObjectMapper().readTree(result.getResponse().getContentAsString());
-			newId = dto.path("metadata").path("id").asText();//dto.path("measurementGoals").path(0).path("metadata").path("id").asText();
+			newId = dto.path("measurementGoals").path(0).path("metadata").path("id").asText();
 
 		} catch (Exception e) {
 			e.printStackTrace();

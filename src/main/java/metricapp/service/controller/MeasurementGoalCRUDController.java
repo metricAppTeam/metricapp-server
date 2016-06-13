@@ -2,14 +2,19 @@ package metricapp.service.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.Data;
+import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.Entity;
+import metricapp.entity.State;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
+import metricapp.exception.DBException;
+import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
@@ -122,7 +127,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
-	public MeasurementGoalDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException {
+	public MeasurementGoalCrudDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException {
 		if (userId == null) {
 			throw new BadInputException("MeasurementGoal userId cannot be null");
 		}
@@ -130,7 +135,15 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		if (measurementGoals.size() == 0) {
 			throw new NotFoundException("User " + userId + " has no Metrics");
 		}
-		return modelMapperFactory.getLooseModelMapper().map(measurementGoals.get(0), MeasurementGoalDTO.class);
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		dto.setRequest("MeasurementGoal of " + userId);
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getLooseModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
 	}
 	
 	
@@ -139,7 +152,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.save(goal);
 	}
 	
-	public MeasurementGoalDTO createMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException{
+	public MeasurementGoalCrudDTO createMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException{
 		
 		if (dto.getMetadata().getCreatorId() == null) {
 			throw new BadInputException("Bad Input");
@@ -147,6 +160,10 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		if (dto.getMetadata().getId() != null) {
 			throw new BadInputException("New Metrics cannot have ID");
 		}
+		
+//		if (dto.getMetadata().getState() != State.Created){
+//			throw new BadInputException("MeasurementGoal must be in CREATED state");
+//		}
 		
 		dto.getMetadata().setCreationDate(LocalDate.now());
 		dto.getMetadata().setLastVersionDate(LocalDate.now());
@@ -206,30 +223,54 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			
 			System.out.println("metricatorId: " + goal.getMetricatorId() + "\n");
 		}		
-		goal = createMeasurementGoal(goal);
-		return measurementGoalToDTO(goal);
+		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
+		dtoCrud.setRequest("create MeasurementGoal");
+		dtoCrud.addMeasurementGoalToList(measurementGoalToDTO(createMeasurementGoal(goal)));
+		return dtoCrud;
 	}
 	
 	@Override
 	public MeasurementGoal updateMeasurementGoal(MeasurementGoal goal){
-		return measurementGoalRepository.save(goal);
+		return measurementGoalRepository.save(goal);		
 	}
 	@Override
-	public MeasurementGoalDTO updateMeasurementGoal(MeasurementGoalDTO dto){
+	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException{
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
-		MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
-	
-		return measurementGoalToDTO(updateMeasurementGoal(goal));
+		MeasurementGoal newGoal = modelMapper.map(dto, MeasurementGoal.class);
+		MeasurementGoal oldGoal = measurementGoalRepository.findById(newGoal.getId());
 		
+		//state transition
+		
+		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
+		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
+		if (oldGoal == null) {
+			throw new NotFoundException();
+		}
+
+		try {
+			dtoCrud.addMeasurementGoalToList(
+					measurementGoalToDTO(updateMeasurementGoal(newGoal)));
+		} catch (Exception e) {
+			throw new DBException("Error in saving, tipically your version is not the last");
+		}
+
+		return dtoCrud;
 	}
 	
 	@Override
-	public void deleteMeasurementGoalById(String id){
+	public void deleteMeasurementGoalById(String id) throws BadInputException, IllegalStateTransitionException{
+		if (id == null) {
+			throw new BadInputException("Bad Input");
+		}
+//		if (!measurementGoalRepository.findById(id).getState().equals(State.Suspended)) {
+//			throw new IllegalStateTransitionException("A MeasurementGoal must be Suspended before delete");
+//		}
+		
 		measurementGoalRepository.delete(id);
 	}
 	@Override
-	public void deleteMeasurementGoal(MeasurementGoalDTO dto){
+	public void deleteMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, IllegalStateTransitionException{
 		deleteMeasurementGoalById(dto.getId());
 	}
 	
