@@ -177,8 +177,29 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			throw new BadInputException("Bad Input");
 		}
 		if (dto.getMetadata().getId() != null) {
-			throw new BadInputException("New Metrics cannot have ID");
+			throw new BadInputException("New Measurement Goal cannot have ID");
 		}
+//		if (dto.getInterpretationModel() == null) {
+//			throw new BadInputException("New Measurement Goal must have an Interpretation Model");
+//		}
+		if (dto.getOrganizationalGoalId() == null){
+			throw new BadInputException("New Measurement Goal must have a link to an Organizational Goal");
+		}
+//		if (dto.getContextFactorIdList() == null){
+//			throw new BadInputException("New Measurement Goal must have a Context Factor list");
+//		}
+//		if (dto.getAssumptionIdList() == null) {
+//			throw new BadInputException("New Measurement Goal must have an Assumption List");
+//		}
+//		if (dto.getMetricIdList() == null){
+//			throw new BadInputException("New Measurement Goal must have at least a metric");
+//		}
+//		if (dto.getQuestionIdList() == null){
+//			throw new BadInputException("New Measurement Goal must have at least a question");
+//		}
+		
+		//TODO Check if id of metricator exists into the db
+		//TODO Check if questioner exists into the db
 		
 //		if (dto.getMetadata().getState() != State.Created){
 //			throw new BadInputException("MeasurementGoal must be in CREATED state");
@@ -253,7 +274,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.save(goal);		
 	}
 	@Override
-	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException{
+	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException{
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		MeasurementGoal newGoal = modelMapper.map(dto, MeasurementGoal.class);
@@ -267,6 +288,10 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			throw new NotFoundException();
 		}
 
+		if (dto.getOrganizationalGoalId() == null){
+			throw new BadInputException("Measurement Goal must have a link to an Organizational Goal");
+		}
+		
 		try {
 			dtoCrud.addMeasurementGoalToList(
 					measurementGoalToDTO(updateMeasurementGoal(newGoal)));

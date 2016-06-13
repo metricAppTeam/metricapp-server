@@ -20,7 +20,7 @@ public interface MeasurementGoalCRUDInterface {
 	
 	public MeasurementGoal updateMeasurementGoal(MeasurementGoal goal);
 		
-	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException;
+	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException;
 	
 	public void deleteMeasurementGoalById(String id) throws BadInputException, IllegalStateTransitionException;
 		
