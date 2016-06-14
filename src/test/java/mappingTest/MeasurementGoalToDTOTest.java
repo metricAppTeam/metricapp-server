@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
-import metricapp.entity.OrganizationalGoal;
+import metricapp.entity.external.OrganizationalGoal;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
