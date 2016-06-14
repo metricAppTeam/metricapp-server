@@ -21,6 +21,7 @@ import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MetricCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.MetricRepository;
+import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
 @Service
 public class MetricCRUDController implements MetricCRUDInterface {
@@ -105,6 +106,9 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		}
 		if (dto.getMetadata().getId() != null) {
 			throw new BadInputException("New Metrics cannot have ID");
+		}
+		if (dto.getMetadata().getState() != State.Created) {
+			throw new BadInputException("New Metrics must be in state of CREATED");
 		}
 		dto.getMetadata().setCreationDate(LocalDate.now());
 		dto.getMetadata().setLastVersionDate(LocalDate.now());
@@ -201,81 +205,91 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		metricRepository.delete(id);
 	}
 
-	private void stateTransition(Metric oldMetric, Metric newMetric) throws IllegalStateTransitionException {
+	private void stateTransition(Metric oldMetric, Metric newMetric)
+			throws IllegalStateTransitionException, NotFoundException {
+		
 		newMetric.setLastVersionDate(LocalDate.now());
-		State before = oldMetric.getState();
-		State after = newMetric.getState();
-		if (before.equals(after)) {
-			return;
-		}
-		switch (before) {
-
-		case Created:
-			if (after.equals(State.OnUpdate)) {
-				// TODO alert newMetric.getMetricatorId()
-				return;
-			} else {
-				throw new IllegalStateTransitionException(
-						"New State is not applicable: " + after.toString() + " from " + before.toString());
-			}
-		case OnUpdate:
-			if (after.equals(State.Pending)) {
-				// TODO alert newMetric.getCreatorId()
-				return;
-			} else {
-				throw new IllegalStateTransitionException(
-						"New State is not applicable: " + after.toString() + " from " + before.toString());
-			}
-		case Pending:
-			if (after.equals(State.Approved)) {
-				// TODO alert newMetric.getMetricatorId() with
-				// newMetric.getReleaseNote()
-				// TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion
-				return;
-			}
-			if (after.equals(State.Rejected)) {
-				// TODO alert newMetric.getMetricatorId() with
-				// newMetric.getReleaseNote()
-				return;
-			} else {
-				throw new IllegalStateTransitionException(
-						"New State is not applicable: " + after.toString() + " from " + before.toString());
-			}
-		case Approved:
-			if (after.equals(State.OnUpdate)) {
-				// TODO alert newMetric.getMetricatorId() with
-				// newMetric.getReleaseNote()
-				return;
-			}
-			if (after.equals(State.Suspended)) {
-				// TODO alert newMetric.getMetricatorId() with
-				// newMetric.getReleaseNote()
-				return;
-			} else {
-				throw new IllegalStateTransitionException(
-						"New State is not applicable: " + after.toString() + " from " + before.toString());
-			}
-		case Rejected:
-			if (after.equals(State.OnUpdate)) {
-				// TODO alert newMetric.getMetricatorId() with
-				// newMetric.getReleaseNote()
-				return;
-			}
-			if (after.equals(State.Suspended)) {
-				// TODO alert newMetric.getMetricatorId() with
-				// newMetric.getReleaseNote()
-				return;
-			} else {
-				throw new IllegalStateTransitionException(
-						"New State is not applicable: " + after.toString() + " from " + before.toString());
-			}
-		case Suspended:
-			// TODO check dependencies
-			throw new IllegalStateTransitionException(
-					"New State is not applicable: " + after.toString() + " from " + before.toString());
-		default:
-			throw new IllegalStateTransitionException("Before State is not applicable: " + before.toString());
-		}
+		if (oldMetric.getState().equals(newMetric.getState())) {
+			 return;
+			 }
+		AbstractStateTransitionFactory.getFactory(Entity.Metric).transition(oldMetric, newMetric).execute();
+		// 
+		// switch (before) {
+		//
+		// case Created:
+		// if (after.equals(State.OnUpdate)) {
+		// // TODO alert newMetric.getMetricatorId()
+		// return;
+		// } else {
+		// throw new IllegalStateTransitionException(
+		// "New State is not applicable: " + after.toString() + " from " +
+		// before.toString());
+		// }
+		// case OnUpdate:
+		// if (after.equals(State.Pending)) {
+		// // TODO alert newMetric.getCreatorId()
+		// return;
+		// } else {
+		// throw new IllegalStateTransitionException(
+		// "New State is not applicable: " + after.toString() + " from " +
+		// before.toString());
+		// }
+		// case Pending:
+		// if (after.equals(State.Approved)) {
+		// // TODO alert newMetric.getMetricatorId() with
+		// // newMetric.getReleaseNote()
+		// // TODO send to bus the new metric ->need to convert: wipe securekey,
+		// change id, ermesLastVersion
+		// return;
+		// }
+		// if (after.equals(State.Rejected)) {
+		// // TODO alert newMetric.getMetricatorId() with
+		// // newMetric.getReleaseNote()
+		// return;
+		// } else {
+		// throw new IllegalStateTransitionException(
+		// "New State is not applicable: " + after.toString() + " from " +
+		// before.toString());
+		// }
+		// case Approved:
+		// if (after.equals(State.OnUpdate)) {
+		// // TODO alert newMetric.getMetricatorId() with
+		// // newMetric.getReleaseNote()
+		// return;
+		// }
+		// if (after.equals(State.Suspended)) {
+		// // TODO alert newMetric.getMetricatorId() with
+		// // newMetric.getReleaseNote()
+		// return;
+		// } else {
+		// throw new IllegalStateTransitionException(
+		// "New State is not applicable: " + after.toString() + " from " +
+		// before.toString());
+		// }
+		// case Rejected:
+		// if (after.equals(State.OnUpdate)) {
+		// // TODO alert newMetric.getMetricatorId() with
+		// // newMetric.getReleaseNote()
+		// return;
+		// }
+		// if (after.equals(State.Suspended)) {
+		// // TODO alert newMetric.getMetricatorId() with
+		// // newMetric.getReleaseNote()
+		// return;
+		// } else {
+		// throw new IllegalStateTransitionException(
+		// "New State is not applicable: " + after.toString() + " from " +
+		// before.toString());
+		// }
+		// case Suspended:
+		// // TODO check dependencies
+		// throw new IllegalStateTransitionException(
+		// "New State is not applicable: " + after.toString() + " from " +
+		// before.toString());
+		// default:
+		// throw new IllegalStateTransitionException("Before State is not
+		// applicable: " + before.toString());
+		// }
 	}
 
 }

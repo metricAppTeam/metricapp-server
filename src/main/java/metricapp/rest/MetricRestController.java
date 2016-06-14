@@ -68,9 +68,17 @@ public class MetricRestController {
 		MetricCrudDTO dto = new MetricCrudDTO();
 		try {
 			metricCRUDController.deleteMetricById(id);
-		} catch (Exception e) {
+		} catch (BadInputException e) {
 			e.printStackTrace();
 			dto.setError(e.getMessage());
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.BAD_REQUEST);
+		} catch (IllegalStateTransitionException e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.FORBIDDEN);
+		} catch (Exception e){
+			dto.setError(e.getMessage());
+			e.printStackTrace();
 			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<MetricCrudDTO>(HttpStatus.OK);
@@ -94,7 +102,7 @@ public class MetricRestController {
 		} catch (IllegalStateTransitionException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.CONFLICT);
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.FORBIDDEN);
 		} catch (NotFoundException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -102,7 +110,11 @@ public class MetricRestController {
 		} catch (DBException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.FORBIDDEN);
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.CONFLICT);
+		}catch (Exception e){
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -116,6 +128,10 @@ public class MetricRestController {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
+		} catch (Exception e){
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

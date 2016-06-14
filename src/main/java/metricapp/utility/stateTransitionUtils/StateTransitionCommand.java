@@ -1,7 +1,10 @@
 package metricapp.utility.stateTransitionUtils;
 
-public interface StateTransition {
+
+public interface StateTransitionCommand {
 
 	public void execute();
+	
+	
 
 }

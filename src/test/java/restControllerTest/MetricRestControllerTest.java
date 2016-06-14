@@ -121,6 +121,7 @@ public class MetricRestControllerTest {
 		// create a metric
 		metric1 = Metric.randomMetric();
 		metric1.setId(null);
+		metric1.setState(State.Created);
 		metric1.setVersion(null);
 		// convert to dto
 		metricDTO1 = modelMapperFactory.getLooseModelMapper().map(metric1, MetricDTO.class);
