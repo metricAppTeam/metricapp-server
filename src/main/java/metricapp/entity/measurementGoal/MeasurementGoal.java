@@ -28,8 +28,7 @@ public class MeasurementGoal extends AbstractGoal{
 		//this.metricator = new Metricator();
 	}
 	
-	@DBRef
-	private OrganizationalGoal organizationalGoal;
+	private String organizationalGoalId;
 	
 	private String object;
 	
@@ -82,7 +81,7 @@ public class MeasurementGoal extends AbstractGoal{
 			e.printStackTrace();
 			fail("random attribute creation error");
 		}
-		measurementGoal.setOrganizationalGoal(organizationalGoal);
+
 		measurementGoal.setInterpretationModel(interpretationModel);
 		
 		return measurementGoal;

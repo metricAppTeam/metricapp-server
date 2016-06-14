@@ -248,7 +248,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("metricsIdList: " + goal.getMetricIdList() + "\n");
 			System.out.println("questionIdList: " + goal.getQuestionIdList() + "\n");
 			System.out.println("tags: " + goal.getTags() + "\n");
-			System.out.println("organizationalGoalId: " + goal.getOrganizationalGoal().getId() + "\n");
+			System.out.println("organizationalGoalId: " + goal.getOrganizationalGoalId() + "\n");
 			
 			System.out.println("functionJavaScript: " + goal.getInterpretationModel().getFunctionJavascript() +  "\n");
 			System.out.println("queryNoSQL: " + goal.getInterpretationModel().getQueryNoSQL() + "\n");
