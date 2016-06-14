@@ -44,5 +44,38 @@ This is a Maven Project
 	/measurementGoal
 	/user
 	
+# HTTP Error Codes for REST Metric
+| Method      | #           | Code  | e.g. |  
+| --------------- |-----| -----|:--------------------------------------------------|
+| GET   | 400 | BAD_REQUEST | id cannot be null |  
+| GET	 | 500 | INTERNAL_SERVER_ERROR | 	generic error | 
+| GET	 | 404 | NOT_FOUND	 | metric not found | 
+| DELETE | 	400 | BAD_REQUEST | 	not valid id | 
+| DELETE | 	403 | FORBIDDEN | 	a metric must be in state of Suspended before you can delete it | 
+| DELETE | 	500 | INTERNAL_SERVER_ERROR | 	generic error | 
+| PUT | 	400 | BAD_REQUEST | 	 id null, metricator null | 
+| PUT | 	404 | NOT_FOUND | 	metric not found | 
+| PUT | 	409 | CONFLICT | 	version number of your submitted object is not correct | 
+| PUT | 	403 | FORBIDDEN | 	illegal state transition | 
+| PUT | 	500 | INTERNAL_SERVER_ERROR | 	generic error | 
+| POST | 	500 | INTERNAL_SERVER_ERROR | 	generic error | 
+| POST | 	400 | BAD_REQUEST	 | metric must be in state of Created, metric has no id, invalid fields | 
+
+# HTTP Error Codes for REST Measurement Goal
+| Method |  #  | Code |  e.g. | 
+| --------------- |-----| -----|:--------------------------------------------------|
+| GET | 	400 | 	BAD_REQUEST | 	Id cannot be null | 
+| GET | 	500 | 	INTERNAL_SERVER_ERROR | 	Generic error | 
+| GET | 	404 | 	NOT_FOUND | 	Measurement Goal not found | 
+| DELETE | 	400 | 	BAD_REQUEST | 	Invalid field id | 
+| DELETE | 	403 | 	FORBIDDEN | 	A Measurement Goal must be in state of Suspended before you can delete it | 
+| DELETE | 	500 | 	INTERNAL_SERVER_ERROR | 	Generic error | 
+| PUT | 	400 | 	BAD_REQUEST | 	Id null, metricator null | 
+| PUT | 	404 | 	NOT_FOUND | 	Measurement Goal not found | 
+| PUT | 	403 | 	FORBIDDEN | 	Illegal state transition | 
+| PUT | 	500 | 	INTERNAL_SERVER_ERROR | 	Generic error | 
+| POST | 	500 | 	INTERNAL_SERVER_ERROR | 	Generic error | 
+| POST | 	400 | 	BAD_REQUEST | 	A Measurement Goal must be in state of Created, Measurement Goal has no id, invalid fields | 
+    
 
 
