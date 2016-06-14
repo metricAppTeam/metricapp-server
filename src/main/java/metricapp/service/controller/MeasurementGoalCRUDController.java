@@ -328,4 +328,41 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		AbstractStateTransitionFactory.getFactory(Entity.MeasurementGoal).transition(oldGoal, newGoal).execute();
 	
 	}
+
+	@Override
+	public MeasurementGoalCrudDTO changeStateMeasurementGoal(MeasurementGoalDTO dto)
+			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException {
+		if (dto == null) {
+			throw new BadInputException("Bad Input");
+		}
+		if (dto.getMetadata().getId() == null) {
+			throw new BadInputException("MeasurementGoals cannot have null ID");
+		}
+
+		if (dto.getOrganizationalGoalId() == null){
+			throw new BadInputException("Measurement Goal must have a link to an Organizational Goal");
+		}
+		
+		MeasurementGoal oldGoal = measurementGoalRepository.findById(dto.getMetadata().getId());
+		MeasurementGoal newGoal = modelMapperFactory.getLooseModelMapper().map(oldGoal, MeasurementGoal.class);
+		
+		newGoal.setState(dto.getMetadata().getState());
+		newGoal.setReleaseNote(dto.getMetadata().getReleaseNote());
+		stateTransition(oldGoal, newGoal);
+		
+		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
+		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
+		if (oldGoal == null) {
+			throw new NotFoundException();
+		}
+
+		try {
+			dtoCrud.addMeasurementGoalToList(measurementGoalToDTO(updateMeasurementGoal(newGoal)));
+		} catch (Exception e) {
+			throw new DBException("Error in saving, tipically your version is not the last");
+		}
+
+		return dtoCrud;
+	}
+
 }

@@ -32,5 +32,8 @@ public interface MeasurementGoalCRUDInterface {
 	MeasurementGoalCrudDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException;
 
 	MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException;
+
+	MeasurementGoalCrudDTO changeStateMeasurementGoal(MeasurementGoalDTO dto)
+			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException;
 		
 }

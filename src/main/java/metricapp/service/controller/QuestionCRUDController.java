@@ -3,16 +3,11 @@ package metricapp.service.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import metricapp.dto.metric.MetricCrudDTO;
-import metricapp.dto.metric.MetricDTO;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.Entity;
-import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
