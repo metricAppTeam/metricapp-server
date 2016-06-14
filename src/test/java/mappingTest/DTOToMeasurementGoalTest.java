@@ -79,7 +79,7 @@ public class DTOToMeasurementGoalTest {
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL(), this.measurementGoal.getInterpretationModel().getQueryNoSQL());
 		assertEquals(this.measurementGoalDTO.getObject(), this.measurementGoal.getObject());
-		assertEquals(this.measurementGoalDTO.getOrganizationalGoalId(), this.measurementGoal.getOrganizationalGoal().getId());
+		assertEquals(this.measurementGoalDTO.getOrganizationalGoalId(), this.measurementGoal.getOrganizationalGoalId());
 		assertEquals(this.measurementGoalDTO.getViewPoint(), this.measurementGoal.getViewPoint());
 		assertEquals(this.measurementGoalDTO.getMetadata().getReleaseNote(), this.measurementGoal.getReleaseNote());
 		assertEquals(this.measurementGoalDTO.getMetadata().getState(), this.measurementGoal.getState());

@@ -17,8 +17,6 @@ import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
-import metricapp.service.spec.repository.AssumptionRepository;
-import metricapp.service.spec.repository.ContextRepository;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
 import metricapp.service.spec.repository.MetricRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
@@ -34,12 +32,6 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	
 	@Autowired
 	private MetricRepository metricRepository;
-
-	@Autowired
-	private ContextRepository contextRepository;
-
-	@Autowired
-	private AssumptionRepository assumptionRepository;
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
@@ -257,7 +249,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("metricsIdList: " + goal.getMetricIdList() + "\n");
 			System.out.println("questionIdList: " + goal.getQuestionIdList() + "\n");
 			System.out.println("tags: " + goal.getTags() + "\n");
-			System.out.println("organizationalGoalId: " + goal.getOrganizationalGoal().getId() + "\n");
+			System.out.println("organizationalGoalId: " + goal.getOrganizationalGoalId() + "\n");
 			
 			System.out.println("functionJavaScript: " + goal.getInterpretationModel().getFunctionJavascript() +  "\n");
 			System.out.println("queryNoSQL: " + goal.getInterpretationModel().getQueryNoSQL() + "\n");

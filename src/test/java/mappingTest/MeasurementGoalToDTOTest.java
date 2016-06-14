@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
-import metricapp.entity.OrganizationalGoal;
+import metricapp.entity.external.OrganizationalGoal;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.controller.ModelMapperFactoryInterface;
@@ -64,7 +64,7 @@ public class MeasurementGoalToDTOTest {
 			e.printStackTrace();
 			fail("random attribute creation error");
 		}
-		measurementGoal.setOrganizationalGoal(organizationalGoal);
+
 		measurementGoal.setInterpretationModel(interpretationModel);
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
@@ -75,7 +75,7 @@ public class MeasurementGoalToDTOTest {
 		assertEquals(this.measurementGoal.getInterpretationModel().getFunctionJavascript(), this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoal.getInterpretationModel().getQueryNoSQL(), this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL());
 		assertEquals(this.measurementGoal.getObject(), this.measurementGoalDTO.getObject());
-		assertEquals(this.measurementGoal.getOrganizationalGoal().getId(), this.measurementGoalDTO.getOrganizationalGoalId());
+		assertEquals(this.measurementGoal.getOrganizationalGoalId(), this.measurementGoalDTO.getOrganizationalGoalId());
 		assertEquals(this.measurementGoal.getViewPoint(), this.measurementGoalDTO.getViewPoint());
 		assertEquals(this.measurementGoal.getReleaseNote(), this.measurementGoalDTO.getMetadata().getReleaseNote());
 		assertEquals(this.measurementGoal.getState(), this.measurementGoalDTO.getMetadata().getState());

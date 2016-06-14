@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import metricapp.entity.AbstractGoal;
-import metricapp.entity.OrganizationalGoal;
+import metricapp.entity.external.OrganizationalGoal;
 import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
 import metricapp.entity.stakeholders.Metricator;
@@ -28,8 +28,7 @@ public class MeasurementGoal extends AbstractGoal{
 		//this.metricator = new Metricator();
 	}
 	
-	@DBRef
-	private OrganizationalGoal organizationalGoal;
+	private String organizationalGoalId;
 	
 	private String object;
 	
@@ -39,11 +38,9 @@ public class MeasurementGoal extends AbstractGoal{
 	
 	private String viewPoint;
 	
-	@DBRef
-	private Iterable<Context> contexts;
+	private Iterable<String> contexts;
 	
-	@DBRef
-	private Iterable<Assumption> assumptions;
+	private Iterable<String> assumptions;
 	
 	private InterpretationModel interpretationModel;
 	
@@ -84,7 +81,7 @@ public class MeasurementGoal extends AbstractGoal{
 			e.printStackTrace();
 			fail("random attribute creation error");
 		}
-		measurementGoal.setOrganizationalGoal(organizationalGoal);
+
 		measurementGoal.setInterpretationModel(interpretationModel);
 		
 		return measurementGoal;
