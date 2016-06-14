@@ -21,6 +21,7 @@ import metricapp.service.spec.repository.AssumptionRepository;
 import metricapp.service.spec.repository.ContextRepository;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
 import metricapp.service.spec.repository.MetricRepository;
+import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
 @Data
 @Service("MeasurementGoalCRUDController")
@@ -274,13 +275,12 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.save(goal);		
 	}
 	@Override
-	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException{
+	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException, IllegalStateTransitionException{
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		MeasurementGoal newGoal = modelMapper.map(dto, MeasurementGoal.class);
 		MeasurementGoal oldGoal = measurementGoalRepository.findById(newGoal.getId());
-		
-		//state transition
+		stateTransition(oldGoal, newGoal);
 		
 		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
 		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
@@ -318,5 +318,14 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		deleteMeasurementGoalById(dto.getId());
 	}
 	
+	private void stateTransition(MeasurementGoal oldGoal, MeasurementGoal newGoal)
+			throws IllegalStateTransitionException, NotFoundException {
+		
+		newGoal.setLastVersionDate(LocalDate.now());
+		if (oldGoal.getState().equals(newGoal.getState())) {
+			 return;
+			 }
+		AbstractStateTransitionFactory.getFactory(Entity.MeasurementGoal).transition(oldGoal, newGoal).execute();
 	
+	}
 }

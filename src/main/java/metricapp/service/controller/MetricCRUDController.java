@@ -125,6 +125,12 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		return dtoCrud;
 	}
 
+	/**
+	 * This method updates a Metric. This is useful when a Metricator modifies the Metric's fields.
+	 * ModelMapper is used to retrieve the old Metric instance.
+	 * @param  MetricDTO
+	 * @return      MetricCrudDTO
+	 */
 	@Override
 	public MetricCrudDTO updateMetric(MetricDTO dto)
 			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException {
@@ -161,6 +167,13 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		return dtoCrud;
 	}
 	
+	/**
+	 * This method just change state to a Metric. This is useful when a project manager
+	 * just needs to approve/reject a Metric without change the Metric's fields. 
+	 * ModelMapper is used just to clone the Metric instance, so the set is made manually.
+	 * @param  dto, in which must be id, releaseNote, state
+	 * @return      MetricCrudDTO
+	 */
 	@Override
 	public MetricCrudDTO changeStateMetric(MetricDTO dto)
 			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException {
@@ -170,6 +183,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		if (dto.getMetadata().getId() == null) {
 			throw new BadInputException("Metrics cannot have null ID");
 		}
+		
 		Metric oldMetric = metricRepository.findMetricById(dto.getMetadata().getId());
 		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(oldMetric, Metric.class);
 		

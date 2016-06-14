@@ -82,7 +82,7 @@ public class MeasurementGoalRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<MeasurementGoalCrudDTO> putMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto){
+	public ResponseEntity<MeasurementGoalCrudDTO> putMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto) throws IllegalStateTransitionException{
 		MeasurementGoalCrudDTO rensponseDTO = new MeasurementGoalCrudDTO();
 		try {
 			return new ResponseEntity<MeasurementGoalCrudDTO>(controller.updateMeasurementGoal(dto), HttpStatus.OK);
