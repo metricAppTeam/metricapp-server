@@ -22,17 +22,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import metricapp.BootApplication;
+import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
-import metricapp.entity.State;
+import metricapp.exception.BadInputException;
 import metricapp.service.controller.QuestionCRUDController;
 import metricapp.utility.RandomGenerator;
 
@@ -51,6 +56,7 @@ public class QuestionRestControllerTest {
 	
 	private QuestionDTO questionDTO1;
 	private QuestionDTO questionDTO2;
+	private QuestionDTO questionDTO3;
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
@@ -77,39 +83,38 @@ public class QuestionRestControllerTest {
 		
 		QuestionDTO questionDTO = new QuestionDTO();
 		
-		questionDTO.getMetadata().setId(RandomGenerator.randomString());
-		questionDTO.getMetadata().setCreationDate("2016-01-01");
-		questionDTO.getMetadata().setLastVersionDate("2016-03-01");
 		questionDTO.getMetadata().setReleaseNote(RandomGenerator.randomString());
 		questionDTO.getMetadata().setCreatorId(RandomGenerator.randomString());
-		questionDTO.getMetadata().setState(State.OnUpdate_InternalRefinement);
 		questionDTO.getMetadata().setTags(RandomGenerator.randomArrayList());
 		
 		questionDTO.setDescription(RandomGenerator.randomString());
 		questionDTO.setFocus(RandomGenerator.randomString());
 		questionDTO.setSubject(RandomGenerator.randomString());
-		
+
 		return questionDTO;
+
 	}
 	
 	@Before
-	public void setup(){
+	public void startup(){
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 		
 		questionDTO1 = new QuestionDTO();
 		questionDTO2 = new QuestionDTO();
+		questionDTO3 = new QuestionDTO();
 		
 		questionDTO1 = randomQuestionDTO();
 		questionDTO2 = randomQuestionDTO();
+		questionDTO3 = randomQuestionDTO();
 		
-		questionCRUDController.createQuestion(questionDTO1);
-		questionCRUDController.createQuestion(questionDTO2);
-		
+		questionCRUDController.deleteAllQuestions();
 		try {
-			System.out.println(json(questionDTO1));
-		} catch (IOException e) {
+			questionDTO1 = questionCRUDController.createQuestion(questionDTO1).getQuestionList().get(0);
+			questionDTO2 = questionCRUDController.createQuestion(questionDTO2).getQuestionList().get(0);
+		} catch (BadInputException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	@Test
@@ -120,24 +125,42 @@ public class QuestionRestControllerTest {
 					.andExpect(status().isOk())
 					.andReturn();
 			
+			QuestionCrudDTO questionCrudDTO = new ObjectMapper().readValue(result.getResponse().getContentAsString(), QuestionCrudDTO.class);
+			
+			assertTrue(questionCrudDTO.getQuestionList().get(0).getMetadata().getId().equals(questionDTO1.getMetadata().getId()));
 			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
+			
 		} catch (Exception e) {
+			fail("Test Get Failed");
 			e.printStackTrace();
 		}
+		finally{
+			questionCRUDController.deleteQuestionById(questionDTO1.getMetadata().getId());
+		}
+		
 	}
+	
 	
 	@Test
 	public void testPost(){
 		try{
 			MvcResult result = this.mockMvc
 					.perform(post("/question")
-							.content(this.json(questionDTO2))
+							.content(this.json(questionDTO3))
 							.contentType(contentType))
 					.andExpect(status().isOk())
 					.andReturn();
 			
-			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.BAD_REQUEST);
+			QuestionDTO questionDTO3 = 
+					new ObjectMapper().readValue(result.getResponse().getContentAsString(), QuestionCrudDTO.class).getQuestionList().get(0);
+			
+			QuestionDTO testQuestionDTO = questionCRUDController.getQuestionById(questionDTO3.getMetadata().getId()).getQuestionList().get(0);
+			
+			assertTrue(questionDTO3.getMetadata().getId().equals(testQuestionDTO.getMetadata().getId()));
+			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
+			
 		} catch(Exception e) {
+			fail("Test Post Failed");
 			e.printStackTrace();
 		}
 	}
@@ -155,6 +178,7 @@ public class QuestionRestControllerTest {
 			
 			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.BAD_REQUEST);
 		} catch(Exception e) {
+			fail("Test PostFail Failed");
 			e.printStackTrace();
 		}
 	}
@@ -163,18 +187,30 @@ public class QuestionRestControllerTest {
 	public void testPut(){
 		try{
 			
-			questionDTO2.getMetadata().setReleaseNote(RandomGenerator.randomString());
+			QuestionDTO questionDTO = randomQuestionDTO();
+			
+			questionDTO = questionCRUDController.createQuestion(questionDTO).getQuestionList().get(0);			
+			
+			String beforeFocus = questionDTO.getFocus();
+			
+			questionDTO.setFocus(RandomGenerator.randomString());
+			
 			MvcResult result = this.mockMvc
-					.perform(put("/question?id=" + questionDTO2.getMetadata().getId())
-							.content(this.json(questionDTO2))
+					.perform(put("/question?id=" + questionDTO.getMetadata().getId())
+							.content(this.json(questionDTO))
 							.contentType(contentType))
 					.andExpect(status().isOk())
 					.andReturn();
 			
+			QuestionDTO testQuestionDTO = 
+					new ObjectMapper().readValue(result.getResponse().getContentAsString(), QuestionCrudDTO.class).getQuestionList().get(0);
+			
+			assertTrue(!beforeFocus.equals(testQuestionDTO.getFocus()));
 			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
 					
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail("Test Put failed");
 		}
 	}
 	
@@ -186,9 +222,14 @@ public class QuestionRestControllerTest {
 					.andExpect(status().isOk())
 					.andReturn();
 			
+			System.out.println(questionDTO1.getMetadata().getId());
+			QuestionCrudDTO questionCrudDTO = questionCRUDController.getQuestionById(questionDTO1.getMetadata().getId());
+			
+			assertNull(questionCrudDTO);
 			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
 			
 		} catch (Exception e){
+			fail("Test Delete Failed");
 			e.printStackTrace();
 		}
 	}
@@ -200,5 +241,4 @@ public class QuestionRestControllerTest {
         return mockHttpOutputMessage.getBodyAsString();
     }
 	
-
 }

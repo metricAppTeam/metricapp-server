@@ -16,5 +16,7 @@ public interface MetricCRUDInterface {
 	public void deleteMetricById(String id) throws BadInputException, IllegalStateTransitionException ;
 	public MetricCrudDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException ;
 	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException;
+	public MetricCrudDTO changeStateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException ;
+
 		
 }

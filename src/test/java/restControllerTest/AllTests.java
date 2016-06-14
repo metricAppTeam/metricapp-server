@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MetricRestControllerTest.class, QuestionRestControllerTest.class })
+@SuiteClasses({ MeasurementGoalRestControllerTest.class, MetricRestControllerTest.class,
+		QuestionRestControllerTest.class })
 
 public class AllTests {
 

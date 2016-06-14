@@ -140,10 +140,43 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		 * equals to version on MongoDB
 		 *
 		 **/
+		String id = dto.getMetadata().getId();
 		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(dto, Metric.class);
-		Metric oldMetric = metricRepository.findMetricById(newMetric.getId());
+		Metric oldMetric = metricRepository.findMetricById(id);
 		stateTransition(oldMetric, newMetric);
 
+		MetricCrudDTO dtoCrud = new MetricCrudDTO();
+		dtoCrud.setRequest("update Metric id" + id);
+		if (oldMetric == null) {
+			throw new NotFoundException();
+		}
+
+		try {
+			dtoCrud.addMetricToList(
+					modelMapperFactory.getLooseModelMapper().map(metricRepository.save(newMetric), MetricDTO.class));
+		} catch (Exception e) {
+			throw new DBException("Error in saving, tipically your version is not the last");
+		}
+
+		return dtoCrud;
+	}
+	
+	@Override
+	public MetricCrudDTO changeStateMetric(MetricDTO dto)
+			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException {
+		if (dto == null) {
+			throw new BadInputException("Bad Input");
+		}
+		if (dto.getMetadata().getId() == null) {
+			throw new BadInputException("Metrics cannot have null ID");
+		}
+		Metric oldMetric = metricRepository.findMetricById(dto.getMetadata().getId());
+		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(oldMetric, Metric.class);
+		
+		newMetric.setState(dto.getMetadata().getState());
+		newMetric.setReleaseNote(dto.getMetadata().getReleaseNote());
+		stateTransition(oldMetric, newMetric);
+		
 		MetricCrudDTO dtoCrud = new MetricCrudDTO();
 		dtoCrud.setRequest("update Metric id" + dto.getMetadata().getId());
 		if (oldMetric == null) {
@@ -159,6 +192,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 
 		return dtoCrud;
 	}
+	
 
 	@Override
 	public void deleteMetricById(String id) throws BadInputException, IllegalStateTransitionException {

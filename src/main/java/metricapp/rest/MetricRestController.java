@@ -86,10 +86,15 @@ public class MetricRestController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<MetricCrudDTO> putMetricDTO(@RequestBody MetricDTO dto) {
+	public ResponseEntity<MetricCrudDTO> putMetricDTO(@RequestBody MetricDTO dto,
+			@RequestParam(value = "onlychangestate", defaultValue = "false") String onlyChangeState) {
 		MetricCrudDTO rensponseDTO = new MetricCrudDTO();
 		try {
-			return new ResponseEntity<MetricCrudDTO>(metricCRUDController.updateMetric(dto), HttpStatus.OK);
+			if (onlyChangeState.equals("false")) {
+				return new ResponseEntity<MetricCrudDTO>(metricCRUDController.updateMetric(dto), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<MetricCrudDTO>(metricCRUDController.changeStateMetric(dto), HttpStatus.OK);
+			}
 		} catch (BadInputException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -118,7 +123,7 @@ public class MetricRestController {
 
 		MetricCrudDTO rensponseDTO = new MetricCrudDTO();
 		try {
-			return new ResponseEntity<MetricCrudDTO>( metricCRUDController.createMetric(dto), HttpStatus.CREATED);
+			return new ResponseEntity<MetricCrudDTO>(metricCRUDController.createMetric(dto), HttpStatus.CREATED);
 		} catch (BadInputException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();

@@ -62,7 +62,7 @@ public class DTOToMeasurementGoalTest {
 		
 		this.measurementGoalDTO.setId(randomString());
 		this.measurementGoalDTO.setFocus(randomString());
-		this.measurementGoalDTO.setMetricatorId(randomString());
+		//this.measurementGoalDTO.setMetricatorId(randomString());
 		this.measurementGoalDTO.setName(randomString());
 		this.measurementGoalDTO.setObject(randomString());
 		this.measurementGoalDTO.setOrganizationalGoalId(randomString());

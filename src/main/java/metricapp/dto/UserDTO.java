@@ -2,7 +2,7 @@ package metricapp.dto;
 
 import java.io.Serializable;
 
-public class userDTO extends DTO implements Serializable{
+public class UserDTO extends DTO implements Serializable{
 
 	/**
 	 * 
