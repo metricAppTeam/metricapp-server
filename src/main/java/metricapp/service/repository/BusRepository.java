@@ -8,11 +8,13 @@ import metricapp.exception.BusException;
 import metricapp.service.spec.repository.BusInterface;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 
+@Service
 public class BusRepository implements BusInterface {
 
     @Value("${bus.url}")
