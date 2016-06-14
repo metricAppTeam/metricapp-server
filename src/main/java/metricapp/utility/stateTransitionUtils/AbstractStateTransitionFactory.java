@@ -11,7 +11,8 @@ import metricapp.utility.stateTransitionUtils.questionTransition.QuestionStateTr
 public abstract class AbstractStateTransitionFactory {
 
 	protected Entity entity;
-
+	
+	
 	public AbstractStateTransitionFactory(Entity entity) {
 		this.entity = entity;
 	}
@@ -19,11 +20,11 @@ public abstract class AbstractStateTransitionFactory {
 	public static final AbstractStateTransitionFactory getFactory(Entity entity) throws NotFoundException {
 		switch (entity) {
 		case MeasurementGoal:
-			return new MeasurementGoalStateTransitionFactory(Entity.MeasurementGoal);
+			return MeasurementGoalStateTransitionFactory.getInstance();
 		case Metric:
-			return new MetricStateTransitionFactory(Entity.Metric);
+			return MetricStateTransitionFactory.getInstance();
 		case Question:
-			return new QuestionStateTransitionFactory(Entity.Question);
+			return QuestionStateTransitionFactory.getInstance();
 		default:
 			throw new NotFoundException();
 		}
