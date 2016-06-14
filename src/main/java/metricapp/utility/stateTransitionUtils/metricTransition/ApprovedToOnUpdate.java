@@ -13,7 +13,7 @@ public class ApprovedToOnUpdate extends MetricStateTransitionCommand {
 		super.execute();
 		
 		System.out.println("approved to onupdate");
-		System.out.println("// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()");
+		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()
 	}
 
 }

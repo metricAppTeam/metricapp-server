@@ -12,7 +12,7 @@ public class RejectedToOnUpdate extends MetricStateTransitionCommand {
 	public void execute() {
 		super.execute();
 		
-		System.out.println("// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()");
+		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()
 	}
 
 }

@@ -13,7 +13,7 @@ public class PendingToRejected extends MetricStateTransitionCommand {
 		super.execute();
 		
 		System.out.println("pending to approved");
-		System.out.println("// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote() \n TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion");
+		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote() \n TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion
 	}
 	
 }

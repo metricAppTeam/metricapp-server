@@ -16,7 +16,7 @@ public class OnUpdateToPending extends MetricStateTransitionCommand {
 		super.execute();
 		
 		System.out.println("onupdate a pending");	
-		System.out.println("TODO alert newMetric.getCreatorId()");		
+		// TODO alert newMetric.getCreatorId()		
 	}
 
 	

@@ -13,7 +13,7 @@ public class ApprovedToSuspendend extends MetricStateTransitionCommand{
 		super.execute();
 		
 		System.out.println("approved to suspended");
-		System.out.println("// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()");
+		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()
 		
 	}
 	

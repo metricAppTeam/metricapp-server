@@ -13,7 +13,7 @@ public class CreatedToOnUpdate extends MetricStateTransitionCommand {
 	@Override
 	public void execute() {
 		System.out.println("da created a onupdate");
-		System.out.println("TODO alert newMetric.getCreatorId()");
+		// TODO alert newMetric.getCreatorId()
 	}
 
 	
