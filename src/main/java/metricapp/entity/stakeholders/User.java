@@ -1,18 +1,22 @@
 package metricapp.entity.stakeholders;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDate;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@Document
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class User extends Person {
+public class User {
 	
-	private Credential credential;
+	private String role;
+	private String description;
+	private String name;
+	private String surname;
+	private LocalDate dob;
+	private Gender gender;
+	private String pic;
 	
-	private Role role;
-	
-	private Profile profile;
+	private enum Gender{
+		Male,
+		Female;
+	}
 }

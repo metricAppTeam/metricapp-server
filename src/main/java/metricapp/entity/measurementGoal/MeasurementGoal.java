@@ -10,8 +10,6 @@ import metricapp.entity.AbstractGoal;
 import metricapp.entity.OrganizationalGoal;
 import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
-import metricapp.entity.stakeholders.Metricator;
-import metricapp.entity.stakeholders.Questioner;
 import metricapp.utility.RandomGenerator;
 
 @Document
@@ -57,10 +55,10 @@ public class MeasurementGoal extends AbstractGoal{
 	@DBRef
 	private Iterable<Question> questions;
 	
-    private Metricator metricatorId;
+    private String metricatorId;
 
 	@DBRef
-	private Iterable<Questioner> questioners;
+	private Iterable<String> questioners;
 		
 	public static MeasurementGoal randomMeasurementGoal(){
 		InterpretationModel interpretationModel = new InterpretationModel();

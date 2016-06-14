@@ -1,4 +1,4 @@
-package metricapp.entity.stakeholders;
+package metricapp.dto.user;
 
 public enum Role {
 	Questioner,

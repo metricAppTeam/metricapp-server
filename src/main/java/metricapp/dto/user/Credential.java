@@ -1,12 +1,10 @@
-package metricapp.entity.stakeholders;
-
-import org.springframework.data.annotation.Id;
+package metricapp.dto.user;
 
 import lombok.Data;
 
 @Data
 public class Credential {
-	@Id
+	
 	private String username;
 	private String password;
 }
