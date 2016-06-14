@@ -7,7 +7,7 @@ import metricapp.entity.external.ContextFactor;
 import metricapp.entity.external.InstanceProject;
 import metricapp.entity.external.OrganizationalGoal;
 
-public interface ExternalElementsRepository {
+public interface ExternalElementsRepositoryInterface {
 
 	public Assumption getAssumptionById(String id);
 		

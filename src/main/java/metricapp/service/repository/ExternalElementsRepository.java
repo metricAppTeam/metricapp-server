@@ -6,8 +6,9 @@ import metricapp.entity.external.Assumption;
 import metricapp.entity.external.ContextFactor;
 import metricapp.entity.external.InstanceProject;
 import metricapp.entity.external.OrganizationalGoal;
+import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
 
-public class ExternalElementsRepository implements metricapp.service.spec.repository.ExternalElementsRepository {
+public class ExternalElementsRepository implements ExternalElementsRepositoryInterface {
 
 	public Assumption getAssumptionById(String id){
 		return null;

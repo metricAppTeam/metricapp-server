@@ -135,7 +135,9 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		if (measurementGoal == null) {
 			throw new NotFoundException("Metric with id " + id + " and version " + version + "is not available");
 		}
-		return modelMapperFactory.getLooseModelMapper().map(measurementGoal, MeasurementGoalDTO.class);
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		dto.addMeasurementGoalToList(modelMapperFactory.getLooseModelMapper().map(measurementGoal, MeasurementGoalDTO.class));
+		return dto;
 	}
 	
 	@Override
