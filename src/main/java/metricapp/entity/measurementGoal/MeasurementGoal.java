@@ -39,11 +39,9 @@ public class MeasurementGoal extends AbstractGoal{
 	
 	private String viewPoint;
 	
-	@DBRef
-	private Iterable<Context> contexts;
+	private Iterable<String> contexts;
 	
-	@DBRef
-	private Iterable<Assumption> assumptions;
+	private Iterable<String> assumptions;
 	
 	private InterpretationModel interpretationModel;
 	
