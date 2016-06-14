@@ -1,4 +1,4 @@
-package metricapp.dto;
+package metricapp.dto.bus;
 
 import lombok.Data;
 
@@ -14,12 +14,7 @@ public class BusDTO implements Serializable {
     public String resolvedAdress;
 
     @Data
-    public class BusContent{
-        public String objIdLocalToPhase;
-        public String typeObj;
-        public String instance;
-        public String busVersion;
-        public ArrayList<String> tags;
+    public class BusContent extends MetadataBusDTO{
         public Serializable payload;
     }
 }
