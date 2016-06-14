@@ -5,15 +5,18 @@ import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
 public class QuestionStateTransitionFactory extends AbstractStateTransitionFactory {
 
-	private static QuestionStateTransitionFactory questionStateTransitionFactory;
 	
 	public QuestionStateTransitionFactory(Entity entity) {
 		super(entity);
 	}
+	
+	// Initialization-on-demand holder idiom
+    private static class SingletonHolder {
+        private static final QuestionStateTransitionFactory INSTANCE = new QuestionStateTransitionFactory(Entity.Question);
+    }
 
-	public static QuestionStateTransitionFactory getInstance(){
-		return questionStateTransitionFactory == null ? new QuestionStateTransitionFactory(Entity.Question) : questionStateTransitionFactory;
-	}
-
+    public static QuestionStateTransitionFactory getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
 
 }
