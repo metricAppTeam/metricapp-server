@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import metricapp.dto.DTO;
+import metricapp.dto.bus.PointerBusDTO;
+import metricapp.entity.external.PointerBus;
 import metricapp.entity.metric.ScaleType;
 import metricapp.entity.metric.Set;
 
@@ -16,7 +18,9 @@ import metricapp.entity.metric.Set;
 @Setter()
 @ToString(callSuper=true)
 @EqualsAndHashCode(callSuper=true)
-public class MetricDTO extends DTO implements Serializable{
+public class
+
+MetricDTO extends DTO implements Serializable{
 
 	private static final long serialVersionUID = -2073939437602304884L;
 	public String name;

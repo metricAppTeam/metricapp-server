@@ -2,22 +2,21 @@ package metricapp.entity.measurementGoal;
 
 
 import java.lang.reflect.InvocationTargetException;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import java.util.ArrayList;
+
+import metricapp.entity.Element;
+import metricapp.entity.external.PointerBus;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import metricapp.entity.AbstractGoal;
 import metricapp.entity.external.OrganizationalGoal;
-import metricapp.entity.metric.Metric;
-import metricapp.entity.question.Question;
-import metricapp.entity.stakeholders.Metricator;
-import metricapp.entity.stakeholders.Questioner;
 import metricapp.utility.RandomGenerator;
 
 @Document
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class MeasurementGoal extends AbstractGoal{
+@EqualsAndHashCode(callSuper=true)
+public class MeasurementGoal extends Element {
 	
 	public MeasurementGoal(){
 		this.interpretationModel = new InterpretationModel();
@@ -28,7 +27,7 @@ public class MeasurementGoal extends AbstractGoal{
 		//this.metricator = new Metricator();
 	}
 	
-	private String organizationalGoalId;
+	private PointerBus organizationalGoalId;
 	
 	private String object;
 	
@@ -38,26 +37,19 @@ public class MeasurementGoal extends AbstractGoal{
 	
 	private String viewPoint;
 	
-	private Iterable<String> contexts;
+	private Iterable<PointerBus> contexts;
 	
-	private Iterable<String> assumptions;
+	private Iterable<PointerBus> assumptions;
 	
 	private InterpretationModel interpretationModel;
 	
-	private Iterable<String> metricIdList;
+	private Iterable<PointerBus> metrics;
 	
-	private Iterable<String> questionIdList;
+	private Iterable<PointerBus> questions;
 	
-	@DBRef
-	private Iterable<Metric> metrics;
-	
-	@DBRef
-	private Iterable<Question> questions;
-	
-    private Metricator metricatorId;
+    private String metricatorId;
 
-	@DBRef
-	private Iterable<Questioner> questioners;
+	private ArrayList<String> questionersId;
 		
 	public static MeasurementGoal randomMeasurementGoal(){
 		InterpretationModel interpretationModel = new InterpretationModel();

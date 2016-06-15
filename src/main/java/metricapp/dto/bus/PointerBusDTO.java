@@ -13,8 +13,5 @@ public class PointerBusDTO implements Serializable {
     public String busVersion;
     public ArrayList<String> tags;
 
-    public String toJsonString(){
-        // TODO implement mapper
-        return null;
-    }
+
 }
