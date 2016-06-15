@@ -15,7 +15,7 @@ import metricapp.entity.external.PointerBus;
 /**
  * This class provides a large number of methods to generate random fields and
  * objects.
- * 
+ * <p>
  * Every method can work staticly, without the need of an instance of
  * RandomGenerator. The random seed is initialized when the JVM load the class,
  * the seed is the Nanosec of the moment of charge in memory.
@@ -33,7 +33,7 @@ public class RandomGenerator {
 	/**
 	 * this function permits to fill a single field of an Object. you have to
 	 * pass the object entity as Object, and the field gathered by reflection.
-	 * 
+	 * <p>
 	 * This function can randomize the content of field if it is a supported
 	 * type, otherwise leave the field null. Behavior of the function is not
 	 * predictable with unsupported field types
@@ -42,7 +42,7 @@ public class RandomGenerator {
 	 * 
 	 * This function could throw a large number of Exception, due to internal
 	 * use of reflection with unknown classes.
-	 * 
+	 *
 	 * @param obj
 	 *            is the instance to fill. (e.g. class Car has String door, you
 	 *            have to pass randomAttribute(car, doorField))
@@ -173,11 +173,13 @@ public class RandomGenerator {
 
 	/**
 	 * This is a generic method to create a randomized Array of an unknown (and supported by this module) class.
-	 * 
-	 * Supported ArrayList:
-	 * String,
-	 * PointerBus
-	 * 
+	 *
+	 *     <ul>
+	 * <li> Supported ArrayList:
+	 * <li> String,
+	 * <li> PointerBus
+	 * </ul>
+	 *
 	 * @param clazz is the class of every element of the Array, is the parameter of the function
 	 * @return an instace of a random ArrayList parameterized with clazz
 	 * @throws Exception

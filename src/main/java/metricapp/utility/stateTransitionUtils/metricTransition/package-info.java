@@ -7,7 +7,7 @@
  * Every command extends MetricStateTransitionCommand, that implements StateTransitionCommand interface.
  * @see metricapp.utility.stateTransitionUtils.metricTransition.MetricStateTransitionCommand
  *
- * User Must put here every state transition for metric that he needs to execute.
+ *  User Must put here every state transition for metric that he needs to execute.
  *
  * The name of these transition MUST be stateBeforeTostateAfter.
  */

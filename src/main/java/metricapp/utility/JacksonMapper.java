@@ -19,13 +19,15 @@ import java.io.IOException;
  *
  * According to Jackson Documentation max performance of massive multithread use of mapper could be reached only
  * with the separated use of writer and reader.
- *
+ * <p>
  * Jackson Documentation permits to use mapper with a single instance, it is ThreadSafe:
  * from Jackson Doc...
- * "ObjectReader/ObjectWriter: these are light-weight immutable objects that can be safely shared between threads (and thus reused) as well"
- *
+ *"ObjectReader/ObjectWriter: these are light-weight immutable objects that can be safely shared between threads (and thus reused) as well"
+ *</p>
+ * <p>
  * Example of use:
  * jacksonMapper.toJson(myDTO) = return String of Json
+ * </p>
  */
 
 @Getter
@@ -51,10 +53,10 @@ public class JacksonMapper {
 
     /**
      * this method is a simple wrapper of writeValueAsString of writer.
-     *
+     * <p>
      * Example of use:
      * jacksonMapper.toJson(myDTO) = return String of Json
-     *
+     * </p>
      * @param object that you want to convert
      * @return String json formatted
      * @throws JsonProcessingException

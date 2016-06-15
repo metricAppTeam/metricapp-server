@@ -6,19 +6,20 @@ import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
 
 /**
  * This abstract class is the prototype of a Command, configured to be used for Metric transitions.
- * It has 2 attributes, that MUST be not null during execution.
+ *  It has 2 attributes, that MUST be not null during execution.
+ *<p>
+ * <p> Child classes MUST implement a 2 parameters constructor that calls the method in this class:
+ * <p> e.g. public CreatedToOnUpdate(Element before, Element after){
+ * <p>     super(before, after);
+ *<p>  }
  *
- * Child classes MUST implement a 2 parameters constructor that calls the method in this class:
- * e.g. public CreatedToOnUpdate(Element before, Element after){
- *     super(before, after);
- * }
+ * <p> Child should overrides execute method and call it like super class method:
+ *<p>  e.g. public void execute(){
+ * <p>     super.execute();
+ * <p>    foo(things);
+ * <p>     ...
+ * <p> }
  *
- * Child should overrides execute method and call it like super class method:
- * e.g. public void execute(){
- *     super.execute();
- *     foo(things);
- *     ...
- * }
  */
 public abstract class MetricStateTransitionCommand implements StateTransitionCommand{
 

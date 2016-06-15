@@ -29,7 +29,7 @@ public abstract class AbstractStateTransitionFactory {
 
     /**
      * This function is static and final, is the function that returns the user desired factory.
-     * Not all the entities have their own StateTransitionFactory, due to some entities are external to our system and we cannot manage their status.
+     *  Not all the entities have their own StateTransitionFactory, due to some entities are external to our system and we cannot manage their status.
      * Supported entities are: Metric, MeasurementGoal, Question
      *
      * @param entity from Enumeration Entity, identifies the type of factory the user needs.
@@ -52,11 +52,11 @@ public abstract class AbstractStateTransitionFactory {
     /**
      * This method implements Reflection to retrieve single transition command.
      * User just needs to define the class of transition, calling it StateBeforeToStateAfter and put it on the right package.
-     * This function could be implement the call of a class with a predetermined map of classes, improving performances but making less flexible the structure.
+     *  This function could be implement the call of a class with a predetermined map of classes, improving performances but making less flexible the structure.
      * In that way a user needs to change the map after the introduction or the delete of a state transition class.
      * In this way, user is not required in class grabbing process.
      *
-     * User Must use the command at least one time
+     *  User Must use the command at least one time
      *
      * @param before You can pass MeasurementGoal, Question, Metric. state cannot be null
      * @param after same as before

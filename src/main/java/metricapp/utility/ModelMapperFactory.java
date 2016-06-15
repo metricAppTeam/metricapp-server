@@ -15,7 +15,6 @@ import metricapp.dto.metric.MetricMap;
  *
  * It implements Factory pattern to offers different configurations of the same class.
  * Spring is needed to implements simple Singleton pattern of the instances.
- *
  * The module is loaded with different instances, with different configuration, to guarantee performances in multithread scenarios
  */
 @Service
@@ -61,11 +60,11 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
      */
     @Autowired
     private void modelMapperInitAll(){
-        modelMapperFactoryInit(this.looseModelMapper);
+		this.looseModelMapper = modelMapperFactoryInit(this.looseModelMapper);
         looseModelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        modelMapperFactoryInit(this.standardModelMapper);
+		this.standardModelMapper=  modelMapperFactoryInit(this.standardModelMapper);
         standardModelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-        modelMapperFactoryInit(this.strictModelMapper);
+        this.strictModelMapper = modelMapperFactoryInit(this.strictModelMapper);
         strictModelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
