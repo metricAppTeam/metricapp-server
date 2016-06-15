@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
@@ -28,6 +29,7 @@ import java.io.IOException;
  */
 
 @Getter
+@Service("JacksonMapper")
 public class JacksonMapper {
 
     private ObjectMapper mapper;
@@ -79,7 +81,7 @@ public class JacksonMapper {
      * @param json String of json
      * @param myClass this is the class of destination of the mapping
      * @return no cast needed, we do it for you.
-     * @throws IOException if the conversion failed 
+     * @throws IOException if the conversion failed
      */
     public <T extends Object> T fromJson(String json, Class<T> myClass) throws IOException {
         return getReader(myClass).readValue(json);

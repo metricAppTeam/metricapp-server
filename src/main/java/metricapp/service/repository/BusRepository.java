@@ -17,6 +17,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 
+/**
+ * This repository is the lowest level before the connection with Bus Rest Interface.
+ * Method in this class are almost the same described in Bus Team Documentation on their Bus.
+ */
 @Service
 public class BusRepository implements BusInterface {
 
@@ -121,6 +125,7 @@ public class BusRepository implements BusInterface {
     public String read(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException {
         return rawPost(fillContent(phaseBus, readFromBus, pointerBusDTO) );
     }
+
 
     /**
      * this method permits to interact with the bus through a update request.

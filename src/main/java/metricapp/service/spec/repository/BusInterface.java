@@ -18,7 +18,6 @@ public interface BusInterface {
 
     public String rollback(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException;
 
-
     public String delete(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException;
 
 }
