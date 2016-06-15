@@ -83,7 +83,11 @@ public class MeasurementGoalToDTOTest {
 		assertEquals(this.measurementGoal.getCreationDate().toString(), this.measurementGoalDTO.getMetadata().getCreationDate());
 		assertEquals(this.measurementGoal.getVersion(), this.measurementGoalDTO.getMetadata().getVersion());
 		assertEquals(this.measurementGoal.getLastVersionDate().toString(), this.measurementGoalDTO.getMetadata().getLastVersionDate());
-		
+		assertEquals(this.measurementGoalDTO.getAssumptions(),this.measurementGoal.getAssumptions());
+		assertEquals(this.measurementGoalDTO.getContextFactors(),this.measurementGoal.getContextFactors());
+		assertEquals(this.measurementGoalDTO.getMetrics(),this.measurementGoal.getMetrics());
+		assertEquals(this.measurementGoalDTO.getQuestions(),this.measurementGoal.getQuestions());
+		assertEquals(this.measurementGoalDTO.getQuestionersId(),this.measurementGoal.getQuestionersId());
 	}
 
 }

@@ -3,11 +3,9 @@ package metricapp.service.spec.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import metricapp.entity.external.*;
 import metricapp.exception.BusException;
 
-import javax.annotation.Nonnull;
 
 public interface ExternalElementsRepositoryInterface {
 
