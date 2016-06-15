@@ -103,6 +103,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	public QuestionCrudDTO createQuestion(QuestionDTO questionDTO) throws BadInputException{
 		
 		if (questionDTO.getMetadata().getCreatorId() == null) {
+			System.out.println(questionDTO.getMetadata().getCreatorId());
 			throw new BadInputException("Bad Input");
 		}
 		if (questionDTO.getMetadata().getId() != null) {

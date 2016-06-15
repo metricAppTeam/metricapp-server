@@ -3,6 +3,7 @@ package metricapp.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,7 @@ import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.service.controller.QuestionCRUDController;
 
+@CrossOrigin
 @RestController
 @RequestMapping(("/question"))
 public class QuestionRestController {
@@ -82,11 +84,15 @@ public class QuestionRestController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<QuestionCrudDTO> createQuestionDTO(@RequestBody QuestionDTO questionDTO){
 		QuestionCrudDTO questionCrudDTO = null;
+		System.out.println("Received new question");
+		System.out.println(questionDTO.toString());
 		try{
 			questionCrudDTO = questionCRUDController.createQuestion(questionDTO);
+			System.out.println("Sending result OK");
 			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.OK);			
 		}
 		catch (Exception e){
+			e.printStackTrace();
 			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.BAD_REQUEST);
 		}
 	}
