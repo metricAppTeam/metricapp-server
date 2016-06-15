@@ -10,93 +10,142 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-
-
 import metricapp.entity.external.PointerBus;
 
-
-
+/**
+ * This class provides a large number of methods to generate random fields and
+ * objects.
+ * 
+ * Every method can work staticly, without the need of an instance of
+ * RandomGenerator. The random seed is initialized when the JVM load the class,
+ * the seed is the Nanosec of the moment of charge in memory.
+ * 
+ * User has not to initialize this class to use it
+ *
+ *
+ */
 public class RandomGenerator {
-	//seed is time from epoch	
+	/**
+	 * seed is time from epoch
+	 */
 	private static Random rnd = new Random(LocalTime.now().getNano());
-	
-	/*
-	 * this function permits to fill an object 
-	 * obj with random attributes (if String, Double, Int, String, ArrayList<String>, Enum<String>
+
+	/**
+	 * this function permits to fill a single field of an Object. you have to
+	 * pass the object entity as Object, and the field gathered by reflection.
 	 * 
-	 * */
+	 * This function can randomize the content of field if it is a supported
+	 * type, otherwise leave the field null. Behavior of the function is not
+	 * predictable with unsupported field types
+	 * 
+	 * This function supports a small number of ArrayList fields.
+	 * 
+	 * This function could throw a large number of Exception, due to internal
+	 * use of reflection with unknown classes.
+	 * 
+	 * @param obj
+	 *            is the instance to fill. (e.g. class Car has String door, you
+	 *            have to pass randomAttribute(car, doorField))
+	 * @param field
+	 *            is the field gathered by Reflection to fill up with random
+	 *            content. (e.g. Car.getClass().getAttributes()[0])
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 */
 	@SuppressWarnings("unchecked")
-	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
+	static public void randomAttribute(Object obj, Field field)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException,
+			SecurityException, ClassNotFoundException, InstantiationException {
+
 		
-		if (field.getType().equals(String.class)){
-			//System.out.println("set"+toCamelCase(field.getName()));
-			//TODO replace with something that use reflection
-			//try {
-				//if (field.getClass().getMethod("set"+toCamelCase(field.getName())).getParameterTypes()[0].equals(LocalDate.class)){
-				if(field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")){
-					field.set(obj, RandomGenerator.randomLocalDate().toString());
-				}
-				else{
-					field.set(obj, RandomGenerator.randomString());
-				}
-			//} catch (NoSuchMethodException e) {
-				//System.out.println("Warning, this method doesn't exists : "+field.getDeclaringClass()+".set"+toCamelCase(field.getName()));
-				//e.printStackTrace();
-				
-			//}
-		}
-		if (field.getType().equals(LocalDate.class)){
-			field.set(obj, RandomGenerator.randomLocalDate());
-		}
-		if (field.getType().equals(boolean.class)){
-			field.set(obj, RandomGenerator.randomBoolean());
-		}
-		if (field.getType().equals(double.class)){
-			field.set(obj, RandomGenerator.randomDouble());
-		}
-		if (field.getType().equals(List.class)){
-			try{
-				field.set(obj, RandomGenerator.randomGenericArrayList( (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0]  ));
-			} catch(Exception e){
-				
+		if (field.getType().equals(String.class)) {
+			//required for dto, where creationDate and LastVersionDate are Strings
+			if (field.getName().equals("creationDate") || field.getName().equals("lastVersionDate")) {
+				field.set(obj, RandomGenerator.randomLocalDate().toString());
+			} else {
+				field.set(obj, RandomGenerator.randomString());
 			}
 		}
-		if (field.getType().equals(int.class)){
-				field.set(obj, RandomGenerator.randomInt());
+		if (field.getType().equals(LocalDate.class)) {
+			field.set(obj, RandomGenerator.randomLocalDate());
 		}
-		if (field.getType().equals(PointerBus.class)){
+		if (field.getType().equals(boolean.class)) {
+			field.set(obj, RandomGenerator.randomBoolean());
+		}
+		if (field.getType().equals(double.class)) {
+			field.set(obj, RandomGenerator.randomDouble());
+		}
+		if (field.getType().equals(List.class)) {
+			try {
+				field.set(obj, RandomGenerator.randomGenericArrayList(
+						(Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0]));
+			} catch (Exception e) {
+
+			}
+		}
+		if (field.getType().equals(int.class)) {
+			field.set(obj, RandomGenerator.randomInt());
+		}
+		if (field.getType().equals(PointerBus.class)) {
 			PointerBus pb = new PointerBus();
 			pb.randomAttributes();
-			field.set(obj,  pb);
+			field.set(obj, pb);
 		}
-		if (field.getType().isEnum()){
+		if (field.getType().isEnum()) {
 			field.set(obj, RandomGenerator.randomEnum((Class<Enum<?>>) field.getType()));
 		}
 	}
-	
-	static public String randomString(){
+
+	/**
+	 * returns a randomString formatted as UUID. 
+	 * @return
+	 */
+	static public String randomString() {
 		return UUID.randomUUID().toString();
 	}
-	
-	static public boolean randomBoolean(){
+
+	/**
+	 * returns a random boolean
+	 * @return
+	 */
+	static public boolean randomBoolean() {
 		return rnd.nextBoolean();
 	}
-	
-	
-	
-	static public double randomDouble(){
+
+	/**
+	 * returns a random double
+	 * @return
+	 */
+	static public double randomDouble() {
 		return rnd.nextDouble();
 	}
-	
-	static public long randomLong(){
+
+	/**
+	 * returns a random long
+	 * @return
+	 */
+	static public long randomLong() {
 		return rnd.nextLong();
 	}
 	
-	static public long randomInt(){
-		return rnd.nextInt(1024*128);
+	/**
+	 * returns a random int
+	 * @return
+	 */
+	static public long randomInt() {
+		return rnd.nextInt(1024 * 128);
 	}
-	
-	static public PointerBus randomPointerBus(){
+
+	/**
+	 * this function returns a new randomized PointerBus element
+	 * @return PointerBus randomized
+	 */
+	static public PointerBus randomPointerBus() {
 		PointerBus pb = new PointerBus();
 		try {
 			pb.randomAttributes();
@@ -106,27 +155,42 @@ public class RandomGenerator {
 		}
 		return pb;
 	}
-	
-	static public ArrayList<String> randomArrayList(){
+
+	/**
+	 * returns a random ArrayList of Strings, formatted like UUID.
+	 * @return
+	 */
+	static public ArrayList<String> randomArrayList() {
 		ArrayList<String> list = new ArrayList<String>();
-		int n=rnd.nextInt(50);
-		while(n>0){
-			
+		int n = rnd.nextInt(50);
+		while (n > 0) {
+
 			list.add(randomString());
 			n--;
 		}
 		return list;
 	}
-	
-	static public <T> ArrayList<T> randomGenericArrayList(Class<T> clazz) throws Exception{
+
+	/**
+	 * This is a generic method to create a randomized Array of an unknown (and supported by this module) class.
+	 * 
+	 * Supported ArrayList:
+	 * String,
+	 * PointerBus
+	 * 
+	 * @param clazz is the class of every element of the Array, is the parameter of the function
+	 * @return an instace of a random ArrayList parameterized with clazz
+	 * @throws Exception
+	 */
+	static public <T> ArrayList<T> randomGenericArrayList(Class<T> clazz) throws Exception {
 		ArrayList<T> list = new ArrayList<T>();
-		int n=rnd.nextInt(10);
-		while(n>0){
-			if(clazz.equals(String.class)){
+		int n = rnd.nextInt(10);
+		while (n > 0) {
+			if (clazz.equals(String.class)) {
 				list.add(clazz.cast(randomString()));
 			}
-			if(clazz.equals(PointerBus.class)){
-				PointerBus pb =new PointerBus();
+			if (clazz.equals(PointerBus.class)) {
+				PointerBus pb = new PointerBus();
 				pb.randomAttributes();
 				list.add(clazz.cast(pb));
 			}
@@ -134,21 +198,25 @@ public class RandomGenerator {
 		}
 		return list;
 	}
+
 	
-	//random date from 1970 and 2300
-	static public LocalDate randomLocalDate(){
-		return LocalDate.ofEpochDay(randomInt()%(2300 * 360));
+	/**
+	 * provides a random date formatted as LocalDate between 1970 and 2300
+	 * @return
+	 */
+	static public LocalDate randomLocalDate() {
+		return LocalDate.ofEpochDay(randomInt() % (2300 * 360));
 	}
-	
-	/*
-	 * e.g. for Enum State: randomEnum(State.class) --> return State (State.getValue() = Approved)
-	 * this function uses reflections to bring you a random element of a Enumeration. 
-	 * As a parameter it takes the Enum.class element, T is my enumeration like State or ScaleType
-	 * */
-	public static <T extends Enum<?>> T randomEnum(Class<T> myEnumClass){
-        int x = rnd.nextInt(myEnumClass.getEnumConstants().length);
-        return myEnumClass.getEnumConstants()[x];
-    }
-	
-	
+
+	/**
+	 * e.g. for Enum State: randomEnum(State.class) --> return State
+	 * (State.getValue() = Approved) this function uses reflections to bring you
+	 * a random element of a Enumeration. As a parameter it takes the Enum.class
+	 * element, T is my enumeration like State or ScaleType
+	 */
+	public static <T extends Enum<?>> T randomEnum(Class<T> myEnumClass) {
+		int x = rnd.nextInt(myEnumClass.getEnumConstants().length);
+		return myEnumClass.getEnumConstants()[x];
+	}
+
 }
