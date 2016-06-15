@@ -128,7 +128,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	/**
 	 * This method updates a Metric. This is useful when a Metricator modifies the Metric's fields.
 	 * ModelMapper is used to retrieve the old Metric instance.
-	 * @param  MetricDTO
+	 * @param  dto MetricDTO
 	 * @return      MetricCrudDTO
 	 */
 	@Override

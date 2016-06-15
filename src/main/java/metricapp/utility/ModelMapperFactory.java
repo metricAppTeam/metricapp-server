@@ -28,7 +28,7 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
     /**
      * This function returns the ModelMapper object configurated as Standard Mapping strategy
      *
-     * e.g. modelMapperFactory.getStandardModelMapper().map(objectToMap, TargetObject.class) -> TargetObject targetObject
+     * e.g. modelMapperFactory.getStandardModelMapper().map(objectToMap, TargetObject.class) = TargetObject targetObject
      * @return
      */
 	public ModelMapper getStandardModelMapper(){
@@ -38,7 +38,7 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
     /**
      * This function returns the ModelMapper object configurated as Loose Mapping strategy
      *
-     * e.g. modelMapperFactory.getStandardModelMapper().map(objectToMap, TargetObject.class) -> TargetObject targetObject
+     * e.g. modelMapperFactory.getStandardModelMapper().map(objectToMap, TargetObject.class) = TargetObject targetObject
      * @return
      */
 	public ModelMapper getLooseModelMapper(){
@@ -48,7 +48,7 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
     /**
      * This function returns the ModelMapper object configurated as Strict Mapping strategy
      *
-     * e.g. modelMapperFactory.getStandardModelMapper().map(objectToMap, TargetObject.class) -> TargetObject targetObject
+     * e.g. modelMapperFactory.getStandardModelMapper().map(objectToMap, TargetObject.class) = TargetObject targetObject
      * @return
      */
 	public ModelMapper getStrictModelMapper(){

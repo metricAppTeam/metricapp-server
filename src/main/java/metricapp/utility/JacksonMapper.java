@@ -25,7 +25,7 @@ import java.io.IOException;
  * "ObjectReader/ObjectWriter: these are light-weight immutable objects that can be safely shared between threads (and thus reused) as well"
  *
  * Example of use:
- * jacksonMapper.toJson(myDTO) -> return String of Json
+ * jacksonMapper.toJson(myDTO) = return String of Json
  */
 
 @Getter
@@ -53,7 +53,7 @@ public class JacksonMapper {
      * this method is a simple wrapper of writeValueAsString of writer.
      *
      * Example of use:
-     * jacksonMapper.toJson(myDTO) -> return String of Json
+     * jacksonMapper.toJson(myDTO) = return String of Json
      *
      * @param object that you want to convert
      * @return String json formatted

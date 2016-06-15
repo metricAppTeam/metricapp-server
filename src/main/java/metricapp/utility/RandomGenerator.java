@@ -209,7 +209,7 @@ public class RandomGenerator {
 	}
 
 	/**
-	 * e.g. for Enum State: randomEnum(State.class) --> return State
+	 * e.g. for Enum State: randomEnum(State.class) = return State
 	 * (State.getValue() = Approved) this function uses reflections to bring you
 	 * a random element of a Enumeration. As a parameter it takes the Enum.class
 	 * element, T is my enumeration like State or ScaleType

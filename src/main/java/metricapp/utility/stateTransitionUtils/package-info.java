@@ -16,20 +16,20 @@
  * @see metricapp.utility.stateTransitionUtils.StateTransitionCommand is the interface of this kind of object.
  *
  * This module doesn't implement directly the State Pattern, but it is inspired of it. Elements change their behaviour according to internal state in transparent way.
- * @See State is the enumeration where the states are described.
+ *  State is the enumeration where the states are described.
  *
  * Factory Pattern is implemented in single packages.
  * Every entity has a factory that can create new StateTransitionCommand, configured and ready to run.
  * In this way the user can easily get a configured command, he has only to execute it.
  * With different objects released to user, the speed of execution in multithread scenario is incremented, it permits massive use of parallel work.
- * @See MeasurementGoalStateTransitionFactory
- * @See QuestionStateTransitionFactory
- * @See MetricStateTransitionFactory
+ *  @see metricapp.utility.stateTransitionUtils.measurementGoalTransition.MeasurementGoalStateTransitionFactory
+ *  @see metricapp.utility.stateTransitionUtils.questionTransition.QuestionStateTransitionFactory
+ *  @see metricapp.utility.stateTransitionUtils.metricTransition.MetricStateTransitionFactory
  *
  *
  * Abstract Factory Pattern is used to uniform behaviour of different factories. Different entities has the same interface.
  * This improve the readiness of the code, it's user friendly and it is debuggable and manageable.
- * @See AbstractStateTransitionFactory
+ * @see metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory
  *
  * Every Factory use Reflection to inspect the entity state transition package to retrieve the correct transition.
  * This is the most flexible structure, in fact to add a transition a user just needs to create a new class in the entity state transition package.
