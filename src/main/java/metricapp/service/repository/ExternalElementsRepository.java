@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import metricapp.dto.bus.PointerBusDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.external.*;
 import metricapp.exception.BusException;
@@ -37,7 +36,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws IOException
      */
 	public Assumption getAssumptionByIdAndVersion(@Nonnull String id, String version) throws BusException, IOException {
-        PointerBusDTO request = new PointerBusDTO();
+        PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.Assumption.name());
@@ -55,7 +54,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      */
 	public ContextFactor getContextFactorByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException {
-        PointerBusDTO request = new PointerBusDTO();
+        PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.ContextFactor.name());
@@ -73,7 +72,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      */
 	public OrganizationalGoal getOrganizationalGoalByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException {
-        PointerBusDTO request = new PointerBusDTO();
+        PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.OrganizationalGoal.name());
@@ -91,7 +90,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      */
 	public InstanceProject getInstanceProjectByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException {
-        PointerBusDTO request = new PointerBusDTO();
+        PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.InstanceProject.name());

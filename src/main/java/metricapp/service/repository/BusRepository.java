@@ -4,7 +4,7 @@ package metricapp.service.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import metricapp.dto.bus.BusRequestDTO;
 import metricapp.dto.bus.BusResponseDTO;
-import metricapp.dto.bus.PointerBusDTO;
+import metricapp.entity.external.PointerBus;
 import metricapp.exception.BusException;
 import metricapp.service.spec.repository.BusInterface;
 import metricapp.utility.JacksonMapper;
@@ -103,7 +103,7 @@ public class BusRepository implements BusInterface {
      * @param field2 identifies the request
      * @return the filled array of elements
      */
-    private ArrayList<String> fillContent(String field0, String field1, PointerBusDTO field2) throws JsonProcessingException {
+    private ArrayList<String> fillContent(String field0, String field1, PointerBus field2) throws JsonProcessingException {
         ArrayList<String> content = new ArrayList<String>(3);
         content.add(0, field0);
         content.add(1, field1);
@@ -122,7 +122,7 @@ public class BusRepository implements BusInterface {
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String read(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException {
+    public String read(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
         return rawPost(fillContent(phaseBus, readFromBus, pointerBusDTO) );
     }
 
@@ -136,7 +136,7 @@ public class BusRepository implements BusInterface {
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String update(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException {
+    public String update(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
         return rawPost(fillContent(phaseBus, updateToBus, pointerBusDTO) );
     }
 
@@ -149,7 +149,7 @@ public class BusRepository implements BusInterface {
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String create(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException {
+    public String create(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
         return rawPost(fillContent(phaseBus, createBus, pointerBusDTO) );
     }
 
@@ -162,7 +162,7 @@ public class BusRepository implements BusInterface {
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String rollback(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException {
+    public String rollback(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
         return rawPost(fillContent(phaseBus, rollbackBus, pointerBusDTO) );
     }
 
@@ -175,7 +175,7 @@ public class BusRepository implements BusInterface {
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String delete(PointerBusDTO pointerBusDTO) throws BusException, JsonProcessingException {
+    public String delete(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
         return rawPost(fillContent(phaseBus, deleteFromBus, pointerBusDTO) );
     }
 

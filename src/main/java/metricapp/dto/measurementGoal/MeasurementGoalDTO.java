@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import metricapp.dto.GoalDTO;
 import metricapp.dto.MetadataDTO;
-import metricapp.dto.bus.PointerBusDTO;
 import metricapp.dto.measurementGoal.InterpretationModelDTO;
 import metricapp.entity.external.PointerBus;
 
@@ -27,13 +26,13 @@ public class MeasurementGoalDTO extends GoalDTO{
 	public String viewPoint;
 	public String focus;
 	public String purpose;
-	public String OrganizationalGoalId;
-	public List<PointerBusDTO> metrics;
-	public List<PointerBusDTO> questions;
+	public PointerBus OrganizationalGoalId;
+	public List<PointerBus> metrics;
+	public List<PointerBus> questions;
 	public String metricatorId;
 	public List<String> questionersId;
-	public List<PointerBusDTO> contextFactors;
-	public List<PointerBusDTO> assumptions;
+	public List<PointerBus> contextFactors;
+	public List<PointerBus> assumptions;
 	public InterpretationModelDTO interpretationModel;
 	public MetadataDTO metadata;
 }

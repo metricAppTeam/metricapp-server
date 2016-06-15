@@ -12,5 +12,9 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BusRequestDTO extends BusDTO {
-    public ArrayList<String> content;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6399985292317129080L;
+	public ArrayList<String> content;
 }

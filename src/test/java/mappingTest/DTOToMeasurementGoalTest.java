@@ -2,6 +2,7 @@ package mappingTest;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -65,15 +66,23 @@ public class DTOToMeasurementGoalTest {
 		//this.measurementGoalDTO.setMetricatorId(randomString());
 		this.measurementGoalDTO.setName(randomString());
 		this.measurementGoalDTO.setObject(randomString());
-		this.measurementGoalDTO.setOrganizationalGoalId(randomString());
+		//this.measurementGoalDTO.setOrganizationalGoalId(RandomGenerator.randomPointerBus());
 		this.measurementGoalDTO.setViewPoint(randomString());
 		this.measurementGoalDTO.setInterpretationModel(interpretationModelDTO);
 		this.measurementGoalDTO.setMetadata(metadataDTO);
 		
+		try {
+			this.measurementGoalDTO.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		this.measurementGoal = modelMapper.map(this.measurementGoalDTO, MeasurementGoal.class);
-		
+		System.out.println(measurementGoalDTO.toString());
+		System.out.println(measurementGoal.toString());
 				
 		assertEquals(this.measurementGoalDTO.getId(), this.measurementGoal.getId());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());
@@ -86,7 +95,7 @@ public class DTOToMeasurementGoalTest {
 		assertEquals(this.measurementGoalDTO.getMetadata().getVersion(), this.measurementGoal.getVersion());
 		assertEquals(this.measurementGoalDTO.getMetadata().getCreationDate(), this.measurementGoal.getCreationDate().toString());
 		assertEquals(this.measurementGoalDTO.getMetadata().getVersion(), this.measurementGoal.getVersion());
-		assertEquals(this.measurementGoalDTO.getMetadata().getCreationDate(), this.measurementGoal.getLastVersionDate().toString());
+		assertEquals(this.measurementGoalDTO.getMetadata().getLastVersionDate(), this.measurementGoal.getLastVersionDate().toString());
 		
 	}
 

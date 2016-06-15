@@ -96,6 +96,17 @@ public class RandomGenerator {
 		return rnd.nextInt(1024*128);
 	}
 	
+	static public PointerBus randomPointerBus(){
+		PointerBus pb = new PointerBus();
+		try {
+			pb.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			e.printStackTrace();
+		}
+		return pb;
+	}
+	
 	static public ArrayList<String> randomArrayList(){
 		ArrayList<String> list = new ArrayList<String>();
 		int n=rnd.nextInt(50);

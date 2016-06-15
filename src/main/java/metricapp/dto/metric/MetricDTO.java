@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import metricapp.dto.DTO;
-import metricapp.dto.bus.PointerBusDTO;
-import metricapp.entity.external.PointerBus;
 import metricapp.entity.metric.ScaleType;
 import metricapp.entity.metric.Set;
 

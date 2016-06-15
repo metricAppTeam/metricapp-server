@@ -10,7 +10,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BusDTO implements Serializable{
-    public String tag;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6765156160010440068L;
+	public String tag;
     public String originAdress;
     public String id;
     public String resolvedAdress;
