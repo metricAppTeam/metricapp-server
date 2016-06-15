@@ -38,7 +38,7 @@ public class MeasurementGoal extends Element {
 	
 	private String viewPoint;
 	
-	private List<PointerBus> contexts;
+	private List<PointerBus> contextFactors;
 	
 	private List<PointerBus> assumptions;
 	
