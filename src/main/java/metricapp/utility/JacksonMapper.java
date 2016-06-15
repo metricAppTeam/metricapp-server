@@ -70,7 +70,7 @@ public class JacksonMapper {
      * @param myClass
      * @return a Reader Object
      */
-    public ObjectReader getReader(Class myClass){
+    public <T> ObjectReader getReader(Class<T> myClass){
         return this.getMapper().readerFor(myClass);
     }
 

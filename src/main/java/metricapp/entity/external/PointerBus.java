@@ -19,24 +19,19 @@ public class PointerBus {
 
 
     public String busVersion;
-    public List<String> tags;
+    public List<String> busTags;
 
 
     public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
             NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
         Field[] attributes = this.getClass().getDeclaredFields();
-        Class<?> actual = this.getClass();
         // when the function reaches Element, it stops
-
+        
         for (Field field : attributes) {
             // necessary for private fields
             field.setAccessible(true);
-
             // set the attribute
             RandomGenerator.randomAttribute(this, field);
         }
-        actual = actual.getSuperclass();
-        attributes = actual.getDeclaredFields();
-
     }
 }

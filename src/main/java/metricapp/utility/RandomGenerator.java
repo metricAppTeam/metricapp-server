@@ -2,6 +2,7 @@ package metricapp.utility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -10,14 +11,9 @@ import java.util.Random;
 import java.util.UUID;
 
 
-import metricapp.entity.external.Assumption;
-import metricapp.entity.external.ContextFactor;
-import metricapp.entity.external.InstanceProject;
-import metricapp.entity.external.OrganizationalGoal;
+
 import metricapp.entity.external.PointerBus;
-import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.entity.metric.Metric;
-import metricapp.entity.question.Question;
+
 
 
 public class RandomGenerator {
@@ -30,7 +26,7 @@ public class RandomGenerator {
 	 * 
 	 * */
 	@SuppressWarnings("unchecked")
-	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, SecurityException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException {
+	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
 		
 		if (field.getType().equals(String.class)){
 			//System.out.println("set"+toCamelCase(field.getName()));
@@ -44,7 +40,6 @@ public class RandomGenerator {
 					field.set(obj, RandomGenerator.randomString());
 				}
 			//} catch (NoSuchMethodException e) {
-			//    TODO Auto-generated catch block
 				//System.out.println("Warning, this method doesn't exists : "+field.getDeclaringClass()+".set"+toCamelCase(field.getName()));
 				//e.printStackTrace();
 				
@@ -60,7 +55,11 @@ public class RandomGenerator {
 			field.set(obj, RandomGenerator.randomDouble());
 		}
 		if (field.getType().equals(List.class)){
-			field.set(obj, RandomGenerator.randomArrayList());
+			try{
+				field.set(obj, RandomGenerator.randomGenericArrayList( (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0]  ));
+			} catch(Exception e){
+				
+			}
 		}
 		if (field.getType().equals(int.class)){
 				field.set(obj, RandomGenerator.randomInt());
@@ -83,6 +82,8 @@ public class RandomGenerator {
 		return rnd.nextBoolean();
 	}
 	
+	
+	
 	static public double randomDouble(){
 		return rnd.nextDouble();
 	}
@@ -99,7 +100,25 @@ public class RandomGenerator {
 		ArrayList<String> list = new ArrayList<String>();
 		int n=rnd.nextInt(50);
 		while(n>0){
+			
 			list.add(randomString());
+			n--;
+		}
+		return list;
+	}
+	
+	static public <T> ArrayList<T> randomGenericArrayList(Class<T> clazz) throws Exception{
+		ArrayList<T> list = new ArrayList<T>();
+		int n=rnd.nextInt(10);
+		while(n>0){
+			if(clazz.equals(String.class)){
+				list.add(clazz.cast(randomString()));
+			}
+			if(clazz.equals(PointerBus.class)){
+				PointerBus pb =new PointerBus();
+				pb.randomAttributes();
+				list.add(clazz.cast(pb));
+			}
 			n--;
 		}
 		return list;
@@ -120,40 +139,5 @@ public class RandomGenerator {
         return myEnumClass.getEnumConstants()[x];
     }
 	
-	public static void main(String[] args) {
-		Metric metric = new Metric();
-		MeasurementGoal measurementGoal = new MeasurementGoal();
-		OrganizationalGoal organizationalGoal = new OrganizationalGoal();
-		Question question = new Question();
-		Assumption assumption = new Assumption();
-		ContextFactor contextFactor = new ContextFactor();
-		InstanceProject instanceProject = new InstanceProject();
-		
-		try {
-			measurementGoal.randomAttributes();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println(pb.toString());
-	}
+	
 }
