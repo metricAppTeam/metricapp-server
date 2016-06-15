@@ -1,6 +1,10 @@
 # metricapp-server
 Project for course Software Systems and Internet Services Engineering 2016
 
+[Server Code Documentation](http://metricappteam.github.io/metricapp-server/javadocs/)
+
+[Github's site](http://metricappteam.github.io/metricapp-server/)
+
 ## Requirements
 This is a Maven Project
 	
