@@ -47,7 +47,7 @@ public class JacksonMapper {
     }
 
     /**
-     * this method is a simple wrapper of writeValueAsString of writer. 
+     * this method is a simple wrapper of writeValueAsString of writer.
      *
      * @param object that you want to convert
      * @return String json formatted
