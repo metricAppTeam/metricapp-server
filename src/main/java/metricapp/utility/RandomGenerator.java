@@ -1,14 +1,23 @@
 package metricapp.utility;
 
 import java.lang.reflect.Field;
-
-
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+
+import metricapp.entity.external.Assumption;
+import metricapp.entity.external.ContextFactor;
+import metricapp.entity.external.InstanceProject;
+import metricapp.entity.external.OrganizationalGoal;
+import metricapp.entity.external.PointerBus;
+import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.entity.metric.Metric;
+import metricapp.entity.question.Question;
 
 
 public class RandomGenerator {
@@ -21,7 +30,7 @@ public class RandomGenerator {
 	 * 
 	 * */
 	@SuppressWarnings("unchecked")
-	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, SecurityException {
+	static public void randomAttribute(Object obj, Field field) throws IllegalArgumentException, IllegalAccessException, SecurityException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException, InstantiationException {
 		
 		if (field.getType().equals(String.class)){
 			//System.out.println("set"+toCamelCase(field.getName()));
@@ -55,6 +64,11 @@ public class RandomGenerator {
 		}
 		if (field.getType().equals(int.class)){
 				field.set(obj, RandomGenerator.randomInt());
+		}
+		if (field.getType().equals(PointerBus.class)){
+			PointerBus pb = new PointerBus();
+			pb.randomAttributes();
+			field.set(obj,  pb);
 		}
 		if (field.getType().isEnum()){
 			field.set(obj, RandomGenerator.randomEnum((Class<Enum<?>>) field.getType()));
@@ -105,4 +119,41 @@ public class RandomGenerator {
         int x = rnd.nextInt(myEnumClass.getEnumConstants().length);
         return myEnumClass.getEnumConstants()[x];
     }
+	
+	public static void main(String[] args) {
+		Metric metric = new Metric();
+		MeasurementGoal measurementGoal = new MeasurementGoal();
+		OrganizationalGoal organizationalGoal = new OrganizationalGoal();
+		Question question = new Question();
+		Assumption assumption = new Assumption();
+		ContextFactor contextFactor = new ContextFactor();
+		InstanceProject instanceProject = new InstanceProject();
+		
+		try {
+			measurementGoal.randomAttributes();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(pb.toString());
+	}
 }

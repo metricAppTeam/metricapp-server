@@ -19,7 +19,7 @@ import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.external.OrganizationalGoal;
 import metricapp.entity.measurementGoal.InterpretationModel;
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.service.spec.controller.ModelMapperFactoryInterface;
+import metricapp.service.spec.ModelMapperFactoryInterface;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)

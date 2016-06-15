@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class PointerBus {
@@ -19,7 +19,7 @@ public class PointerBus {
 
 
     public String busVersion;
-    public ArrayList<String> tags;
+    public List<String> tags;
 
 
     public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,

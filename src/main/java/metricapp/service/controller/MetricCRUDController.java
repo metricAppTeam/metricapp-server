@@ -18,8 +18,8 @@ import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.MetricCRUDInterface;
-import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.MetricRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
