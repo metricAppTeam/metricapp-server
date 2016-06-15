@@ -21,6 +21,7 @@ import metricapp.service.spec.repository.AssumptionRepository;
 import metricapp.service.spec.repository.ContextRepository;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
 import metricapp.service.spec.repository.MetricRepository;
+import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
 @Data
 @Service("MeasurementGoalCRUDController")
@@ -274,13 +275,12 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return measurementGoalRepository.save(goal);		
 	}
 	@Override
-	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException{
+	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException, IllegalStateTransitionException{
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		MeasurementGoal newGoal = modelMapper.map(dto, MeasurementGoal.class);
 		MeasurementGoal oldGoal = measurementGoalRepository.findById(newGoal.getId());
-		
-		//state transition
+		stateTransition(oldGoal, newGoal);
 		
 		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
 		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
@@ -318,5 +318,51 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		deleteMeasurementGoalById(dto.getId());
 	}
 	
+	private void stateTransition(MeasurementGoal oldGoal, MeasurementGoal newGoal)
+			throws IllegalStateTransitionException, NotFoundException {
+		
+		newGoal.setLastVersionDate(LocalDate.now());
+		if (oldGoal.getState().equals(newGoal.getState())) {
+			 return;
+			 }
+		AbstractStateTransitionFactory.getFactory(Entity.MeasurementGoal).transition(oldGoal, newGoal).execute();
 	
+	}
+
+	@Override
+	public MeasurementGoalCrudDTO changeStateMeasurementGoal(MeasurementGoalDTO dto)
+			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException {
+		if (dto == null) {
+			throw new BadInputException("Bad Input");
+		}
+		if (dto.getMetadata().getId() == null) {
+			throw new BadInputException("MeasurementGoals cannot have null ID");
+		}
+
+		if (dto.getOrganizationalGoalId() == null){
+			throw new BadInputException("Measurement Goal must have a link to an Organizational Goal");
+		}
+		
+		MeasurementGoal oldGoal = measurementGoalRepository.findById(dto.getMetadata().getId());
+		MeasurementGoal newGoal = modelMapperFactory.getLooseModelMapper().map(oldGoal, MeasurementGoal.class);
+		
+		newGoal.setState(dto.getMetadata().getState());
+		newGoal.setReleaseNote(dto.getMetadata().getReleaseNote());
+		stateTransition(oldGoal, newGoal);
+		
+		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
+		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
+		if (oldGoal == null) {
+			throw new NotFoundException();
+		}
+
+		try {
+			dtoCrud.addMeasurementGoalToList(measurementGoalToDTO(updateMeasurementGoal(newGoal)));
+		} catch (Exception e) {
+			throw new DBException("Error in saving, tipically your version is not the last");
+		}
+
+		return dtoCrud;
+	}
+
 }

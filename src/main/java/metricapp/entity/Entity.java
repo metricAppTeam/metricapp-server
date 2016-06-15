@@ -5,6 +5,8 @@ public enum Entity {
 	Question,
 	Metric,
 	ContextFactor,
-	Assumption;
+	Assumption,
+	User,
+	OrganizationalGoal;
 	
 }

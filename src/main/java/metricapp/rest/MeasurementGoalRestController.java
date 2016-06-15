@@ -19,9 +19,7 @@ import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 @RestController
 @RequestMapping("/measurementgoal")
 public class MeasurementGoalRestController {
-	
-	// TODO errorcheck and try catch blocks
-	
+		
 	@Autowired
 	private MeasurementGoalCRUDInterface controller;	
 
@@ -71,21 +69,31 @@ public class MeasurementGoalRestController {
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
 			controller.deleteMeasurementGoalById(id);
-		} catch (BadInputException | IllegalStateTransitionException e) {
-			// TODO Auto-generated catch block
+		} catch (BadInputException e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.BAD_REQUEST);
+		} catch (IllegalStateTransitionException e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.FORBIDDEN);
+		} catch (Exception e){
 			e.printStackTrace();
 			dto.setError(e.getMessage());
 			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		return new ResponseEntity<MeasurementGoalCrudDTO>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<MeasurementGoalCrudDTO> putMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto){
+	public ResponseEntity<MeasurementGoalCrudDTO> putMeasurementGoalDTO(@RequestBody MeasurementGoalDTO dto, @RequestParam(value = "onlychangestate", defaultValue = "false") String onlyChangeState) {
 		MeasurementGoalCrudDTO rensponseDTO = new MeasurementGoalCrudDTO();
 		try {
-			return new ResponseEntity<MeasurementGoalCrudDTO>(controller.updateMeasurementGoal(dto), HttpStatus.OK);
+			if (onlyChangeState.equals("false")) {
+				return new ResponseEntity<MeasurementGoalCrudDTO>(controller.updateMeasurementGoal(dto), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<MeasurementGoalCrudDTO>(controller.changeStateMeasurementGoal(dto), HttpStatus.OK);
+			}
 		} catch (NotFoundException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -93,11 +101,20 @@ public class MeasurementGoalRestController {
 		} catch (DBException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.FORBIDDEN);
+			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.CONFLICT);
 		} catch (BadInputException e) {
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
+		} catch (IllegalStateTransitionException e) {
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.FORBIDDEN);
+		}
+		catch (Exception e){
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -108,12 +125,14 @@ public class MeasurementGoalRestController {
 		try {
 			return new ResponseEntity<MeasurementGoalCrudDTO>(controller.createMeasurementGoal(dto),HttpStatus.CREATED);
 		} catch (BadInputException e) {
-			// TODO Auto-generated catch block
 			rensponseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.BAD_REQUEST);
-		
+		} catch (Exception e){
+			rensponseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<MeasurementGoalCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
 }
+

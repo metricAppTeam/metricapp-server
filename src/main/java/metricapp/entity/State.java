@@ -8,9 +8,9 @@ public enum State {
 	External,
 	Suspended,
 	OnUpdate,
-	OnUpdate_WaitingQuestions,
-	OnUpdate_QuestionerEndpoint,
-	OnUpdate_InternalRefinement,
+	OnUpdateWaitingQuestions,
+	OnUpdateQuestionerEndpoint,
+	OnUpdateInternalRefinement,
 	Pending;
 	
 }
