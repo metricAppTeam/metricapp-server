@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Metricapp-server by metricAppTeam</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Metricapp-server</h1>
+      <h2 class="project-tagline">Project for course Software Systems and Internet Services Engineering 2016</h2>
+      <a href="https://github.com/metricAppTeam/metricapp-server" class="btn">View on GitHub</a>
+      <a href="https://github.com/metricAppTeam/metricapp-server/zipball/master" class="btn">Download .zip</a>
+      <a href="./javadocs/index.html" class="btn">View Documentation</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="metricapp-server" class="anchor" href="#metricapp-server" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metricapp-server</h1>
+
+<p>Project for course Software Systems and Internet Services Engineering 2016</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p>This is a Maven Project</p>
+
+<pre><code>you need Maven to resolve dependencies and run it. 
+
+JDK 8+ installed as default
+</code></pre>
+
+<h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build</h2>
+
+<pre><code>/$PROJECT_PATH/mvn install
+/$PROJECT_PATH/mvn test
+/$PROJECT_PATH/mvn package (it includes install and tests)
+</code></pre>
+
+<h2>
+<a id="import-in-eclipse" class="anchor" href="#import-in-eclipse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Import in Eclipse</h2>
+
+<pre><code>file-&gt;import...
+existing Maven Project
+select $PROJECT_PATH
+project-&gt;maven-&gt;install
+</code></pre>
+
+<h2>
+<a id="common-difficulties" class="anchor" href="#common-difficulties" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Common difficulties</h2>
+
+<pre><code>Maven Build can fail due to Java JDK.
+Please ensure you have installed JAVA 1.8 JDK in your machine, and it is setted by default.
+</code></pre>
+
+<h2>
+<a id="start" class="anchor" href="#start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start</h2>
+
+<pre><code>with Embedded Tomcat
+
+    after you have compiled the project and resolved dependencies with Maven, you have to execute /main/metricapp-server/BootApplication
+
+with External Tomcat
+
+    project is compiled in .War file. 
+    Cause of /main/metricapp-server/ServletInitializer it can be automatically executed and imported on a Tomcat Server.
+</code></pre>
+
+<h1>
+<a id="available-rest-interfaces" class="anchor" href="#available-rest-interfaces" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available Rest Interfaces</h1>
+
+<pre><code>/metric
+/question
+/measurementGoal
+/user
+</code></pre>
+
+<h1>
+<a id="http-error-codes-for-rest-metric" class="anchor" href="#http-error-codes-for-rest-metric" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTTP Error Codes for REST Metric</h1>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>#</th>
+<th>Code</th>
+<th align="left">e.g.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">id cannot be null</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">generic error</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>404</td>
+<td>NOT_FOUND</td>
+<td align="left">metric not found</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">not valid id</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>403</td>
+<td>FORBIDDEN</td>
+<td align="left">a metric must be in state of Suspended before you can delete it</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">generic error</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">id null, metricator null</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>404</td>
+<td>NOT_FOUND</td>
+<td align="left">metric not found</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>409</td>
+<td>CONFLICT</td>
+<td align="left">version number of your submitted object is not correct</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>403</td>
+<td>FORBIDDEN</td>
+<td align="left">illegal state transition</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">generic error</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">generic error</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">metric must be in state of Created, metric has no id, invalid fields</td>
+</tr>
+</tbody>
+</table>
+
+<h1>
+<a id="http-error-codes-for-rest-measurement-goal" class="anchor" href="#http-error-codes-for-rest-measurement-goal" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTTP Error Codes for REST Measurement Goal</h1>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>#</th>
+<th>Code</th>
+<th align="left">e.g.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">Id cannot be null</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">Generic error</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>404</td>
+<td>NOT_FOUND</td>
+<td align="left">Measurement Goal not found</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">Invalid field id</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>403</td>
+<td>FORBIDDEN</td>
+<td align="left">A Measurement Goal must be in state of Suspended before you can delete it</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">Generic error</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">Id null, metricator null</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>404</td>
+<td>NOT_FOUND</td>
+<td align="left">Measurement Goal not found</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>403</td>
+<td>FORBIDDEN</td>
+<td align="left">Illegal state transition</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">Generic error</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>500</td>
+<td>INTERNAL_SERVER_ERROR</td>
+<td align="left">Generic error</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>400</td>
+<td>BAD_REQUEST</td>
+<td align="left">A Measurement Goal must be in state of Created, Measurement Goal has no id, invalid fields</td>
+</tr>
+</tbody>
+</table>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/metricAppTeam/metricapp-server">Metricapp-server</a> is maintained by <a href="https://github.com/metricAppTeam">metricAppTeam</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
