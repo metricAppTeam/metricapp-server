@@ -3,6 +3,7 @@ package metricapp.entity.external;
 import lombok.Data;
 import metricapp.utility.RandomGenerator;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +18,7 @@ public class PointerBus {
     @Id
     public String instance;
 
-
+    @Version
     public String busVersion;
     public List<String> busTags;
 
