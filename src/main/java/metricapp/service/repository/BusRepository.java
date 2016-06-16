@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import metricapp.dto.bus.BusRequestDTO;
 import metricapp.dto.bus.BusResponseDTO;
 import metricapp.entity.external.PointerBus;
+import metricapp.entity.external.RichPointerBus;
 import metricapp.exception.BusException;
 import metricapp.service.spec.repository.BusInterface;
 import metricapp.utility.JacksonMapper;
@@ -117,13 +118,13 @@ public class BusRepository implements BusInterface {
      * this method permits to interact with the bus through a read request.
      * There's no null parameters check.
      *
-     * @param pointerBusDTO
+     * @param pointerBus
      * @return the content of the response, it's a String in Json Syntax typically and needs to be converted
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String read(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
-        return rawPost(fillContent(phaseBus, readFromBus, pointerBusDTO) );
+    public String read(PointerBus pointerBus) throws BusException, JsonProcessingException {
+        return rawPost(fillContent(phaseBus, readFromBus, pointerBus) );
     }
 
 
@@ -131,52 +132,52 @@ public class BusRepository implements BusInterface {
      * this method permits to interact with the bus through a update request.
      * There's no null parameters check.
      *
-     * @param pointerBusDTO
+     * @param pointerBus
      * @return the content of the response, it's a String in Json Syntax typically and needs to be converted
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String update(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
-        return rawPost(fillContent(phaseBus, updateToBus, pointerBusDTO) );
+    public String update(RichPointerBus pointerBus) throws BusException, JsonProcessingException {
+        return rawPost(fillContent(phaseBus, updateToBus, pointerBus) );
     }
 
     /**
      * this method permits to interact with the bus through a create request.
      * There's no null parameters check.
      *
-     * @param pointerBusDTO
+     * @param pointerBus, of type RichPointerBus, it contains the payload too
      * @return the content of the response, it's a String in Json Syntax typically and needs to be converted
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String create(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
-        return rawPost(fillContent(phaseBus, createBus, pointerBusDTO) );
+    public String create(RichPointerBus pointerBus) throws BusException, JsonProcessingException {
+        return rawPost(fillContent(phaseBus, createBus, pointerBus) );
     }
 
     /**
      * this method permits to interact with the bus through a rollback request.
      * There's no null parameters check.
      *
-     * @param pointerBusDTO
+     * @param pointerBus, of type RichPointerBus, it contains the payload too
      * @return the content of the response, it's a String in Json Syntax typically and needs to be converted
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String rollback(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
-        return rawPost(fillContent(phaseBus, rollbackBus, pointerBusDTO) );
+    public String rollback(PointerBus pointerBus) throws BusException, JsonProcessingException {
+        return rawPost(fillContent(phaseBus, rollbackBus, pointerBus) );
     }
 
     /**
      * this method permits to interact with the bus through a delete request.
      * There's no null parameters check.
      *
-     * @param pointerBusDTO
+     * @param pointerBus
      * @return the content of the response, it's a String.
      * @throws BusException if available append the previous exception to the last one
      * @throws JsonProcessingException if the dto is not printable like json
      */
-    public String delete(PointerBus pointerBusDTO) throws BusException, JsonProcessingException {
-        return rawPost(fillContent(phaseBus, deleteFromBus, pointerBusDTO) );
+    public String delete(PointerBus pointerBus) throws BusException, JsonProcessingException {
+        return rawPost(fillContent(phaseBus, deleteFromBus, pointerBus) );
     }
 
 
