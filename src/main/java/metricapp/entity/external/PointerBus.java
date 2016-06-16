@@ -12,27 +12,32 @@ import java.util.List;
 @Data
 public class PointerBus {
 
-    public String objIdLocalToPhase;
-    public String typeObj;
+	public String objIdLocalToPhase;
+	public String typeObj;
 
-    @Id
-    public String instance;
+	@Id
+	public String instance;
 
-    @Version
-    public String busVersion;
-    public List<String> busTags;
+	@Version
+	public String busVersion;
+	public List<String> busTags;
 
+	public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
+		Field[] attributes = this.getClass().getDeclaredFields();
+		Class<?> actual = this.getClass();
+		// when the function reaches Element, it stops
+		while (!actual.getName().equals(Object.class.getName())) {
+			for (Field field : attributes) {
+				// necessary for private fields
+				field.setAccessible(true);
 
-    public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
-        Field[] attributes = this.getClass().getDeclaredFields();
-        // when the function reaches Element, it stops
-        
-        for (Field field : attributes) {
-            // necessary for private fields
-            field.setAccessible(true);
-            // set the attribute
-            RandomGenerator.randomAttribute(this, field);
-        }
-    }
+				// set the attribute
+				RandomGenerator.randomAttribute(this, field);
+			}
+			actual = actual.getSuperclass();
+			attributes = actual.getDeclaredFields();
+		}
+
+	}
 }
