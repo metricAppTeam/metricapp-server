@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import metricapp.dto.MessageDTO;
+import metricapp.dto.externalElements.OrganizationalGoalDTO;
 
 @Data
 @EqualsAndHashCode(callSuper=true)

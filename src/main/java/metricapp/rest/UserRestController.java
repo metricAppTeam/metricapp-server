@@ -10,6 +10,5 @@ import metricapp.service.spec.controller.UserCRUDControllerInterface;
 @RequestMapping(("/users"))
 public class UserRestController {
 
-	@Autowired
-	UserCRUDControllerInterface controller;
+	
 }

@@ -11,7 +11,7 @@ import metricapp.entity.Entity;
 import metricapp.entity.question.Question;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
-import metricapp.service.spec.controller.ModelMapperFactoryInterface;
+import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.QuestionCRUDInterface;
 import metricapp.service.spec.repository.QuestionRepository;
 

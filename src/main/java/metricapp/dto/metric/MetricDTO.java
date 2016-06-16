@@ -16,7 +16,9 @@ import metricapp.entity.metric.Set;
 @Setter()
 @ToString(callSuper=true)
 @EqualsAndHashCode(callSuper=true)
-public class MetricDTO extends DTO implements Serializable{
+public class
+
+MetricDTO extends DTO implements Serializable{
 
 	private static final long serialVersionUID = -2073939437602304884L;
 	public String name;

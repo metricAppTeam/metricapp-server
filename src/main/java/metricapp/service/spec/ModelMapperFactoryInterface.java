@@ -1,4 +1,4 @@
-package metricapp.service.spec.controller;
+package metricapp.service.spec;
 
 import org.modelmapper.ModelMapper;
 

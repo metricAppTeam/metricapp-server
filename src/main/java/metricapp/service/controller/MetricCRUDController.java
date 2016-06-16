@@ -18,8 +18,8 @@ import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.MetricCRUDInterface;
-import metricapp.service.spec.controller.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.MetricRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
@@ -128,7 +128,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	/**
 	 * This method updates a Metric. This is useful when a Metricator modifies the Metric's fields.
 	 * ModelMapper is used to retrieve the old Metric instance.
-	 * @param  MetricDTO
+	 * @param  dto MetricDTO
 	 * @return      MetricCrudDTO
 	 */
 	@Override
