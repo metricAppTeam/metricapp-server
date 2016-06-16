@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Nonnull;
 
 /**
- * This repository offers user friedly methods to grab external elements from Bus.
+ * This repository offers user friendly methods to grab external elements from Bus.
  *
  * There's the possibility to find elements by id, by id list, by pointerBus list for almost of them
  */
