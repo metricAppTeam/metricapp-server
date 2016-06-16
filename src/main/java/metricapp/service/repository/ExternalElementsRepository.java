@@ -3,6 +3,7 @@ package metricapp.service.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import metricapp.entity.Entity;
 import metricapp.entity.external.*;
@@ -11,6 +12,7 @@ import metricapp.service.spec.repository.BusInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
 import metricapp.utility.JacksonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
 
@@ -19,6 +21,7 @@ import javax.annotation.Nonnull;
  *
  * There's the possibility to find elements by id, by id list, by pointerBus list for almost of them
  */
+@Service
 public class ExternalElementsRepository implements ExternalElementsRepositoryInterface {
 
 	@Autowired
@@ -106,7 +109,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws IOException
      * @throws BusException
      */
-	public ArrayList<Assumption> getAssumptionsByIdList(@Nonnull ArrayList<String> list) throws IOException, BusException {
+	public ArrayList<Assumption> getAssumptionsByIdList(@Nonnull List<String> list) throws IOException, BusException {
         Iterator<String> i = list.iterator();
 
         // it increases the performance
@@ -126,7 +129,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws IOException
      * @throws BusException
      */
-	public ArrayList<ContextFactor> getContextFactorsByIdList(@Nonnull ArrayList<String> list) throws IOException, BusException {
+	public ArrayList<ContextFactor> getContextFactorsByIdList(@Nonnull List<String> list) throws IOException, BusException {
         Iterator<String> i = list.iterator();
 
         // it increases the performance
@@ -146,7 +149,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws IOException
      * @throws BusException
      */
-    public ArrayList<Assumption> getAssumptionsByPointerBusList(@Nonnull ArrayList<PointerBus> list) throws IOException, BusException {
+    public ArrayList<Assumption> getAssumptionsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException {
         Iterator<PointerBus> i = list.iterator();
 
         // it increases the performance
@@ -168,7 +171,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws IOException
      * @throws BusException
      */
-    public ArrayList<ContextFactor> getContextFactorsByPointerBusList(@Nonnull ArrayList<PointerBus> list) throws IOException, BusException {
+    public ArrayList<ContextFactor> getContextFactorsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException {
         Iterator<PointerBus> i = list.iterator();
 
         // it increases the performance
@@ -184,12 +187,12 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
     }
 
     // TODO
-	public ArrayList<Assumption> getAssumptionsByTags(@Nonnull ArrayList<String> tags) throws Exception {
+	public ArrayList<Assumption> getAssumptionsByTags(@Nonnull List<String> tags) throws Exception {
         throw new Exception("not implemented");
 	}
 
     // TODO
-	public ArrayList<ContextFactor> getContextFactorsByTags(@Nonnull ArrayList<String> tags) throws Exception {
+	public ArrayList<ContextFactor> getContextFactorsByTags(@Nonnull List<String> tags) throws Exception {
         throw new Exception("not implemented");
 	}
 	

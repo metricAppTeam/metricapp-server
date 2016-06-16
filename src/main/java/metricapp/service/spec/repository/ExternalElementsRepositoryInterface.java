@@ -2,6 +2,7 @@ package metricapp.service.spec.repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import metricapp.entity.external.*;
 import metricapp.exception.BusException;
@@ -17,16 +18,16 @@ public interface ExternalElementsRepositoryInterface {
 		
 	public InstanceProject getInstanceProjectByIdAndVersion(String id, String version) throws IOException, BusException;
 	
-	public ArrayList<Assumption> getAssumptionsByIdList(ArrayList<String> list) throws IOException, BusException;
+	public ArrayList<Assumption> getAssumptionsByIdList(List<String> list) throws IOException, BusException;
 	
-	public ArrayList<ContextFactor> getContextFactorsByIdList(ArrayList<String> list) throws IOException, BusException;
+	public ArrayList<ContextFactor> getContextFactorsByIdList(List<String> list) throws IOException, BusException;
 	
-	public ArrayList<Assumption> getAssumptionsByTags(ArrayList<String> tags) throws Exception;
+	public ArrayList<Assumption> getAssumptionsByTags(List<String> tags) throws Exception;
 	
-	public ArrayList<ContextFactor> getContextFactorsByTags(ArrayList<String> tags) throws Exception;
+	public ArrayList<ContextFactor> getContextFactorsByTags(List<String> tags) throws Exception;
 
-	public ArrayList<ContextFactor> getContextFactorsByPointerBusList(ArrayList<PointerBus> list) throws IOException, BusException;
+	public ArrayList<ContextFactor> getContextFactorsByPointerBusList(List<PointerBus> list) throws IOException, BusException;
 
-	public ArrayList<Assumption> getAssumptionsByPointerBusList(ArrayList<PointerBus> list) throws IOException, BusException;
+	public ArrayList<Assumption> getAssumptionsByPointerBusList(List<PointerBus> list) throws IOException, BusException;
 
 	}
