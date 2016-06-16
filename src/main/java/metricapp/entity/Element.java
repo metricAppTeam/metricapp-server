@@ -15,7 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 import metricapp.utility.RandomGenerator;
-
+/**
+ * Element is a generic object in our Db and that can be pushed to Bus Storage.
+ * Examples of Elements are MeasurementGoal, Metric, Assumption, ContextFactor...
+ */
 @Document
 @Data
 public class Element extends Object {
@@ -32,8 +35,14 @@ public class Element extends Object {
 	private LocalDate creationDate;
 	@LastModifiedDate
 	private LocalDate lastVersionDate;
+	/**
+	 * private id to modify object on bus
+	 */
 	private String secretToken;
-
+	/**
+	 * version of the last approved entity on bus
+	 */
+	private String versionBus;
 	private Entity entityType;
 
 	public void setTagsByList(String... strings) {
@@ -68,10 +77,10 @@ public class Element extends Object {
 		this.lastVersionDate = date;
 	}
 
-	/*
+	/**
 	 * randomAttributes fills every attribute of the entity.
-	 * 
-	 * 
+	 * it can throw a large number of Exception, due to Reflection Implementation.
+	 * See RandomGenerator documentation to specifications.
 	 */
 	public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
