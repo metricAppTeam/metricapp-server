@@ -36,7 +36,7 @@ public class QuestionToQuestionDTO {
 		this.question.setLastVersionDate(RandomGenerator.randomLocalDate());
 		this.question.setReleaseNote(RandomGenerator.randomString());
 		this.question.setCreatorId(RandomGenerator.randomString());
-		this.question.setState(State.OnUpdateInternalRefinement);
+		this.question.setState(State.Created);
 		this.question.setTags(RandomGenerator.randomArrayList());
 		this.question.setCreatorId(RandomGenerator.randomString());
 		this.question.setDescription(RandomGenerator.randomString());

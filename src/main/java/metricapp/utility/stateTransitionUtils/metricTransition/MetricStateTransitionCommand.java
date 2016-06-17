@@ -28,7 +28,7 @@ public abstract class MetricStateTransitionCommand implements StateTransitionCom
 
 	/**
 	 * this method simply casts Element to Metric objects passed like parameters.
-	 * It is not intentended to be use directly, a factory can do it for you.
+	 * It is not intended to be use directly, a factory can do it for you.
 	 *
 	 * @param before Metric before
 	 * @param after Metric after
