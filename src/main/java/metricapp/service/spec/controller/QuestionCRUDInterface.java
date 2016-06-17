@@ -12,6 +12,7 @@ public interface QuestionCRUDInterface {
 	public QuestionCrudDTO getQuestionBySubject(String subject);
 	public QuestionCrudDTO createQuestion(QuestionDTO dto) throws BadInputException;
 	public QuestionCrudDTO updateQuestion(QuestionDTO dto) throws BadInputException, NotFoundException;
+	public QuestionCrudDTO getAllQuestions();
 	public boolean deleteQuestionById(String id) throws BadInputException, NotFoundException;
 	public void deleteAllQuestions();
 	

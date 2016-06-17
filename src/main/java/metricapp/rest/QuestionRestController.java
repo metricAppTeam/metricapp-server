@@ -31,8 +31,11 @@ public class QuestionRestController {
 		
 		QuestionCrudDTO questionCrudDTO = null;
 		
-		if(!id.equals("NA")){
+		if(!id.equals("NA") && !id.equals("all")){
 			questionCrudDTO = questionCRUDController.getQuestionById(id);
+		}
+		else if(id.equals("all")){
+			questionCrudDTO = questionCRUDController.getAllQuestions();
 		}
 		
 		else if(!focus.equals("NA")){
@@ -53,6 +56,8 @@ public class QuestionRestController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseDTO> deleteQuestionDTO(@RequestParam(value="id", defaultValue = "NA") String id){
+		
+		System.out.println("Delete request intercepted");
 		if(id.equals("NA") || !questionCRUDController.deleteQuestionById(id)){
 			return new ResponseEntity<ResponseDTO>(HttpStatus.BAD_REQUEST);
 		}

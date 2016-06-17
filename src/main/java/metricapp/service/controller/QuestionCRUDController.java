@@ -144,6 +144,21 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		}
 		
 	}
+	
+	@Override
+	public QuestionCrudDTO getAllQuestions(){
+		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
+		
+		Iterator<Question> questionIter = questionRepository.findAll().iterator();
+		
+		while(questionIter.hasNext()){
+			
+			questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(questionIter.next(), QuestionDTO.class));
+			
+		}	
+		
+		return questionCrudDTO;
+	}
 
 	@Override
 	public boolean deleteQuestionById(String id) {
