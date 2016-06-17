@@ -2,9 +2,10 @@ package mappingTest;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
 import java.util.UUID;
 
 import org.junit.Test;
@@ -15,12 +16,13 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import metricapp.BootApplication;
-import metricapp.dto.MetadataDTO;
+
 import metricapp.dto.measurementGoal.InterpretationModelDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
-import metricapp.entity.State;
+
 import metricapp.entity.measurementGoal.MeasurementGoal;
-import metricapp.service.spec.controller.ModelMapperFactoryInterface;
+import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.utility.RandomGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(BootApplication.class)
@@ -46,48 +48,40 @@ public class DTOToMeasurementGoalTest {
 		
 		this.measurementGoalDTO = new MeasurementGoalDTO();
 		
-		InterpretationModelDTO interpretationModelDTO = new InterpretationModelDTO();
-		interpretationModelDTO.setFunctionJavascript(randomString());
-		interpretationModelDTO.setQueryNoSQL(randomString());
-		
-		MetadataDTO metadataDTO = new MetadataDTO();
-		metadataDTO.setId(randomString());
-		metadataDTO.setCreatorId(randomString());
-		metadataDTO.setReleaseNote(randomString());
-		metadataDTO.setState(State.Created);
-		metadataDTO.setVersion(randomString());
-		metadataDTO.setTags(new ArrayList<String>());
-		metadataDTO.setCreationDate(LocalDate.now().toString());
-		metadataDTO.setLastVersionDate(LocalDate.now().toString());
-		
-		this.measurementGoalDTO.setId(randomString());
-		this.measurementGoalDTO.setFocus(randomString());
-		//this.measurementGoalDTO.setMetricatorId(randomString());
-		this.measurementGoalDTO.setName(randomString());
-		this.measurementGoalDTO.setObject(randomString());
-		this.measurementGoalDTO.setOrganizationalGoalId(randomString());
-		this.measurementGoalDTO.setViewPoint(randomString());
-		this.measurementGoalDTO.setInterpretationModel(interpretationModelDTO);
-		this.measurementGoalDTO.setMetadata(metadataDTO);
-		
+		try {
+			this.measurementGoalDTO.randomAttributes();
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | InstantiationException e) {
+			e.printStackTrace();
+			fail("error in random Generator");
+		}
+		InterpretationModelDTO interpretationModel = new InterpretationModelDTO();
+		interpretationModel.setFunctionJavascript(RandomGenerator.randomString());
+		interpretationModel.setQueryNoSQL(RandomGenerator.randomString());
+		this.measurementGoalDTO.setInterpretationModel(interpretationModel);
 		
 		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 		this.measurementGoal = modelMapper.map(this.measurementGoalDTO, MeasurementGoal.class);
-		
+		System.out.println(measurementGoalDTO.toString());
+		System.out.println(measurementGoal.toString());
 				
 		assertEquals(this.measurementGoalDTO.getId(), this.measurementGoal.getId());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL(), this.measurementGoal.getInterpretationModel().getQueryNoSQL());
 		assertEquals(this.measurementGoalDTO.getObject(), this.measurementGoal.getObject());
-		assertEquals(this.measurementGoalDTO.getOrganizationalGoalId(), this.measurementGoal.getOrganizationalGoal().getId());
+		assertEquals(this.measurementGoalDTO.getOrganizationalGoalId(), this.measurementGoal.getOrganizationalGoalId());
 		assertEquals(this.measurementGoalDTO.getViewPoint(), this.measurementGoal.getViewPoint());
 		assertEquals(this.measurementGoalDTO.getMetadata().getReleaseNote(), this.measurementGoal.getReleaseNote());
 		assertEquals(this.measurementGoalDTO.getMetadata().getState(), this.measurementGoal.getState());
 		assertEquals(this.measurementGoalDTO.getMetadata().getVersion(), this.measurementGoal.getVersion());
 		assertEquals(this.measurementGoalDTO.getMetadata().getCreationDate(), this.measurementGoal.getCreationDate().toString());
 		assertEquals(this.measurementGoalDTO.getMetadata().getVersion(), this.measurementGoal.getVersion());
-		assertEquals(this.measurementGoalDTO.getMetadata().getCreationDate(), this.measurementGoal.getLastVersionDate().toString());
-		
+		assertEquals(this.measurementGoalDTO.getMetadata().getLastVersionDate(), this.measurementGoal.getLastVersionDate().toString());
+		assertEquals(this.measurementGoalDTO.getAssumptions(),this.measurementGoal.getAssumptions());
+		assertEquals(this.measurementGoalDTO.getContextFactors(),this.measurementGoal.getContextFactors());
+		assertEquals(this.measurementGoalDTO.getMetrics(),this.measurementGoal.getMetrics());
+		assertEquals(this.measurementGoalDTO.getQuestions(),this.measurementGoal.getQuestions());
+		assertEquals(this.measurementGoalDTO.getQuestionersId(),this.measurementGoal.getQuestionersId());
 	}
 
 }

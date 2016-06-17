@@ -1,23 +1,23 @@
 package metricapp.entity.measurementGoal;
 
-import static org.junit.Assert.fail;
+
 import java.lang.reflect.InvocationTargetException;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import java.util.List;
+
+import metricapp.entity.Element;
+import metricapp.entity.external.PointerBus;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import metricapp.entity.AbstractGoal;
-import metricapp.entity.OrganizationalGoal;
-import metricapp.entity.metric.Metric;
-import metricapp.entity.question.Question;
-import metricapp.entity.stakeholders.Metricator;
-import metricapp.entity.stakeholders.Questioner;
+import lombok.ToString;
+import metricapp.entity.external.OrganizationalGoal;
 import metricapp.utility.RandomGenerator;
 
 @Document
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class MeasurementGoal extends AbstractGoal{
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
+public class MeasurementGoal extends Element {
 	
 	public MeasurementGoal(){
 		this.interpretationModel = new InterpretationModel();
@@ -28,8 +28,7 @@ public class MeasurementGoal extends AbstractGoal{
 		//this.metricator = new Metricator();
 	}
 	
-	@DBRef
-	private OrganizationalGoal organizationalGoal;
+	private PointerBus organizationalGoalId;
 	
 	private String object;
 	
@@ -39,28 +38,19 @@ public class MeasurementGoal extends AbstractGoal{
 	
 	private String viewPoint;
 	
-	@DBRef
-	private Iterable<Context> contexts;
+	private List<PointerBus> contextFactors;
 	
-	@DBRef
-	private Iterable<Assumption> assumptions;
+	private List<PointerBus> assumptions;
 	
 	private InterpretationModel interpretationModel;
 	
-	private Iterable<String> metricIdList;
+	private List<PointerBus> metrics;
 	
-	private Iterable<String> questionIdList;
+	private List<PointerBus> questions;
 	
-	@DBRef
-	private Iterable<Metric> metrics;
-	
-	@DBRef
-	private Iterable<Question> questions;
-	
-    private Metricator metricatorId;
+    private String metricatorId;
 
-	@DBRef
-	private Iterable<Questioner> questioners;
+	private List<String> questionersId;
 		
 	public static MeasurementGoal randomMeasurementGoal(){
 		InterpretationModel interpretationModel = new InterpretationModel();
@@ -73,7 +63,6 @@ public class MeasurementGoal extends AbstractGoal{
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
 				| SecurityException | ClassNotFoundException | InstantiationException e) {
 			e.printStackTrace();
-			fail("random attribute creation error");
 		}
 		
 		MeasurementGoal measurementGoal = new MeasurementGoal();
@@ -82,9 +71,8 @@ public class MeasurementGoal extends AbstractGoal{
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException
 				| SecurityException | ClassNotFoundException | InstantiationException e) {
 			e.printStackTrace();
-			fail("random attribute creation error");
 		}
-		measurementGoal.setOrganizationalGoal(organizationalGoal);
+
 		measurementGoal.setInterpretationModel(interpretationModel);
 		
 		return measurementGoal;

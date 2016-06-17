@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 
+/**
+ * This class is a Utility used by Model Mapper to convert manually from e to LocalDate
+ */
 public class ModelMapperUtility {
 	
 	private static Converter<String, LocalDate> stringToDateConverter;

@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -80,6 +81,7 @@ public class MetricRestControllerTest {
 	protected String json(Object o) throws IOException {
 		MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
 		this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+
 		return mockHttpOutputMessage.getBodyAsString();
 	}
 
@@ -91,7 +93,20 @@ public class MetricRestControllerTest {
 	@Test
 	public void testDelete() {
 		// create a metric
-		metric1 = Metric.randomMetric();
+		metric1 = new Metric();
+		try {
+			metric1.randomAttributes();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		}
 		metric1.setId(null);
 		// set state to suspended, only a suspended entity could be deleted
 		metric1.setState(State.Suspended);
@@ -119,7 +134,20 @@ public class MetricRestControllerTest {
 	@Test
 	public void testPost() {
 		// create a metric
-		metric1 = Metric.randomMetric();
+		metric1 = new Metric();
+		try {
+			metric1.randomAttributes();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		}
 		metric1.setId(null);
 		metric1.setState(State.Created);
 		metric1.setVersion(null);
@@ -154,7 +182,20 @@ public class MetricRestControllerTest {
 	@Test
 	public void testPut() throws IOException {
 		// create a metric
-		metric1 = Metric.randomMetric();
+		metric1 = new Metric();
+		try {
+			metric1.randomAttributes();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		}
 		metric1.setId(null);
 		metric1.setVersion(null);
 
@@ -190,7 +231,20 @@ public class MetricRestControllerTest {
 	@Test
 	public void getById() {
 		// create a metric
-		metric1 = Metric.randomMetric();
+		metric1 = new Metric();
+		try {
+			metric1.randomAttributes();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		}
 		metric1.setId(null);
 		metric1.setVersion(null);
 
