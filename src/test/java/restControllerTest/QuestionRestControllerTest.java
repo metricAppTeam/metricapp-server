@@ -2,6 +2,7 @@ package restControllerTest;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
@@ -38,6 +39,7 @@ import metricapp.BootApplication;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.State;
+import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.controller.QuestionCRUDController;
 import metricapp.utility.RandomGenerator;
@@ -133,6 +135,36 @@ public class QuestionRestControllerTest {
 		
 	}
 	
+	@Test
+	public void getRecentTest(){
+
+		try {
+			for(int i=0; i<20; i++){
+				QuestionDTO tempQuestionDTO = randomQuestionDTO();
+				
+				tempQuestionDTO.getMetadata().setCreatorId("questioner");
+				questionCRUDController.createQuestion(tempQuestionDTO);
+			}
+			
+
+			MvcResult result = this.mockMvc
+					.perform(get("/question?creatorId=questioner&recent=true"))
+					.andExpect(status().isOk())
+					.andReturn();
+			
+			QuestionCrudDTO questionCrudDTO = new ObjectMapper().readValue(result.getResponse().getContentAsString(), QuestionCrudDTO.class);
+			
+			assertTrue(questionCrudDTO.getQuestionList().size() == 10);
+			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
+			
+		} catch (BadInputException e) {
+			e.printStackTrace();
+			fail("Test Get Recent Failed");
+		} catch(Exception e){
+			e.printStackTrace();
+			fail("Test Get Recent Failed");
+		}
+	}
 	
 	@Test
 	public void testPost(){
@@ -218,7 +250,6 @@ public class QuestionRestControllerTest {
 			
 			QuestionDTO questionDTO = randomQuestionDTO();
 			questionDTO.getMetadata().setState(State.Suspended);
-			System.out.println("state = " + questionDTO.getMetadata().getState());
 			
 			questionDTO = questionCRUDController.createQuestion(questionDTO).getQuestionList().get(0);
 			
@@ -227,7 +258,6 @@ public class QuestionRestControllerTest {
 					.andExpect(status().isOk())
 					.andReturn();
 			
-			System.out.println(questionDTO.getMetadata().getId());
 			QuestionCrudDTO questionCrudDTO = questionCRUDController.getQuestionById(questionDTO.getMetadata().getId());
 			
 			assertTrue(questionCrudDTO.getQuestionList().isEmpty());

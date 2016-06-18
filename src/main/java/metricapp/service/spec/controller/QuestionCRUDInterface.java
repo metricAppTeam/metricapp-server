@@ -15,6 +15,7 @@ public interface QuestionCRUDInterface {
 	public QuestionCrudDTO createQuestion(QuestionDTO dto) throws BadInputException;
 	public QuestionCrudDTO updateQuestion(QuestionDTO dto) throws BadInputException, NotFoundException, IllegalStateTransitionException, DBException;
 	public QuestionCrudDTO getAllQuestions();
+	public QuestionCrudDTO getRecentQuestions(String creatorId);
 	public void deleteQuestionById(String id) throws BadInputException, NotFoundException, IllegalStateTransitionException;
 	public void deleteAllQuestions();
 	

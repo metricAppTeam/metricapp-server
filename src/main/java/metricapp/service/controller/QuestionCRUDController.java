@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
@@ -27,6 +28,8 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory; 
+
+	private static final int LIMIT = 10;
 	
 	@Override
 	public QuestionCrudDTO getQuestionById(String id) throws NotFoundException, BadInputException {
@@ -109,7 +112,6 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	public QuestionCrudDTO createQuestion(QuestionDTO questionDTO) throws BadInputException{
 		
 		if (questionDTO.getMetadata().getCreatorId() == null) {
-			System.out.println(questionDTO.getMetadata().getCreatorId());
 			throw new BadInputException("Bad Input");
 		}
 		if (questionDTO.getMetadata().getId() != null) {
@@ -146,9 +148,6 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		
 		Question oldQuestion = questionRepository.findQuestionById(questionDTO.getMetadata().getId());
 		
-		System.out.println(oldQuestion.getState());
-		System.out.println(updatedQuestion.getState());
-		
 		stateTransition(oldQuestion, updatedQuestion);
 		
 		if(questionRepository.exists(updatedQuestion.getId())){
@@ -183,13 +182,29 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		
 		return questionCrudDTO;
 	}
+	
+	@Override
+	public QuestionCrudDTO getRecentQuestions(String creatorId){
+		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
+		
+		Sort sort = new Sort(Sort.Direction.DESC, "lastVersionDate");
+		
+		Iterator<Question> questionIter = questionRepository.findAll(sort).iterator();
+		
+		int counter = 0;
+		while(questionIter.hasNext() && counter < LIMIT){
+			questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(questionIter.next(), QuestionDTO.class));
+			counter++;
+		}
+		
+		return questionCrudDTO;
+	}
 
 	@Override
 	public void deleteQuestionById(String id) throws IllegalStateTransitionException, NotFoundException {
 				
 		if(questionRepository.exists(id)){
 			if (!questionRepository.findQuestionById(id).getState().equals(State.Suspended)) {
-				System.out.println(questionRepository.findQuestionById(id).getState());
 				throw new IllegalStateTransitionException("A question must be Suspended before deletion");
 			}
 

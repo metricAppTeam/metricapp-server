@@ -16,4 +16,5 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 	public ArrayList<Question> findQuestionByFocus(String focus);
 	
 	public ArrayList<Question> findQuestionBySubject(String subject);
+	
 }

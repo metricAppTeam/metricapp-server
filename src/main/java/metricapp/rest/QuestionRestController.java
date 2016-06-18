@@ -31,12 +31,16 @@ public class QuestionRestController {
 			@RequestParam(value="id", defaultValue="NA") String id,
 			@RequestParam(value="creatorId", defaultValue="NA") String creatorId,
 			@RequestParam(value="focus", defaultValue="NA") String focus,
-			@RequestParam(value="subject", defaultValue="NA") String subject){
+			@RequestParam(value="subject", defaultValue="NA") String subject,
+			@RequestParam(value="recent", defaultValue="false") String recent){
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
 		try{
-			if(!id.equals("NA") && !id.equals("all")){
+			if(!creatorId.equals("NA") && !recent.equals("false")){
+				questionCrudDTO = questionCRUDController.getRecentQuestions(creatorId);
+			}
+			else if(!id.equals("NA") && !id.equals("all")){
 				questionCrudDTO = questionCRUDController.getQuestionById(id);
 			}
 			else if(id.equals("all")){
@@ -135,8 +139,6 @@ public class QuestionRestController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<QuestionCrudDTO> createQuestionDTO(@RequestBody QuestionDTO questionDTO){
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
-		System.out.println("Received new question");
-		System.out.println(questionDTO.toString());
 		try{
 			questionCrudDTO = questionCRUDController.createQuestion(questionDTO);
 			System.out.println("Sending result OK");
