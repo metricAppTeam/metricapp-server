@@ -58,7 +58,7 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 	 */
 	public <T extends Element> Element sendApprovedElement(@Nonnull Element element, Class<T> clazz) 
 			throws BadInputException, BusException, IOException {
-
+		
 		// state check control
 		if (!element.getState().equals(State.Approved)) {
 			throw new BadInputException("Element MUST be in state of Approved to be sent to bus");
