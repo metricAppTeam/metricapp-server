@@ -37,7 +37,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	private boolean debug = false;
 	
 	private MeasurementGoalDTO measurementGoalToDTO(MeasurementGoal goal){
-		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		ModelMapper modelMapper = modelMapperFactory.getStandardModelMapper();
 		//modelMapper.addMappings(new MeasurementGoalMap());
 		MeasurementGoalDTO dto = modelMapper.map(goal, MeasurementGoalDTO.class);
 
@@ -94,7 +94,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			throw new NotFoundException("Metric with id " + id + " and version " + version + "is not available");
 		}
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
-		dto.addMeasurementGoalToList(modelMapperFactory.getLooseModelMapper().map(measurementGoal, MeasurementGoalDTO.class));
+		dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoal, MeasurementGoalDTO.class));
 		return dto;
 	}
 	
@@ -112,7 +112,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		dto.setRequest("MeasurementGoal of " + userId);
 		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
 		while (measurementGoalIter.hasNext()) {
-			dto.addMeasurementGoalToList(modelMapperFactory.getLooseModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
 		}
 		
 		return dto;
@@ -164,7 +164,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		if(debug){
 			System.out.println("\n\n--- Using Model mapper ---\n\n");
 			
-			System.out.println("id: " + dto.getId() + "\n");
+			System.out.println("id: " + dto.getMetadata().getId() + "\n");
 			System.out.println("object: " + dto.getObject() + "\n");
 			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
 			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
@@ -188,7 +188,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			modelMapper.addMappings(personMap);
 			*/
 		
-		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		ModelMapper modelMapper = modelMapperFactory.getStandardModelMapper();
 		MeasurementGoal goal = modelMapper.map(dto, MeasurementGoal.class);
 		
 		goal.setEntityType(Entity.MeasurementGoal);
@@ -229,7 +229,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	@Override
 	public MeasurementGoalCrudDTO updateMeasurementGoal(MeasurementGoalDTO dto) throws DBException, NotFoundException, BadInputException, IllegalStateTransitionException{
 		
-		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		ModelMapper modelMapper = modelMapperFactory.getStandardModelMapper();
 		MeasurementGoal newGoal = modelMapper.map(dto, MeasurementGoal.class);
 		MeasurementGoal oldGoal = measurementGoalRepository.findById(newGoal.getId());
 		stateTransition(oldGoal, newGoal);
@@ -267,7 +267,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	@Override
 	public void deleteMeasurementGoal(MeasurementGoalDTO dto) throws BadInputException, IllegalStateTransitionException{
-		deleteMeasurementGoalById(dto.getId());
+		deleteMeasurementGoalById(dto.getMetadata().getId());
 	}
 	
 	private void stateTransition(MeasurementGoal oldGoal, MeasurementGoal newGoal)
@@ -296,7 +296,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		}
 		
 		MeasurementGoal oldGoal = measurementGoalRepository.findById(dto.getMetadata().getId());
-		MeasurementGoal newGoal = modelMapperFactory.getLooseModelMapper().map(oldGoal, MeasurementGoal.class);
+		MeasurementGoal newGoal = modelMapperFactory.getStandardModelMapper().map(oldGoal, MeasurementGoal.class);
 		
 		newGoal.setState(dto.getMetadata().getState());
 		newGoal.setReleaseNote(dto.getMetadata().getReleaseNote());
