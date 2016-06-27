@@ -20,6 +20,8 @@ public class MetricDTOMap extends PropertyMap<MetricDTO, Metric> {
 		map().setEntityType(source.getMetadata().getEntityType());
 		map().setSet(source.getSet());
 		map().setState(source.getMetadata().getState());
+		map().setVersionBus(source.getMetadata().getVersionBus());
+
 	}
 
 }

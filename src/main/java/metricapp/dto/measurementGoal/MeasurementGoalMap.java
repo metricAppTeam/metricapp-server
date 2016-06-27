@@ -21,6 +21,9 @@ public class MeasurementGoalMap extends PropertyMap<MeasurementGoal, Measurement
 		map().getMetadata().setVersion(source.getVersion());
 		map().getMetadata().setTags(source.getTags());
 		map().getMetadata().setState(source.getState());
+		map().getMetadata().setCreationDate(source.getCreationDate());
+		map().getMetadata().setLastVersionDate(source.getLastVersionDate());
+		map().getMetadata().setVersionBus(source.getVersionBus());
 		
 	}
 	

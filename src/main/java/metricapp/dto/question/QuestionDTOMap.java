@@ -20,6 +20,8 @@ public class QuestionDTOMap extends PropertyMap<QuestionDTO, Question>{
 		map().setReleaseNote(source.getMetadata().getReleaseNote());
 		map().setCreationDate(source.getMetadata().getCreationDate());
 		map().setLastVersionDate(source.getMetadata().getLastVersionDate());
+		map().setVersionBus(source.getMetadata().getVersionBus());
+
 	}
 
 }
