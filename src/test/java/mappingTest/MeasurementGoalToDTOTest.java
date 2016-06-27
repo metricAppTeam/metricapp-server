@@ -67,11 +67,11 @@ public class MeasurementGoalToDTOTest {
 
 		measurementGoal.setInterpretationModel(interpretationModel);
 		
-		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		ModelMapper modelMapper = modelMapperFactory.getStandardModelMapper();
 		this.measurementGoalDTO = modelMapper.map(this.measurementGoal, MeasurementGoalDTO.class);
 
 		
-		assertEquals(this.measurementGoal.getId(), this.measurementGoalDTO.getId());
+		assertEquals(this.measurementGoal.getId(), this.measurementGoalDTO.getMetadata().getId());
 		assertEquals(this.measurementGoal.getInterpretationModel().getFunctionJavascript(), this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoal.getInterpretationModel().getQueryNoSQL(), this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL());
 		assertEquals(this.measurementGoal.getObject(), this.measurementGoalDTO.getObject());
@@ -82,6 +82,7 @@ public class MeasurementGoalToDTOTest {
 		assertEquals(this.measurementGoal.getVersion(), this.measurementGoalDTO.getMetadata().getVersion());
 		assertEquals(this.measurementGoal.getCreationDate().toString(), this.measurementGoalDTO.getMetadata().getCreationDate());
 		assertEquals(this.measurementGoal.getVersion(), this.measurementGoalDTO.getMetadata().getVersion());
+		assertEquals(this.measurementGoal.getVersionBus(), this.measurementGoalDTO.getMetadata().getVersionBus());
 		assertEquals(this.measurementGoal.getLastVersionDate().toString(), this.measurementGoalDTO.getMetadata().getLastVersionDate());
 		assertEquals(this.measurementGoalDTO.getAssumptions(),this.measurementGoal.getAssumptions());
 		assertEquals(this.measurementGoalDTO.getContextFactors(),this.measurementGoal.getContextFactors());
