@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Entity;
@@ -184,11 +185,13 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			throw new BadInputException("Metrics cannot have null ID");
 		}
 		
-		Metric oldMetric = metricRepository.findMetricById(dto.getMetadata().getId());
-		Metric newMetric = modelMapperFactory.getLooseModelMapper().map(oldMetric, Metric.class);
-		
+		Metric oldMetric = new Metric();
+		Metric newMetric = metricRepository.findMetricById(dto.getMetadata().getId());//modelMapperFactory.getLooseModelMapper().map(oldMetric, Metric.class);
+		oldMetric.setState(newMetric.getState());
+
 		newMetric.setState(dto.getMetadata().getState());
 		newMetric.setReleaseNote(dto.getMetadata().getReleaseNote());
+		oldMetric.setVersion(newMetric.getVersion());
 		stateTransition(oldMetric, newMetric);
 		
 		MetricCrudDTO dtoCrud = new MetricCrudDTO();
@@ -221,7 +224,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 
 	private void stateTransition(Metric oldMetric, Metric newMetric)
 			throws IllegalStateTransitionException, NotFoundException {
-		
+		System.out.println(oldMetric.getState() + "->" + newMetric.getState());
 		newMetric.setLastVersionDate(LocalDate.now());
 		if (oldMetric.getState().equals(newMetric.getState())) {
 			 return;
