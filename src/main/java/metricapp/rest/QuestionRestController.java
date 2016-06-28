@@ -32,6 +32,7 @@ public class QuestionRestController {
 			@RequestParam(value="creatorId", defaultValue="NA") String creatorId,
 			@RequestParam(value="focus", defaultValue="NA") String focus,
 			@RequestParam(value="subject", defaultValue="NA") String subject,
+			@RequestParam(value="tag", defaultValue="NA") String tag,
 			@RequestParam(value="recent", defaultValue="false") String recent){
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
@@ -52,9 +53,11 @@ public class QuestionRestController {
 			else if(!focus.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionByFocus(focus);
 			}
-			
 			else if(!subject.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionBySubject(subject);
+			}
+			else if(!tag.equals("NA")){
+				questionCrudDTO = questionCRUDController.getQuestionByTag(tag);
 			}
 			else{
 				questionCrudDTO.setError("No parameters given");
@@ -71,6 +74,7 @@ public class QuestionRestController {
 			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.NOT_FOUND);
 		} catch (Exception e){
 			questionCrudDTO.setError("Server Error");
+			e.printStackTrace();
 			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

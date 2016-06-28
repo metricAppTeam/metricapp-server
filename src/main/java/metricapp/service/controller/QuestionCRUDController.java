@@ -72,6 +72,23 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		return questionCrudDTO;
 	}
 	
+	public QuestionCrudDTO getQuestionByTag(String tag) throws NotFoundException {
+		ArrayList<Question> questionList = questionRepository.findQuestionByTag(tag);
+		
+		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
+		Iterator<Question> questionIter = questionList.iterator();
+		
+		if(!questionIter.hasNext()){
+			throw new NotFoundException("No question for this focus");
+		}
+		
+		while(questionIter.hasNext()){
+			questionCrudDTO.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(questionIter.next(), QuestionDTO.class));
+		}
+		
+		return questionCrudDTO;
+	}
+	
 	@Override
 	public QuestionCrudDTO getQuestionByFocus(String focus) throws NotFoundException {
 		ArrayList<Question> questionList = questionRepository.findQuestionByFocus(focus);
@@ -149,6 +166,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		Question oldQuestion = questionRepository.findQuestionById(questionDTO.getMetadata().getId());
 		
 		stateTransition(oldQuestion, updatedQuestion);
+		System.out.println(updatedQuestion.getVersion());
 		
 		if(questionRepository.exists(updatedQuestion.getId())){
 			QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
@@ -158,7 +176,11 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 			catch(Exception e){
 				throw new DBException("Error in saving question in repository");
 			}
-			
+						
+			questionDTO = modelMapperFactory.getLooseModelMapper()
+					.map(questionRepository.findQuestionById(questionDTO.getMetadata().getId()), QuestionDTO.class);
+
+			System.out.println(questionDTO.getMetadata().getVersion());
 			questionCrudDTO.addQuestionToList(questionDTO);
 			return questionCrudDTO;
 		}
@@ -229,5 +251,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	 	}
 		
 	}
+
+	
 
 }

@@ -12,6 +12,7 @@ public interface QuestionCRUDInterface {
 	public QuestionCrudDTO getQuestionByCreatorId(String id) throws BadInputException, NotFoundException;
 	public QuestionCrudDTO getQuestionByFocus(String focus) throws NotFoundException;
 	public QuestionCrudDTO getQuestionBySubject(String subject) throws NotFoundException;
+	public QuestionCrudDTO getQuestionByTag(String tag) throws NotFoundException;
 	public QuestionCrudDTO createQuestion(QuestionDTO dto) throws BadInputException;
 	public QuestionCrudDTO updateQuestion(QuestionDTO dto) throws BadInputException, NotFoundException, IllegalStateTransitionException, DBException;
 	public QuestionCrudDTO getAllQuestions();
