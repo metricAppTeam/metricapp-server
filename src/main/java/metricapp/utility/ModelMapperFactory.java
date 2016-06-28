@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import metricapp.dto.question.QuestionDTOMap;
 import metricapp.dto.question.QuestionMap;
 import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.dto.measurementGoal.MeasurementGoalDTOMap;
+import metricapp.dto.measurementGoal.MeasurementGoalMap;
 import metricapp.dto.metric.MetricDTOMap;
 import metricapp.dto.metric.MetricMap;
 
@@ -84,6 +86,8 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		modelMapper.addConverter(ModelMapperUtility.stringToLocalDate());
 		modelMapper.addMappings(new QuestionMap());
 		modelMapper.addMappings(new QuestionDTOMap());
+		modelMapper.addMappings(new MeasurementGoalDTOMap());
+		modelMapper.addMappings(new MeasurementGoalMap());
         return modelMapper;
 		
 	}

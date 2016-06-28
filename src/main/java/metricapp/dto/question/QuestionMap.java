@@ -20,6 +20,8 @@ public class QuestionMap extends PropertyMap<Question, QuestionDTO>{
 		map().setFocus(source.getFocus());
 		map().setSubject(source.getSubject());
 		map().setDescription(source.getDescription());
+		map().getMetadata().setVersionBus(source.getVersionBus());
+
 		
 	}
 
