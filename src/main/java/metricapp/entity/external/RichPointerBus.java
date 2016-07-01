@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString(callSuper=true)
 public class RichPointerBus extends PointerBus {
 
-	private String payload;
+	private Object payload;
 	
 	
 }

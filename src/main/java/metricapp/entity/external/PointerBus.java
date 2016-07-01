@@ -5,8 +5,11 @@ import metricapp.utility.RandomGenerator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,6 +23,7 @@ public class PointerBus {
 
 	@Version
 	public String busVersion;
+	@JsonProperty("tags")
 	public List<String> busTags;
 
 	public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
@@ -39,5 +43,13 @@ public class PointerBus {
 			attributes = actual.getDeclaredFields();
 		}
 
+	}
+	
+	public PointerBus(){
+		this.busTags = new ArrayList<String>();
+		this.busVersion= "";
+		this.instance= "";
+		this.objIdLocalToPhase= "";
+		this.typeObj = "";
 	}
 }
