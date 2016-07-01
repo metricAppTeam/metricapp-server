@@ -7,10 +7,10 @@ import java.util.List;
 
 import metricapp.entity.Entity;
 import metricapp.entity.external.*;
+import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
-import metricapp.service.spec.repository.BusInterface;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
-import metricapp.utility.JacksonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +24,10 @@ import javax.annotation.Nonnull;
 @Service
 public class ExternalElementsRepository implements ExternalElementsRepositoryInterface {
 
+	
 	@Autowired
-	private BusInterface busRepository;
+	private BusApprovedElementInterface busApprovedElementRepository; 
 
-    @Autowired
-    private JacksonMapper mapper;
 
     /**
      * this is the simple method to grab an assumption, version value could be null (last version is received)
@@ -37,15 +36,16 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws BusException
      * @throws IOException
+     * @throws BadInputException 
      */
-	public Assumption getAssumptionByIdAndVersion(@Nonnull String id, String version) throws BusException, IOException {
+	public Assumption getAssumptionByIdAndVersion(@Nonnull String id, String version) throws BusException, IOException, BadInputException {
         PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.Assumption.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request).get(0), Assumption.class);
+        return (Assumption) busApprovedElementRepository.getApprovedElement(request, Assumption.class);
 	}
 
     /**
@@ -55,15 +55,16 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-	public ContextFactor getContextFactorByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException {
+	public ContextFactor getContextFactorByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException, BadInputException {
         PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.ContextFactor.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request).get(0), ContextFactor.class);
+        return (ContextFactor) busApprovedElementRepository.getApprovedElement(request, ContextFactor.class);
 	}
 
     /**
@@ -73,15 +74,16 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-	public OrganizationalGoal getOrganizationalGoalByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException {
+	public OrganizationalGoal getOrganizationalGoalByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException, BadInputException {
         PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.OrganizationalGoal.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request).get(0), OrganizationalGoal.class);
+        return (OrganizationalGoal) busApprovedElementRepository.getApprovedElement(request, OrganizationalGoal.class);
 	}
 
     /**
@@ -91,15 +93,16 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-	public InstanceProject getInstanceProjectByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException {
+	public InstanceProject getInstanceProjectByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException, BadInputException {
         PointerBus request = new PointerBus();
 
         request.setBusVersion(version);
         request.setTypeObj(Entity.InstanceProject.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request).get(0), InstanceProject.class);
+        return (InstanceProject) busApprovedElementRepository.getApprovedElement(request, InstanceProject.class);
 	}
 
     /**
@@ -108,8 +111,9 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-	public ArrayList<Assumption> getAssumptionsByIdList(@Nonnull List<String> list) throws IOException, BusException {
+	public ArrayList<Assumption> getAssumptionsByIdList(@Nonnull List<String> list) throws IOException, BusException, BadInputException {
         Iterator<String> i = list.iterator();
 
         // it increases the performance
@@ -128,8 +132,9 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-	public ArrayList<ContextFactor> getContextFactorsByIdList(@Nonnull List<String> list) throws IOException, BusException {
+	public ArrayList<ContextFactor> getContextFactorsByIdList(@Nonnull List<String> list) throws IOException, BusException, BadInputException {
         Iterator<String> i = list.iterator();
 
         // it increases the performance
@@ -148,8 +153,9 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-    public ArrayList<Assumption> getAssumptionsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException {
+    public ArrayList<Assumption> getAssumptionsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException, BadInputException {
         Iterator<PointerBus> i = list.iterator();
 
         // it increases the performance
@@ -170,8 +176,9 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @return
      * @throws IOException
      * @throws BusException
+     * @throws BadInputException 
      */
-    public ArrayList<ContextFactor> getContextFactorsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException {
+    public ArrayList<ContextFactor> getContextFactorsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException, BadInputException {
         Iterator<PointerBus> i = list.iterator();
 
         // it increases the performance
