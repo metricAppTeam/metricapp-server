@@ -1,6 +1,7 @@
 package metricapp.service.spec.repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
@@ -21,6 +22,8 @@ public interface BusApprovedElementInterface {
 
 		public <T extends Element> Element getApprovedElement(@Nonnull PointerBus pointerBus, Class<T> clazz)throws BadInputException, BusException, IOException ; 
 
+		public <T extends Element> ArrayList<T> getApprovedElements(@Nonnull PointerBus pointerBus, Class<T> clazz) throws BadInputException, BusException, IOException; 
+		
 		public RichPointerBus fromElementToRichPointerBus(Element element) throws JsonProcessingException ;
 
 		public Element fromRichPointerBusToElement(RichPointerBus pointer) throws BusException, IOException ;
