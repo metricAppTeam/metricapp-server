@@ -16,7 +16,7 @@ import metricapp.entity.external.PointerBus;
  * This class provides a large number of methods to generate random fields and
  * objects.
  * <p>
- * Every method can work staticly, without the need of an instance of
+ * Every method can work statically, without the need of an instance of
  * RandomGenerator. The random seed is initialized when the JVM load the class,
  * the seed is the Nanosec of the moment of charge in memory.
  * 
@@ -42,6 +42,8 @@ public class RandomGenerator {
 	 * 
 	 * This function could throw a large number of Exception, due to internal
 	 * use of reflection with unknown classes.
+	 * 
+	 * Due to implementation, entityType can not reflect real type of object! 
 	 *
 	 * @param obj
 	 *            is the instance to fill. (e.g. class Car has String door, you
@@ -56,6 +58,7 @@ public class RandomGenerator {
 	 * @throws SecurityException
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
+	 * TODO fix entityType generation, the object must be setted as the right type.
 	 */
 	@SuppressWarnings("unchecked")
 	static public void randomAttribute(Object obj, Field field)
