@@ -1,6 +1,8 @@
 package metricapp.service.repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import metricapp.entity.Element;
 import metricapp.entity.Entity;
@@ -45,10 +48,26 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 
 	@Autowired
 	private JacksonMapper mapper;
+	
+	@Autowired
+	static private BusApprovedElementRepository instance;
+	
+	
+	/**
+	 * Spring implementation of Singleton Pattern
+	 */
+	public BusApprovedElementRepository(){
+		instance = this;
+	}
+	
+	public static BusApprovedElementRepository getInstance(){
+		return instance;
+	}
 
 	/**
 	 * This function send an approved Element like to Bus.
-	 * There's a check for the state (must be Approved). It returns the updated MeasurementGoal
+	 * There's a check for the state (must be Approved). It returns the updated Element.
+	 * If the element has null busversion the element is created on bus, otherwise is updated.
 	 * @param element the Element to send to bus
 	 * @param clazz is the class of the element, like MeasurementGoal or Question
 	 * @return the Element returned by the bus
@@ -63,23 +82,20 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		if (!element.getState().equals(State.Approved)) {
 			throw new BadInputException("Element MUST be in state of Approved to be sent to bus");
 		}
-
-		Element result;
-
-		// case: element is new, it is the first time it's approved, so these
-		// fields are empty
-		if (element.getVersionBus() == null && element.getSecretToken() == null) {
-			result = mapper.fromJson(busRepository.create(fromElementToRichPointerBus(element)),
-					clazz);
-			return result;
+		
+		String content;
+		if(element.getVersionBus() == null){
+			//send element to bus and receive it from bus
+			content = busRepository.create(fromElementToRichPointerBus(element)).get(0);
+		}else{
+			content = busRepository.update(fromElementToRichPointerBus(element)).get(0);
 		}
-		//case: element is not new, update it
-		if (element.getVersionBus() == null && element.getSecretToken() == null) {
-			result = mapper.fromJson(busRepository.create(fromElementToRichPointerBus(element)),
-					clazz);
-			return result;
-		}
-		throw new BusException("error in sending Element");
+		//map received json to new element of the class clazz
+		T el = mapper.fromJson(mapper.getMapper().readTree(content).get("payload").toString(), clazz);
+		//set the updated version bus
+		el.setVersionBus(mapper.getMapper().readTree(content).get("busVersion").asText());
+		
+		return el;
 	}
 	
 	/**
@@ -92,14 +108,56 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 	 * @throws BusException error in interation with bus
 	 * @throws IOException generic mapping error.
 	 */
-	public <T extends Element> Element getApprovedElement(@Nonnull PointerBus pointerBus, Class<T> clazz) 
+	public <T extends Element> T getApprovedElement(@Nonnull PointerBus pointerBus, Class<T> clazz) 
 			throws BadInputException, BusException, IOException {
-
-		T element = mapper.fromJson(busRepository.read(pointerBus), clazz);
 		
-		return element;
-	}
+		//read from the bus
+		String content = busRepository.read(pointerBus).get(0);
 
+		//map received json to new element of the class clazz
+		T el = mapper.fromJson(mapper.getMapper().readTree(content).get(0).get("payload").toString(), clazz);
+		//set the correct version
+		el.setVersionBus(mapper.getMapper().readTree(content).get(0).get("busVersion").asText());
+		
+		return el;
+	}
+	/**
+	 * This function gathers an Array of Elements like MeasurementGoal, Metric and Question from the bus.
+	 * If the pointerBus has null version, the last one is returned
+	 * @param pointerBus the pointer of the entity requested
+	 * @param clazz the class of the element to gather, like MeasurementGoal.class, Metric.class
+	 * @return return the elements returned by the bus. No null check control implemented
+	 * @throws BadInputException if the pointer is not correct
+	 * @throws BusException error in interation with bus
+	 * @throws IOException generic mapping error.
+	 */
+	public <T extends Element> ArrayList<T> getApprovedElements(@Nonnull PointerBus pointerBus, Class<T> clazz) 
+			throws BadInputException, BusException, IOException {
+		
+		//read from the bus
+		String content = busRepository.read(pointerBus).get(0);
+		
+		//extract the tree of json
+		JsonNode node = mapper.getMapper().readTree(content);
+		
+		//get an iterator
+		Iterator<JsonNode> iterator =node.iterator();
+		
+		//create Array
+		ArrayList<T> list = new ArrayList<T>();
+		
+		while(iterator.hasNext()){
+			JsonNode actual = iterator.next();
+			
+			//map received json to new element of the class clazz
+			T el = mapper.fromJson(actual.get("payload").toString(), clazz);
+			//set the correct version
+			el.setVersionBus(actual.get("busVersion").asText());
+		}
+		return list;
+	}
+	
+	
 	/**
 	 * This method maps Element to RichPointerBus to send it to bus, with a create or a update.
 	 * <p>
@@ -113,7 +171,7 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		RichPointerBus pointerBus;
 
 		pointerBus = new RichPointerBus();
-		pointerBus.setPayload(mapper.toJson(element));
+		pointerBus.setPayload(element);
 		pointerBus.setBusTags(element.getTags());
 		//TODO change this, tags must be useful to do queries. 
 		pointerBus.setInstance(element.getId());
@@ -139,13 +197,13 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		switch (Entity.valueOf(pointer.getTypeObj())) {
 
 		case MeasurementGoal:
-			element = mapper.fromJson(pointer.getPayload(), MeasurementGoal.class);
+			element = (MeasurementGoal) pointer.getPayload();
 			break;
 		case Metric:
-			element = mapper.fromJson(pointer.getPayload(), Metric.class);
+			element = (Metric) pointer.getPayload();
 			break;
 		case Question:
-			element = mapper.fromJson(pointer.getPayload(), Question.class);
+			element = (Question) pointer.getPayload();
 			break;
 		default:
 			throw new BusException("Bus sent entity of type: " + pointer.getTypeObj());
