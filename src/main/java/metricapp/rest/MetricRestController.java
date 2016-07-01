@@ -36,7 +36,7 @@ public class MetricRestController {
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			}
 			if (!id.equals("NA") && approved.equals("true")) {
-				dto = metricCRUDController.getMetricByIdLastApprovedVersion(id);
+				dto = metricCRUDController.getMetricCrudDTOByIdLastApprovedVersion(id);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			}
 			if (!version.equals("NA") && !id.equals("NA")) {
