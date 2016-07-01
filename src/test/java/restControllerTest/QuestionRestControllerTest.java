@@ -3,6 +3,7 @@ package restControllerTest;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.After;
@@ -270,6 +271,42 @@ public class QuestionRestControllerTest {
 			e.printStackTrace();
 			fail("Test Delete Failed");
 		}
+	}
+	
+	@Test
+	public void testGetByTag(){
+		QuestionDTO questionDTO = randomQuestionDTO();
+		ArrayList<String> tags = new ArrayList<String>();
+		
+		tags.add("xyz");
+		tags.add("abc");
+		
+		questionDTO.getMetadata().setTags(tags);
+		
+		try {
+			questionCRUDController.createQuestion(questionDTO);
+			
+			MvcResult result = this.mockMvc
+					.perform(get("/question?tag=abc"))
+					.andExpect(status().isOk())
+					.andReturn();
+			
+			List<QuestionDTO> testQuestionDTOList = 
+					new ObjectMapper().readValue(result.getResponse().getContentAsString(), QuestionCrudDTO.class).getQuestionList();
+			
+			System.out.println(testQuestionDTOList);
+			
+			assertTrue(testQuestionDTOList.get(0).getMetadata().getTags().contains("xyz"));
+			
+		} catch (BadInputException e) {
+			e.printStackTrace();
+			fail("Test tag failed");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Test tag failed");
+		}
+		
+		
 	}
 	
 	protected String json(Object o) throws IOException {
