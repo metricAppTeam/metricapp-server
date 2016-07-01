@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +45,7 @@ import metricapp.utility.ModelMapperFactory;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BootApplication.class)
 @WebAppConfiguration
+@TestPropertySource("/test.properties")
 public class MetricRestControllerTest {
 
 	@Autowired
@@ -178,6 +180,8 @@ public class MetricRestControllerTest {
 		assertTrue(true);
 
 	}
+	
+	
 
 	@Test
 	public void testPut() throws IOException {
@@ -228,6 +232,8 @@ public class MetricRestControllerTest {
 		assertTrue(true);
 	}
 
+
+	
 	@Test
 	public void getById() {
 		// create a metric
