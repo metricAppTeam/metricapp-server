@@ -9,11 +9,9 @@ import metricapp.entity.metric.Metric;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.service.repository.BusApprovedElementRepository;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 
 public class PendingToApproved extends MetricStateTransitionCommand{
-
-	@Autowired
-	BusApprovedElementRepository busApprovedElementRepository; 
 	
 	public PendingToApproved(Element before, Element after) {
 		super(before, after);
@@ -24,7 +22,9 @@ public class PendingToApproved extends MetricStateTransitionCommand{
 		super.execute();
 		System.out.println("pending to approved "+after.toString());
 		try {
-			this.busApprovedElementRepository.sendApprovedElement(after, Metric.class);
+			after.setSecretToken("ciao");
+			BusApprovedElementRepository.getInstance().sendApprovedElement(after, Metric.class);
+			
 		} catch (BadInputException | BusException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,7 +1,11 @@
 package metricapp.utility.stateTransitionUtils.metricTransition;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import metricapp.entity.Element;
 import metricapp.entity.metric.Metric;
+import metricapp.service.repository.BusApprovedElementRepository;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
 
 /**
@@ -22,9 +26,10 @@ import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
  *
  */
 public abstract class MetricStateTransitionCommand implements StateTransitionCommand{
-
+	
 	protected Metric before;
 	protected Metric after;
+
 
 	/**
 	 * this method simply casts Element to Metric objects passed like parameters.
