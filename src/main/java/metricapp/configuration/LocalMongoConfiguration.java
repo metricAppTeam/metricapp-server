@@ -18,6 +18,8 @@ import com.mongodb.WriteConcern;
 
 class LocalMongoConfiguration extends AbstractMongoConfiguration {
 
+	
+	
 	protected String user = null;
 	protected String password = null;
 	protected String database = "metricatorDB";
@@ -44,6 +46,7 @@ class LocalMongoConfiguration extends AbstractMongoConfiguration {
 		if(user!=null){
 		// Set credentials
 		MongoCredential credential = MongoCredential.createCredential(user, getDatabaseName(), password.toCharArray());
+		System.out.println("mongoDb credentials: " + host + ":" + port + "/" + database+ "?user=" + user + "&pass=" + password);
 
 		// Mongo Client
 		mongoClient = new MongoClient(serverAddress, Arrays.asList(credential));
