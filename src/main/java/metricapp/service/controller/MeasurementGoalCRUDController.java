@@ -277,7 +277,11 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		if (oldGoal.getState().equals(newGoal.getState())) {
 			 return;
 			 }
-		AbstractStateTransitionFactory.getFactory(Entity.MeasurementGoal).transition(oldGoal, newGoal).execute();
+		try {
+			AbstractStateTransitionFactory.getFactory(Entity.MeasurementGoal).transition(oldGoal, newGoal).execute();
+		} catch (Exception e) {
+			throw new IllegalStateTransitionException(e);
+		}
 	
 	}
 

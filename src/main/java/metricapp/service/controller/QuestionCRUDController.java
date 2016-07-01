@@ -225,7 +225,11 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 			throws IllegalStateTransitionException, NotFoundException {
 		
 		if (!oldQuestion.getState().equals(newQuestion.getState())) {
-			AbstractStateTransitionFactory.getFactory(Entity.Question).transition(oldQuestion, newQuestion).execute();
+			try {
+				AbstractStateTransitionFactory.getFactory(Entity.Question).transition(oldQuestion, newQuestion).execute();
+			} catch (Exception e) {
+				throw new IllegalStateTransitionException(e);
+			}
 	 	}
 		
 	}

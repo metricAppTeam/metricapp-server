@@ -229,7 +229,11 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		if (oldMetric.getState().equals(newMetric.getState())) {
 			 return;
 			 }
-		AbstractStateTransitionFactory.getFactory(Entity.Metric).transition(oldMetric, newMetric).execute();
+		try {
+			AbstractStateTransitionFactory.getFactory(Entity.Metric).transition(oldMetric, newMetric).execute();
+		} catch (Exception e) {
+			throw new IllegalStateTransitionException(e);
+		}
 		// 
 		// switch (before) {
 		//
