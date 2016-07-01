@@ -1,5 +1,6 @@
 package metricapp.service.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,11 +17,13 @@ import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.metric.Metric;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.MetricCRUDInterface;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.service.spec.repository.MetricRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
@@ -32,6 +35,9 @@ public class MetricCRUDController implements MetricCRUDInterface {
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
+	
+	@Autowired
+	private BusApprovedElementInterface busApprovedElementRepository;
 
 	@Override
 	public MetricCrudDTO getMetricById(String id) throws BadInputException, NotFoundException {
@@ -64,22 +70,26 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		return dto;
 	}
 
-	@SuppressWarnings("unused")
+
 	@Override
-	public MetricCrudDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException {
+	public MetricDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException {
 		if (id == null) {
 			throw new BadInputException("Metric id cannot be null");
 		}
-		// TODO get from bus
-		Metric metric = null;
-		if (metric == null) {
-			throw new NotFoundException("Approved Metric with id " + id + "is not available");
-		}
-		MetricCrudDTO dto = new MetricCrudDTO();
-		dto.setRequest("Metric, id=" + id + ";state=Approved");
-		dto.addMetricToList(modelMapperFactory.getLooseModelMapper().map(metric, MetricDTO.class));
-		return null;
+		
+		Metric last =busApprovedElementRepository.getLastApprovedElement(id, Metric.class);
+		
+		return modelMapperFactory.getLooseModelMapper().map(last, MetricDTO.class);
 	}
+	
+	@Override
+	public MetricCrudDTO getMetricCrudDTOByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException {
+		MetricCrudDTO dto= new MetricCrudDTO();
+		dto.addMetricToList(getMetricByIdLastApprovedVersion(id));
+		return dto;
+		
+	}
+
 
 	@Override
 	public MetricCrudDTO getMetricOfUser(String userId) throws NotFoundException, BadInputException {
@@ -196,10 +206,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		
 		MetricCrudDTO dtoCrud = new MetricCrudDTO();
 		dtoCrud.setRequest("update Metric id" + dto.getMetadata().getId());
-		if (oldMetric == null) {
-			throw new NotFoundException();
-		}
-
+		
 		try {
 			dtoCrud.addMetricToList(
 					modelMapperFactory.getLooseModelMapper().map(metricRepository.save(newMetric), MetricDTO.class));
@@ -234,83 +241,6 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		} catch (Exception e) {
 			throw new IllegalStateTransitionException(e);
 		}
-		// 
-		// switch (before) {
-		//
-		// case Created:
-		// if (after.equals(State.OnUpdate)) {
-		// // TODO alert newMetric.getMetricatorId()
-		// return;
-		// } else {
-		// throw new IllegalStateTransitionException(
-		// "New State is not applicable: " + after.toString() + " from " +
-		// before.toString());
-		// }
-		// case OnUpdate:
-		// if (after.equals(State.Pending)) {
-		// // TODO alert newMetric.getCreatorId()
-		// return;
-		// } else {
-		// throw new IllegalStateTransitionException(
-		// "New State is not applicable: " + after.toString() + " from " +
-		// before.toString());
-		// }
-		// case Pending:
-		// if (after.equals(State.Approved)) {
-		// // TODO alert newMetric.getMetricatorId() with
-		// // newMetric.getReleaseNote()
-		// // TODO send to bus the new metric ->need to convert: wipe securekey,
-		// change id, ermesLastVersion
-		// return;
-		// }
-		// if (after.equals(State.Rejected)) {
-		// // TODO alert newMetric.getMetricatorId() with
-		// // newMetric.getReleaseNote()
-		// return;
-		// } else {
-		// throw new IllegalStateTransitionException(
-		// "New State is not applicable: " + after.toString() + " from " +
-		// before.toString());
-		// }
-		// case Approved:
-		// if (after.equals(State.OnUpdate)) {
-		// // TODO alert newMetric.getMetricatorId() with
-		// // newMetric.getReleaseNote()
-		// return;
-		// }
-		// if (after.equals(State.Suspended)) {
-		// // TODO alert newMetric.getMetricatorId() with
-		// // newMetric.getReleaseNote()
-		// return;
-		// } else {
-		// throw new IllegalStateTransitionException(
-		// "New State is not applicable: " + after.toString() + " from " +
-		// before.toString());
-		// }
-		// case Rejected:
-		// if (after.equals(State.OnUpdate)) {
-		// // TODO alert newMetric.getMetricatorId() with
-		// // newMetric.getReleaseNote()
-		// return;
-		// }
-		// if (after.equals(State.Suspended)) {
-		// // TODO alert newMetric.getMetricatorId() with
-		// // newMetric.getReleaseNote()
-		// return;
-		// } else {
-		// throw new IllegalStateTransitionException(
-		// "New State is not applicable: " + after.toString() + " from " +
-		// before.toString());
-		// }
-		// case Suspended:
-		// // TODO check dependencies
-		// throw new IllegalStateTransitionException(
-		// "New State is not applicable: " + after.toString() + " from " +
-		// before.toString());
-		// default:
-		// throw new IllegalStateTransitionException("Before State is not
-		// applicable: " + before.toString());
-		// }
 	}
 
 }
