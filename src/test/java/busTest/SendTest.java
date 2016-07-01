@@ -91,13 +91,12 @@ public class SendTest {
 		Metric metric2 = (Metric) busApprovedElementRepository.sendApprovedElement(metric1, Metric.class);
 		
 		//change something
-		metric2.setMin(metric2.getMin()+1);
+		metric2.setDescription("descr");
 		
 		//update
 		Metric metric3 = (Metric) busApprovedElementRepository.sendApprovedElement(metric2, Metric.class);
-		
-		assertNotEquals(metric1, metric3);
-		assertTrue(metric3.getMin()-1 == metric1.getMin());
+		assertNotEquals(metric1.toString() +"\n"+ metric3.toString(),metric1, metric3);
+		assertTrue(metric3.getDescription().equals("descr"));
 	}
 	
 	@Test

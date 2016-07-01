@@ -82,12 +82,6 @@ public class BusRepository implements BusInterface {
 
         RestTemplate rest = new RestTemplate();
         ResponseEntity<BusResponseDTO> responseDTO;
-        try {
-			System.out.println("sended: \n"+mapper.toJson(requestDTO));
-		} catch (JsonProcessingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
         try{
             responseDTO = rest.postForEntity(urlBus, requestDTO, BusResponseDTO.class);
         }catch (RestClientException e){
