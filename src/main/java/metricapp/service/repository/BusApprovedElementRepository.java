@@ -60,6 +60,10 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		instance = this;
 	}
 	
+	/**
+	 * this getter has to be used only when is not possible the IoD of Spring, like commands of State Transition Utils.
+	 * @return
+	 */
 	public static BusApprovedElementRepository getInstance(){
 		return instance;
 	}
