@@ -45,7 +45,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         request.setTypeObj(Entity.Assumption.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request), Assumption.class);
+        return mapper.fromJson(busRepository.read(request).get(0), Assumption.class);
 	}
 
     /**
@@ -63,7 +63,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         request.setTypeObj(Entity.ContextFactor.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request), ContextFactor.class);
+        return mapper.fromJson(busRepository.read(request).get(0), ContextFactor.class);
 	}
 
     /**
@@ -81,7 +81,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         request.setTypeObj(Entity.OrganizationalGoal.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request), OrganizationalGoal.class);
+        return mapper.fromJson(busRepository.read(request).get(0), OrganizationalGoal.class);
 	}
 
     /**
@@ -99,7 +99,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         request.setTypeObj(Entity.InstanceProject.name());
         request.setInstance(id);
 
-        return mapper.fromJson(busRepository.read(request), InstanceProject.class);
+        return mapper.fromJson(busRepository.read(request).get(0), InstanceProject.class);
 	}
 
     /**
