@@ -81,5 +81,11 @@ This is a Maven Project
 | POST | 	500 | 	INTERNAL_SERVER_ERROR | 	Generic error | 
 | POST | 	400 | 	BAD_REQUEST | 	A Measurement Goal must be in state of Created, Measurement Goal has no id, invalid fields | 
     
+# HTTP Error Codes for REST External Elements
+| Method |  #  | Code |  e.g. | 
+| --------------- |-----| -----|:--------------------------------------------------|
+| GET | 	400 | 	BAD_REQUEST | 	Id cannot be null | 
+| GET | 	500 | 	INTERNAL_SERVER_ERROR | 	Error in bus interrogation | 
+| GET | 	404 | 	NOT_FOUND | 	entity not found | 
 
 
