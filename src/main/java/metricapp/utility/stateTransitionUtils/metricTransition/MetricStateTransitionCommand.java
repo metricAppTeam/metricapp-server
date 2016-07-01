@@ -1,11 +1,8 @@
 package metricapp.utility.stateTransitionUtils.metricTransition;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import metricapp.entity.Element;
 import metricapp.entity.metric.Metric;
-import metricapp.service.repository.BusApprovedElementRepository;
-import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
 
 /**
@@ -47,9 +44,10 @@ public abstract class MetricStateTransitionCommand implements StateTransitionCom
 	/**
 	 * This is a prototype of the real method that will be implemented by child classes.
 	 * It just check if parameters are null.
+	 * @throws Exception 
 	 *
 	 */
-	public void execute(){
+	public void execute() throws Exception{
 		if (before == null || after == null){
 			throw new NullPointerException("Command needs to be initialized!");
 		}
