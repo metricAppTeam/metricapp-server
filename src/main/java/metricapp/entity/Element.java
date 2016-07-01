@@ -13,6 +13,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 import metricapp.utility.RandomGenerator;
 /**
@@ -38,10 +42,12 @@ public class Element extends Object {
 	/**
 	 * private id to modify object on bus
 	 */
+	
 	private String secretToken;
 	/**
 	 * version of the last approved entity on bus
 	 */
+	@JsonProperty("busVersion")
 	private String versionBus;
 	private Entity entityType;
 
@@ -56,12 +62,14 @@ public class Element extends Object {
 	 * public void setTags(List<String> tags) { this.tags = tags; }
 	 */
 
+	@JsonProperty("creationDate")
 	public void setCreationDate(String date) {
 		if (date != null) {
 			this.creationDate = LocalDate.parse(date);
 		}
 	}
 
+	@JsonProperty("lastVersionDate")
 	public void setLastVersionDate(String date) {
 		if (date != null) {
 			this.lastVersionDate = LocalDate.parse(date);
@@ -69,14 +77,28 @@ public class Element extends Object {
 
 	}
 
+	@JsonIgnore
 	public void setCreationDate(LocalDate date) {
 		this.creationDate = date;
 	}
 
+	@JsonIgnore
 	public void setLastVersionDate(LocalDate date) {
 		this.lastVersionDate = date;
 	}
 
+	@JsonGetter("creationDate")
+	public String getCreationDateString(){
+		return creationDate.toString();
+	}
+	
+	@JsonGetter("lastVersionDate")
+	public String getLastVersionDateString(){
+		return lastVersionDate.toString();
+	}
+	
+		
+	
 	/**
 	 * randomAttributes fills every attribute of the entity.
 	 * it can throw a large number of Exception, due to Reflection Implementation.
