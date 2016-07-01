@@ -121,6 +121,23 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		
 		return el;
 	}
+	
+	/**
+	 * this function returns the last approved version of element with a id in the bus
+	 * @param id
+	 * @param clazz
+	 * @return
+	 * @throws BadInputException
+	 * @throws BusException
+	 * @throws IOException
+	 */
+	public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz) 
+			throws BadInputException, BusException, IOException {
+		PointerBus pointer=new PointerBus();
+		pointer.setInstance(id);
+		return getApprovedElement(pointer, clazz);
+	}
+	
 	/**
 	 * This function gathers an Array of Elements like MeasurementGoal, Metric and Question from the bus.
 	 * If the pointerBus has null version, the last one is returned

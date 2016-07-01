@@ -28,4 +28,6 @@ public interface BusApprovedElementInterface {
 
 		public Element fromRichPointerBusToElement(RichPointerBus pointer) throws BusException, IOException ;
 
+		public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz) 
+				throws BadInputException, BusException, IOException;
 }
