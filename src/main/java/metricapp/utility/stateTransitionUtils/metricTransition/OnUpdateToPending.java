@@ -3,6 +3,7 @@ package metricapp.utility.stateTransitionUtils.metricTransition;
 import metricapp.entity.Element;
 
 
+
 public class OnUpdateToPending extends MetricStateTransitionCommand {
 
 	
@@ -16,7 +17,8 @@ public class OnUpdateToPending extends MetricStateTransitionCommand {
 		super.execute();
 		
 		System.out.println("onupdate a pending");	
-		// TODO alert newMetric.getCreatorId()		
+		// TODO alert newMetric.getCreatorId()
+		
 	}
 
 	
