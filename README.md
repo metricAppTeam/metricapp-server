@@ -5,6 +5,8 @@ Project for course Software Systems and Internet Services Engineering 2016
 
 [Github's site](http://metricappteam.github.io/metricapp-server/)
 
+[Deployed Server](http://qips.sweng.uniroma2.it/metricapp-server/)
+
 ## Requirements
 This is a Maven Project
 	
