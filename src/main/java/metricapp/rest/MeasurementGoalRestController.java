@@ -26,14 +26,14 @@ public class MeasurementGoalRestController {
 	private MeasurementGoalCRUDInterface controller;	
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<MeasurementGoalCrudDTO> getMeasurementGoalDTO(@RequestParam(value="id") String id,
+	public ResponseEntity<MeasurementGoalCrudDTO> getMeasurementGoalDTO(@RequestParam(value="id", defaultValue = "NA") String id,
 			@RequestParam(value = "version", defaultValue = "NA") String version,
 			@RequestParam(value = "userid", defaultValue = "NA") String userId,
 			@RequestParam(value = "approved", defaultValue = "false") String approved){
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
-			if (!userId.equals("NA")) {
+			if (!userId.equals("NA") && id.equals("NA")) {
 				dto = controller.getMeasurementGoalByUser(userId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}

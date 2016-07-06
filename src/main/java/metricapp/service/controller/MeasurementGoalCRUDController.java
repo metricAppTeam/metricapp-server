@@ -135,9 +135,11 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 //		if (dto.getInterpretationModel() == null) {
 //			throw new BadInputException("New Measurement Goal must have an Interpretation Model");
 //		}
-		if (dto.getOrganizationalGoalId() == null){
-			throw new BadInputException("New Measurement Goal must have a link to an Organizational Goal");
-		}
+		
+//		if (dto.getOrganizationalGoalId() == null){
+//			throw new BadInputException("New Measurement Goal must have a link to an Organizational Goal");
+//		}
+		
 //		if (dto.getContextFactorIdList() == null){
 //			throw new BadInputException("New Measurement Goal must have a Context Factor list");
 //		}
