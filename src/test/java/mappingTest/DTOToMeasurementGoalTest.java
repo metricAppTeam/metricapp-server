@@ -60,12 +60,12 @@ public class DTOToMeasurementGoalTest {
 		interpretationModel.setQueryNoSQL(RandomGenerator.randomString());
 		this.measurementGoalDTO.setInterpretationModel(interpretationModel);
 		
-		ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+		ModelMapper modelMapper = modelMapperFactory.getStandardModelMapper();
 		this.measurementGoal = modelMapper.map(this.measurementGoalDTO, MeasurementGoal.class);
 		System.out.println(measurementGoalDTO.toString());
 		System.out.println(measurementGoal.toString());
 				
-		assertEquals(this.measurementGoalDTO.getId(), this.measurementGoal.getId());
+		assertEquals(this.measurementGoalDTO.getMetadata().getId(), this.measurementGoal.getId());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getFunctionJavascript(), this.measurementGoal.getInterpretationModel().getFunctionJavascript());
 		assertEquals(this.measurementGoalDTO.getInterpretationModel().getQueryNoSQL(), this.measurementGoal.getInterpretationModel().getQueryNoSQL());
 		assertEquals(this.measurementGoalDTO.getObject(), this.measurementGoal.getObject());
@@ -82,6 +82,7 @@ public class DTOToMeasurementGoalTest {
 		assertEquals(this.measurementGoalDTO.getMetrics(),this.measurementGoal.getMetrics());
 		assertEquals(this.measurementGoalDTO.getQuestions(),this.measurementGoal.getQuestions());
 		assertEquals(this.measurementGoalDTO.getQuestionersId(),this.measurementGoal.getQuestionersId());
+		assertEquals(this.measurementGoalDTO.getMetadata().getVersionBus(),this.measurementGoal.getVersionBus());
 	}
 
 }

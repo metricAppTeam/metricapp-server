@@ -1,8 +1,11 @@
 package metricapp.service.spec.controller;
 
+import java.io.IOException;
+
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
@@ -14,9 +17,11 @@ public interface MetricCRUDInterface {
 	public MetricCrudDTO getMetricOfUser(String userId) throws NotFoundException, BadInputException ;
 	public MetricCrudDTO updateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException ;
 	public void deleteMetricById(String id) throws BadInputException, IllegalStateTransitionException ;
-	public MetricCrudDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException ;
+	public MetricDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException ;
 	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException;
 	public MetricCrudDTO changeStateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException ;
+	public MetricCrudDTO getMetricCrudDTOByIdLastApprovedVersion(String id)
+			throws BadInputException, NotFoundException, BusException, IOException;
 
 		
 }

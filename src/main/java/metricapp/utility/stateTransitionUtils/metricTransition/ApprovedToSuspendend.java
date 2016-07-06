@@ -9,7 +9,7 @@ public class ApprovedToSuspendend extends MetricStateTransitionCommand{
 	}
 	
 	@Override
-	public void execute() {
+	public void execute() throws Exception {
 		super.execute();
 		
 		System.out.println("approved to suspended");

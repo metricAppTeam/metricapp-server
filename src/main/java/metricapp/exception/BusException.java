@@ -2,7 +2,12 @@ package metricapp.exception;
 
 
 public class BusException extends Exception {
-    public BusException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7469888499359766214L;
+
+	public BusException() {
     }
 
     public BusException(String message) {

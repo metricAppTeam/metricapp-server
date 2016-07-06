@@ -3,6 +3,7 @@ package metricapp.service.controller;
 import metricapp.dto.externalElements.*;
 import metricapp.entity.external.*;
 import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.ExternalElementsGetterInterface;
@@ -39,8 +40,9 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
      * @param measurementGoalId
      * @return ExternalElementsDTO a dto that contains organizational goal,
      * context factors and assumptions of that goal
+     * @throws BadInputException 
      */
-    public ExternalElementsDTO getMeasurementGoalExternalElements(String measurementGoalId) throws IOException, BusException {
+    public ExternalElementsDTO getMeasurementGoalExternalElements(String measurementGoalId) throws IOException, BusException, BadInputException {
 
         //get measurement goal
         MeasurementGoal measurementGoal = this.measurementGoalRepository.findById(measurementGoalId);

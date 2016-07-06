@@ -2,7 +2,7 @@ package metricapp.entity;
 
 public enum State {
 	Approved,
-	Approved_InternalApprobation,
+	ApprovedInternalApprobation,
 	Created,
 	Rejected,
 	External,

@@ -17,6 +17,7 @@ import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MetricCRUDInterface;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 
 @CrossOrigin
 @RestController
@@ -37,7 +38,7 @@ public class MetricRestController {
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			}
 			if (!id.equals("NA") && approved.equals("true")) {
-				dto = metricCRUDController.getMetricByIdLastApprovedVersion(id);
+				dto = metricCRUDController.getMetricCrudDTOByIdLastApprovedVersion(id);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			}
 			if (!version.equals("NA") && !id.equals("NA")) {
@@ -86,7 +87,17 @@ public class MetricRestController {
 		return new ResponseEntity<MetricCrudDTO>(HttpStatus.OK);
 
 	}
-
+	@Autowired
+	BusApprovedElementInterface busApprovedElementRepository; 
+	/**
+	 * This method implements Put interface for Metrics.
+	 * It expects a put on /metric/ that contains a MetricDTO. an optional parameter of the url can be onlychangestate, it's a boolean true or false, default is false.
+	 * WIth that flag put dto must only contain the state and the id.
+	 * Version number of the entity MUST be the same of the last in db, this is to avoid collisions.
+	 * @param dto metricDTO filled 
+	 * @param onlyChangeState it's a boolean
+	 * @return returns the entity modified.
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<MetricCrudDTO> putMetricDTO(@RequestBody MetricDTO dto,
 			@RequestParam(value = "onlychangestate", defaultValue = "false") String onlyChangeState) {

@@ -18,15 +18,15 @@ import com.mongodb.WriteConcern;
 @Configuration
 public class MLabMongoConfiguration {
 
-	@Value("${mLab.metricappdb.user}")
+	@Value("${metricappdb.user}")
 	protected String user;
-	@Value("${mLab.metricappdb.password}")
+	@Value("${metricappdb.password}")
 	protected String password;
-	@Value("${mLab.metricappdb.databaseName}")
+	@Value("${metricappdb.databaseName}")
 	protected String database;
-	@Value("${mLab.metricappdb.port}")
+	@Value("${metricappdb.port}")
 	protected Integer port;
-	@Value("${mLab.metricappdb.address}")
+	@Value("${metricappdb.address}")
 	protected String host;
 	
 	
@@ -40,23 +40,19 @@ public class MLabMongoConfiguration {
 
 	@Bean
 	public MongoDbFactory mongoDbFactory() throws Exception {
-
+		
 		MongoClient mongoClient = null;
 		ServerAddress serverAddress = new ServerAddress(host,port);
 		
 		
 		if(user!=null){
-		// Set credentials
-		MongoCredential credential = MongoCredential.createCredential(user, getDatabaseName(), password.toCharArray());
-
-		// Mongo Client
-		mongoClient = new MongoClient(serverAddress, Arrays.asList(credential));
-		
+			// Set credentials
+			MongoCredential credential = MongoCredential.createCredential(user, getDatabaseName(), password.toCharArray());
+			System.out.println("mongoDb credentials: " + host + ":" + port + "/" + database+ "?user=" + user + "&pass=" + password);
+			// Mongo Client
+			mongoClient = new MongoClient(serverAddress, Arrays.asList(credential));
 		}else{
-			
-		
-		mongoClient = new MongoClient(serverAddress);
-			
+			mongoClient = new MongoClient(serverAddress);
 		}
 		
 		// Mongo DB Factory

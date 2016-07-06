@@ -1,5 +1,6 @@
 package metricapp.utility.stateTransitionUtils.metricTransition;
 
+
 import metricapp.entity.Element;
 import metricapp.entity.metric.Metric;
 import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
@@ -22,13 +23,14 @@ import metricapp.utility.stateTransitionUtils.StateTransitionCommand;
  *
  */
 public abstract class MetricStateTransitionCommand implements StateTransitionCommand{
-
+	
 	protected Metric before;
 	protected Metric after;
 
+
 	/**
 	 * this method simply casts Element to Metric objects passed like parameters.
-	 * It is not intentended to be use directly, a factory can do it for you.
+	 * It is not intended to be use directly, a factory can do it for you.
 	 *
 	 * @param before Metric before
 	 * @param after Metric after
@@ -42,9 +44,10 @@ public abstract class MetricStateTransitionCommand implements StateTransitionCom
 	/**
 	 * This is a prototype of the real method that will be implemented by child classes.
 	 * It just check if parameters are null.
+	 * @throws Exception 
 	 *
 	 */
-	public void execute(){
+	public void execute() throws Exception{
 		if (before == null || after == null){
 			throw new NullPointerException("Command needs to be initialized!");
 		}

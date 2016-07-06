@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,6 +43,7 @@ public class Metric extends Element{
 	private ScaleType scaleType;
 	private Set set;
 		
+	@JsonIgnore
 	public void setUserDefinedList(String ...strings){
 		ArrayList<String> userList = new ArrayList<String>();
 		for(String el : strings){

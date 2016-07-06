@@ -2,6 +2,7 @@ package metricapp.service.spec.controller;
 
 import metricapp.dto.externalElements.*;
 import metricapp.entity.external.*;
+import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.NotFoundException;
 
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface ExternalElementsGetterInterface {
-    ExternalElementsDTO getMeasurementGoalExternalElements(String measurementGoalId) throws IOException, BusException;
+    ExternalElementsDTO getMeasurementGoalExternalElements(String measurementGoalId) throws IOException, BusException, BadInputException;
 
     public<T,Z> ArrayList<T> fromArrayListToArrayListDTO(ArrayList<Z> input, Class<T>clazz);
 
