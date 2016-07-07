@@ -117,7 +117,7 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		
 		//read from the bus
 		String content = busRepository.read(pointerBus).get(0);
-
+		
 		//map received json to new element of the class clazz
 		T el = mapper.fromJson(mapper.getMapper().readTree(content).get(0).get("payload").toString(), clazz);
 		//set the correct version

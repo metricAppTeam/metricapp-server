@@ -93,8 +93,20 @@ public class BusRepository implements BusInterface {
         if(! responseDTO.getStatusCode().is2xxSuccessful()){
             throw new BusException("Null response from Bus");
         }
+        ArrayList<String> incomingContent = responseDTO.getBody().getContent();
+      //TODO: this is the implementation according to Bus Documentation of the error detection.
+    	//This feature is still not implemented by the Bus, our server is ready to support it when becomes available
         
-        return responseDTO.getBody().getContent();
+        //try {
+        //	
+		//	if(!mapper.getMapper().readTree(incomingContent.get(0)).get(0).get("err").toString().equals("0") ){
+		//		throw new BusException(mapper.getMapper().readTree(incomingContent.get(0)).get(0).get("msg").toString());
+		//	}
+		//} catch (IOException e) {
+		//	throw new BusException(e);
+		//}
+        
+        return incomingContent;
     }
 
 
