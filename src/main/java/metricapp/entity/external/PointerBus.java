@@ -24,7 +24,7 @@ public class PointerBus {
 	@Version
 	public String busVersion;
 	@JsonProperty("tags")
-	public List<String> busTags;
+	public List<KeyValue> busTags;
 
 	public void randomAttributes() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException {
@@ -46,7 +46,7 @@ public class PointerBus {
 	}
 	
 	public PointerBus(){
-		this.busTags = new ArrayList<String>();
+		this.busTags = new ArrayList<KeyValue>();
 		this.busVersion= "";
 		this.instance= "";
 		this.objIdLocalToPhase= "";
