@@ -27,6 +27,8 @@ public class MeasurementGoalCrudDTO extends MessageDTO implements Serializable{
 	
 	private OrganizationalGoalDTO organizationalGoal;
 	
+	private long count;
+	
 
 	public MeasurementGoalCrudDTO(){
 		this.setMeasurementGoals(new ArrayList<MeasurementGoalDTO>());;

@@ -66,6 +66,19 @@ public class MeasurementGoalRestController {
 		}
 	}
 	
+	@RequestMapping(value="/count",method = RequestMethod.GET)
+	public ResponseEntity<MeasurementGoalCrudDTO> getCountMeasurementGoalDTOByState(@RequestParam(value="state") String state){
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		try {
+			dto.setCount(controller.countMeasurementGoalByState(state));
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+		} catch (BadInputException | NotFoundException e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<MeasurementGoalCrudDTO> deleteMeasurementGoalDTO(@RequestParam String id){
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();

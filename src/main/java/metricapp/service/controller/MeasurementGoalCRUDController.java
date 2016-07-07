@@ -10,6 +10,7 @@ import lombok.Data;
 import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.Entity;
+import metricapp.entity.State;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
@@ -57,6 +58,14 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		dto.setRequest("MeasurementGoal, id=" + id);
 		dto.addMeasurementGoalToList(measurementGoalToDTO(measurementGoal));
 		return dto;
+	}
+	
+	@Override
+	public long countMeasurementGoalByState(String state) throws BadInputException, NotFoundException{
+		if (state == null) {
+			throw new BadInputException("State cannot be null");
+		}
+		return measurementGoalRepository.countByState(State.valueOf(state));
 	}
 	
 	@Override
