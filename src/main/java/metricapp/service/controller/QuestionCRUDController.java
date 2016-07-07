@@ -1,22 +1,28 @@
 package metricapp.service.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import metricapp.dto.metric.MetricCrudDTO;
+import metricapp.dto.metric.MetricDTO;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.question.Question;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.QuestionCRUDInterface;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.service.spec.repository.QuestionRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
 
@@ -28,6 +34,9 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory; 
+	
+	@Autowired
+	private BusApprovedElementInterface busApprovedElementRepository;
 
 	private static final int LIMIT = 10;
 	
@@ -47,6 +56,25 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		catch(IllegalArgumentException e){
 			throw new NotFoundException("No Questions found");
 		}
+	}
+	
+	@Override
+	public QuestionDTO getQuestionByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException {
+		if (id == null) {
+			throw new BadInputException("Question id cannot be null");
+		}
+		
+		Question last = busApprovedElementRepository.getLastApprovedElement(id, Question.class);
+		
+		return modelMapperFactory.getLooseModelMapper().map(last, QuestionDTO.class);
+	}
+	
+	@Override
+	public QuestionCrudDTO getQuestionCrudDTOByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException {
+		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
+		questionCrudDTO.addQuestionToList(getQuestionByIdLastApprovedVersion(id));
+		return questionCrudDTO;
+		
 	}
 
 	@Override
@@ -91,7 +119,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	
 	@Override
 	public QuestionCrudDTO getQuestionByFocus(String focus) throws NotFoundException {
-		ArrayList<Question> questionList = questionRepository.findQuestionByFocus(focus);
+		ArrayList<Question> questionList = questionRepository.findQuestionByFocusLike(focus);
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		Iterator<Question> questionIter = questionList.iterator();
@@ -109,7 +137,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	
 	@Override
 	public QuestionCrudDTO getQuestionBySubject(String subject) throws NotFoundException {
-		ArrayList<Question> questionList = questionRepository.findQuestionBySubject(subject);
+		ArrayList<Question> questionList = questionRepository.findQuestionBySubjectLike(subject);
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		Iterator<Question> questionIter = questionList.iterator();

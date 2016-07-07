@@ -15,9 +15,9 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 	
 	public ArrayList<Question> findQuestionByCreatorId(String id);
 	
-	public ArrayList<Question> findQuestionByFocus(String focus);
+	public ArrayList<Question> findQuestionByFocusLike(String focus);
 	
-	public ArrayList<Question> findQuestionBySubject(String subject);
+	public ArrayList<Question> findQuestionBySubjectLike(String subject);
 	
 	@Query("{'tags': { $in : [?0] } }")
 	public ArrayList<Question> findQuestionByTag(String tag);

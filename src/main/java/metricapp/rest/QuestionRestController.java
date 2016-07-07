@@ -33,7 +33,8 @@ public class QuestionRestController {
 			@RequestParam(value="focus", defaultValue="NA") String focus,
 			@RequestParam(value="subject", defaultValue="NA") String subject,
 			@RequestParam(value="tag", defaultValue="NA") String tag,
-			@RequestParam(value="recent", defaultValue="false") String recent){
+			@RequestParam(value="recent", defaultValue="false") String recent,
+			@RequestParam(value="approved", defaultValue="false") String approved){
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
@@ -41,8 +42,11 @@ public class QuestionRestController {
 			if(!creatorId.equals("NA") && !recent.equals("false")){
 				questionCrudDTO = questionCRUDController.getRecentQuestions(creatorId);
 			}
-			else if(!id.equals("NA") && !id.equals("all")){
+			else if(!id.equals("NA") && !id.equals("all") && approved.equals("false")){
 				questionCrudDTO = questionCRUDController.getQuestionById(id);
+			}
+			else if(!id.equals("NA") && !id.equals("all") && approved.equals("true")){
+				questionCrudDTO = questionCRUDController.getQuestionCrudDTOByIdLastApprovedVersion(id);
 			}
 			else if(id.equals("all")){
 				questionCrudDTO = questionCRUDController.getAllQuestions();
