@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Entity;
@@ -241,6 +240,14 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		} catch (Exception e) {
 			throw new IllegalStateTransitionException(e);
 		}
+	}
+	
+	@Override
+	public long countMetricByState(String state) throws BadInputException, NotFoundException{
+		if (state == null) {
+			throw new BadInputException("State cannot be null");
+		}
+		return metricRepository.countByState(State.valueOf(state));
 	}
 
 }

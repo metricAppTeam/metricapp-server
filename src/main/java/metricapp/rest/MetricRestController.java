@@ -145,5 +145,18 @@ public class MetricRestController {
 			return new ResponseEntity<MetricCrudDTO>(rensponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@RequestMapping(value="/count",method = RequestMethod.GET)
+	public ResponseEntity<MetricCrudDTO> getCountMetricDTOByState(@RequestParam(value="state") String state){
+		MetricCrudDTO dto = new MetricCrudDTO();
+		try {
+			dto.setCount(metricCRUDController.countMetricByState(state));
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+		} catch (BadInputException | NotFoundException e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }

@@ -16,7 +16,7 @@ public class MetricCrudDTO extends MessageDTO {
 	 * 
 	 */
 	
-	
+	private long count;
 	private static final long serialVersionUID = 8336783368496627133L;
 	public ArrayList<MetricDTO> metricsDTO;
 	
