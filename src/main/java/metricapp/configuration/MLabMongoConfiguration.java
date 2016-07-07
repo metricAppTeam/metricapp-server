@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
@@ -20,15 +19,15 @@ import com.mongodb.WriteConcern;
 //@PropertySource("application.properties")
 public class MLabMongoConfiguration {
 
-	@Value("${mLab.metricappdb.user}")
+	@Value("${metricappdb.user}")
 	protected String user;
-	@Value("${mLab.metricappdb.password}")
+	@Value("${metricappdb.password}")
 	protected String password;
-	@Value("${mLab.metricappdb.databaseName}")
+	@Value("${metricappdb.databaseName}")
 	protected String database;
-	@Value("${mLab.metricappdb.port}")
+	@Value("${metricappdb.port}")
 	protected Integer port;
-	@Value("${mLab.metricappdb.address}")
+	@Value("${metricappdb.address}")
 	protected String host;
 	
 	

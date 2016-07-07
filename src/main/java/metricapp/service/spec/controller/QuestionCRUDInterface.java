@@ -2,7 +2,6 @@ package metricapp.service.spec.controller;
 
 import java.io.IOException;
 
-import metricapp.dto.metric.MetricDTO;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.exception.BadInputException;
