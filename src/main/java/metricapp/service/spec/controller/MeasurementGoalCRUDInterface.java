@@ -35,5 +35,7 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO changeStateMeasurementGoal(MeasurementGoalDTO dto)
 			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException;
+
+	long countMeasurementGoalByState(String state) throws BadInputException, NotFoundException;
 		
 }
