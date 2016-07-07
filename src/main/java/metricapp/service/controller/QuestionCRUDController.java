@@ -119,7 +119,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	
 	@Override
 	public QuestionCrudDTO getQuestionByFocus(String focus) throws NotFoundException {
-		ArrayList<Question> questionList = questionRepository.findQuestionByFocus(focus);
+		ArrayList<Question> questionList = questionRepository.findQuestionByFocusLike(focus);
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		Iterator<Question> questionIter = questionList.iterator();
@@ -137,7 +137,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	
 	@Override
 	public QuestionCrudDTO getQuestionBySubject(String subject) throws NotFoundException {
-		ArrayList<Question> questionList = questionRepository.findQuestionBySubject(subject);
+		ArrayList<Question> questionList = questionRepository.findQuestionBySubjectLike(subject);
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		Iterator<Question> questionIter = questionList.iterator();
