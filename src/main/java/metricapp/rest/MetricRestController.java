@@ -30,7 +30,8 @@ public class MetricRestController {
 	public ResponseEntity<MetricCrudDTO> getMetricDTO(@RequestParam(value = "id", defaultValue = "NA") String id,
 			@RequestParam(value = "version", defaultValue = "NA") String version,
 			@RequestParam(value = "userid", defaultValue = "NA") String userId,
-			@RequestParam(value = "approved", defaultValue = "false") String approved) {
+			@RequestParam(value = "approved", defaultValue = "false") String approved,
+			@RequestParam(value = "state", defaultValue = "NA") String state) {
 		MetricCrudDTO dto = new MetricCrudDTO();
 		try {
 			if (!userId.equals("NA")) {
@@ -48,7 +49,12 @@ public class MetricRestController {
 			if (!id.equals("NA")) {
 				dto = metricCRUDController.getMetricById(id);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
-			} else {
+			} 
+			if (!userId.equals("NA") && !state.equals("NA")) {
+				dto = metricCRUDController.getMetricByState(state,id);
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			} 
+			else {
 				return new ResponseEntity<MetricCrudDTO>(HttpStatus.BAD_REQUEST);
 			}
 		} catch (BadInputException e) {
@@ -149,10 +155,11 @@ public class MetricRestController {
 	}
 	
 	@RequestMapping(value="/count",method = RequestMethod.GET)
-	public ResponseEntity<MetricCrudDTO> getCountMetricDTOByState(@RequestParam(value="state") String state){
+	public ResponseEntity<MetricCrudDTO> getCountMetricDTOByState(@RequestParam(value="state") String state,
+			@RequestParam(value="userid") String userId){
 		MetricCrudDTO dto = new MetricCrudDTO();
 		try {
-			dto.setCount(metricCRUDController.countMetricByState(state));
+			dto.setCount(metricCRUDController.countMetricByState(state,userId));
 			return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 		} catch (BadInputException | NotFoundException e) {
 			e.printStackTrace();

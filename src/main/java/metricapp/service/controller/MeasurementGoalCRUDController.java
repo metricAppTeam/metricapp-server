@@ -61,11 +61,11 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
-	public long countMeasurementGoalByState(String state) throws BadInputException, NotFoundException{
+	public long countMeasurementGoalByState(String state, String userId) throws BadInputException, NotFoundException{
 		if (state == null) {
 			throw new BadInputException("State cannot be null");
 		}
-		return measurementGoalRepository.countByState(State.valueOf(state));
+		return measurementGoalRepository.countByStateAndMetricatorId(State.valueOf(state), userId);
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		}
 		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByMetricatorId(userId);
 		if (measurementGoals.size() == 0) {
-			throw new NotFoundException("User " + userId + " has no Metrics");
+			throw new NotFoundException("User " + userId + " has no Measurement Goals");
 		}
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
@@ -127,7 +127,25 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return dto;
 	}
 	
-	
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByState(String state, String userId) throws NotFoundException, BadInputException {
+		if (state == null) {
+			throw new BadInputException("MeasurementGoal state cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByStateAndMetricatorId(State.valueOf(state),userId);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("State " + state + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		dto.setRequest("MeasurementGoal of " + userId);
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
+	}
 	
 	public MeasurementGoal createMeasurementGoal(MeasurementGoal goal){
 		return measurementGoalRepository.save(goal);

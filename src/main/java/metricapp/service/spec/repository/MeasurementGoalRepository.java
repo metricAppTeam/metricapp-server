@@ -17,5 +17,7 @@ public interface MeasurementGoalRepository extends MongoRepository<MeasurementGo
 		
 	public ArrayList<MeasurementGoal> findByMetricatorId(String id);
 	
-	public Long countByState(State state);
+	public Long countByStateAndMetricatorId(State state, String id);
+	
+	public ArrayList<MeasurementGoal> findByStateAndMetricatorId(State state, String id);	
 }

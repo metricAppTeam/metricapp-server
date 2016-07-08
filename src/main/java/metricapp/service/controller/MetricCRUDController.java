@@ -1,15 +1,13 @@
 package metricapp.service.controller;
 
 import java.io.IOException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.annotation.Nonnull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Entity;
@@ -243,11 +241,31 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 	
 	@Override
-	public long countMetricByState(String state) throws BadInputException, NotFoundException{
+	public long countMetricByState(String state, String userId) throws BadInputException, NotFoundException{
 		if (state == null) {
 			throw new BadInputException("State cannot be null");
 		}
-		return metricRepository.countByState(State.valueOf(state));
+		return metricRepository.countByStateAndMetricatorId(State.valueOf(state), userId);
+	}
+	
+	@Override
+	public MetricCrudDTO getMetricByState(String state, String userId) throws NotFoundException, BadInputException {
+		if (state == null) {
+			throw new BadInputException("Metric state cannot be null");
+		}
+		ArrayList<Metric> metrics = metricRepository.findByStateAndMetricatorId(State.valueOf(state),userId);
+		if (metrics.size() == 0) {
+			throw new NotFoundException("State " + state + " has no Metrics");
+		}
+		
+		MetricCrudDTO dto = new MetricCrudDTO();
+		dto.setRequest("MeasurementGoal of " + userId);
+		Iterator<Metric> metricIter = metrics.iterator();
+		while (metricIter.hasNext()) {
+			dto.addMetricToList(modelMapperFactory.getStandardModelMapper().map(metricIter.next(), MetricDTO.class));
+		}
+		
+		return dto;
 	}
 
 }

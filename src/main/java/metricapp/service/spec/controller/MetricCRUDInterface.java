@@ -22,7 +22,7 @@ public interface MetricCRUDInterface {
 	public MetricCrudDTO changeStateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException ;
 	public MetricCrudDTO getMetricCrudDTOByIdLastApprovedVersion(String id)
 			throws BadInputException, NotFoundException, BusException, IOException;
-	long countMetricByState(String state) throws BadInputException, NotFoundException;
-
+	long countMetricByState(String state, String userId) throws BadInputException, NotFoundException;
+	MetricCrudDTO getMetricByState(String state, String userId) throws NotFoundException, BadInputException;
 		
 }

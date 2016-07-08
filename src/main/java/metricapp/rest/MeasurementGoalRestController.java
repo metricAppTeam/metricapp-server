@@ -29,7 +29,8 @@ public class MeasurementGoalRestController {
 	public ResponseEntity<MeasurementGoalCrudDTO> getMeasurementGoalDTO(@RequestParam(value="id", defaultValue = "NA") String id,
 			@RequestParam(value = "version", defaultValue = "NA") String version,
 			@RequestParam(value = "userid", defaultValue = "NA") String userId,
-			@RequestParam(value = "approved", defaultValue = "false") String approved){
+			@RequestParam(value = "approved", defaultValue = "false") String approved,
+			@RequestParam(value = "state", defaultValue = "NA") String state){
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
@@ -48,7 +49,12 @@ public class MeasurementGoalRestController {
 			if (!id.equals("NA")) {
 				dto = controller.getMeasurementGoalById(id);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
-			} else {
+			}
+			if (!userId.equals("NA") && !state.equals("NA")) {
+				dto = controller.getMeasurementGoalByState(state, userId);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else {
 				return new ResponseEntity<MeasurementGoalCrudDTO>(HttpStatus.BAD_REQUEST);
 			}
 		} catch (BadInputException e) {
@@ -67,10 +73,11 @@ public class MeasurementGoalRestController {
 	}
 	
 	@RequestMapping(value="/count",method = RequestMethod.GET)
-	public ResponseEntity<MeasurementGoalCrudDTO> getCountMeasurementGoalDTOByState(@RequestParam(value="state") String state){
+	public ResponseEntity<MeasurementGoalCrudDTO> getCountMeasurementGoalDTOByState(@RequestParam(value="state") String state,
+			@RequestParam(value="userid") String userId){
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
-			dto.setCount(controller.countMeasurementGoalByState(state));
+			dto.setCount(controller.countMeasurementGoalByState(state,userId));
 			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 		} catch (BadInputException | NotFoundException e) {
 			e.printStackTrace();
