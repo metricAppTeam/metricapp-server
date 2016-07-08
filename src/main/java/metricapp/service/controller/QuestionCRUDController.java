@@ -1,13 +1,13 @@
 package metricapp.service.controller;
 
 import java.io.IOException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.Entity;
@@ -248,6 +248,34 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		return questionCrudDTO;
 	}
 
+	@Override
+	public long countQuestionByState(String state, String userId) throws BadInputException, NotFoundException{
+		if (state == null) {
+			throw new BadInputException("State cannot be null");
+		}
+		return questionRepository.countByStateAndCreatorId(State.valueOf(state), userId);
+	}
+	
+	@Override
+	public QuestionCrudDTO getQuestionByState(String state, String userId) throws NotFoundException, BadInputException {
+		if (state == null) {
+			throw new BadInputException("MeasurementGoal state cannot be null");
+		}
+		ArrayList<Question> questions = questionRepository.findByStateAndCreatorId(State.valueOf(state),userId);
+		if (questions.size() == 0) {
+			throw new NotFoundException("State " + state + " has no Questions");
+		}
+		
+		QuestionCrudDTO dto = new QuestionCrudDTO();
+		dto.setRequest("Question of " + userId);
+		Iterator<Question> questionIter = questions.iterator();
+		while (questionIter.hasNext()) {
+			dto.addQuestionToList(modelMapperFactory.getStandardModelMapper().map(questionIter.next(), QuestionDTO.class));
+		}
+		
+		return dto;
+	}
+	
 	@Override
 	public void deleteQuestionById(String id) throws IllegalStateTransitionException, NotFoundException {
 				

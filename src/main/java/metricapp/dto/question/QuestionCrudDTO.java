@@ -16,6 +16,8 @@ public class QuestionCrudDTO extends MessageDTO{
 	/**
 	 * 
 	 */
+	
+	private long count;
 	private static final long serialVersionUID = 76448360483795694L;
 	
 	private List<QuestionDTO> questionList;

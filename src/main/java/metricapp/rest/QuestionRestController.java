@@ -1,6 +1,7 @@
 package metricapp.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +35,8 @@ public class QuestionRestController {
 			@RequestParam(value="subject", defaultValue="NA") String subject,
 			@RequestParam(value="tag", defaultValue="NA") String tag,
 			@RequestParam(value="recent", defaultValue="false") String recent,
-			@RequestParam(value="approved", defaultValue="false") String approved){
+			@RequestParam(value="approved", defaultValue="false") String approved,
+			@RequestParam(value="state", defaultValue="NA") String state){
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
@@ -63,6 +65,9 @@ public class QuestionRestController {
 			else if(!tag.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionByTag(tag);
 			}
+			else if(!creatorId.equals("NA") &&!state.equals("NA")){
+				questionCrudDTO = questionCRUDController.getQuestionByState(state, creatorId);
+			}
 			else{
 				questionCrudDTO.setError("No parameters given");
 				return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.BAD_REQUEST);
@@ -82,6 +87,21 @@ public class QuestionRestController {
 			return new ResponseEntity<QuestionCrudDTO>(questionCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+	}
+	
+
+	@RequestMapping(value="/count",method = RequestMethod.GET)
+	public ResponseEntity<QuestionCrudDTO> getCountQuestionByState(@RequestParam(value="state") String state,
+			@RequestParam(value="userid") String userId){
+		QuestionCrudDTO dto = new QuestionCrudDTO();
+		try {
+			dto.setCount(questionCRUDController.countQuestionByState(state, userId));
+			return new ResponseEntity<QuestionCrudDTO>(dto, HttpStatus.OK);
+		} catch (BadInputException | NotFoundException e) {
+			e.printStackTrace();
+			dto.setError(e.getMessage());
+			return new ResponseEntity<QuestionCrudDTO>(dto, HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)

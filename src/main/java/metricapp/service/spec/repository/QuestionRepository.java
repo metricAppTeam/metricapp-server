@@ -22,6 +22,9 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 	@Query("{'tags': { $in : [?0] } }")
 	public ArrayList<Question> findQuestionByTag(String tag);
 	
-	public Long countByState(State state);
+	public Long countByStateAndCreatorId(State state, String id);
+	
+	public ArrayList<Question> findByStateAndCreatorId(State state, String id);
+
 	
 }
