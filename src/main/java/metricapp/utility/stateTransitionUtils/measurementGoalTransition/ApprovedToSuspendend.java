@@ -9,7 +9,7 @@ public class ApprovedToSuspendend extends MeasurementGoalStateTransitionCommand{
 	}
 	
 	@Override
-	public void execute() {
+	public void execute() throws Exception {
 		super.execute();
 		
 		System.out.println("approved to suspended");

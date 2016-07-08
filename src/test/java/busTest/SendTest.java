@@ -87,7 +87,7 @@ public class SendTest {
 		metric1.setState(State.Approved);
 		metric1.setVersionBus(null);
 		
-		//send an elemnt to bus
+		//send an element to bus
 		Metric metric2 = (Metric) busApprovedElementRepository.sendApprovedElement(metric1, Metric.class);
 		
 		//change something

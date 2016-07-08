@@ -1,6 +1,8 @@
 package metricapp.utility.stateTransitionUtils.measurementGoalTransition;
 
 import metricapp.entity.Element;
+import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.service.repository.BusApprovedElementRepository;
 
 public class PendingToApproved extends MeasurementGoalStateTransitionCommand{
 
@@ -9,10 +11,13 @@ public class PendingToApproved extends MeasurementGoalStateTransitionCommand{
 	}
 
 	@Override
-	public void execute() {
+	public void execute() throws Exception{
 		super.execute();
 		System.out.println("pending to approved");
-		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote() \n TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion
+		
+		String busVersion=BusApprovedElementRepository.getInstance().sendApprovedElement(after, MeasurementGoal.class).getVersionBus();
+		after.setVersionBus(busVersion);
+		// TODO alert newMeasurementGoal.getMetricatorId() with newMeasurementGoal.getReleaseNote() \n TODO send to bus the new measurement goal ->need to convert: wipe securekey, change id, ermesLastVersion
 	}
 
 }

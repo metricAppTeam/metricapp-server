@@ -12,7 +12,7 @@ public class OnUpdateQuestionsEndpointToPending extends MeasurementGoalStateTran
 	}
 
 	@Override
-	public void execute() {
+	public void execute() throws Exception {
 		super.execute();
 		
 		System.out.println("onupdate a pending");	

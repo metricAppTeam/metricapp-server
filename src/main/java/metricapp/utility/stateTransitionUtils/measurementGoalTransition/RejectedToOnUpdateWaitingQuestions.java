@@ -9,7 +9,7 @@ public class RejectedToOnUpdateWaitingQuestions extends MeasurementGoalStateTran
 	}
 
 	@Override
-	public void execute() {
+	public void execute() throws Exception {
 		super.execute();
 		
 		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote()
