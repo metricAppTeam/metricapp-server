@@ -16,7 +16,7 @@ public class QuestionStateTransitionCommand implements StateTransitionCommand {
 	}
 	
 	
-	public void execute(){
+	public void execute() throws Exception{
 		if (before == null || after == null){
 			throw new NullPointerException("Command needs to be initialized!");
 		}

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +19,5 @@ public class BusDTO implements Serializable{
     public String originAdress;
     public String id;
     public String resolvedAdress;
+    
 }

@@ -1,8 +1,11 @@
 package metricapp.service.spec.controller;
 
+import java.io.IOException;
+
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
@@ -19,5 +22,8 @@ public interface QuestionCRUDInterface {
 	public QuestionCrudDTO getRecentQuestions(String creatorId);
 	public void deleteQuestionById(String id) throws BadInputException, NotFoundException, IllegalStateTransitionException;
 	public void deleteAllQuestions();
+	public QuestionDTO getQuestionByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException;
+	public QuestionCrudDTO getQuestionCrudDTOByIdLastApprovedVersion(String id)
+			throws BadInputException, NotFoundException, BusException, IOException;
 	
 }

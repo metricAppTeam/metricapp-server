@@ -9,7 +9,7 @@ public class OnUpdateToPending extends QuestionStateTransitionCommand{
 	}
 	
 	@Override
-	public void execute(){
+	public void execute() throws Exception{
 		super.execute();
 		System.out.println("Question state switched from 'OnUpdate' to 'Pending'");
 	}

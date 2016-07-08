@@ -9,7 +9,7 @@ public class RejectedToOnUpdate extends QuestionStateTransitionCommand {
 	}
 
 	@Override
-	public void execute(){
+	public void execute() throws Exception{
 		super.execute();
 		System.out.println("Question state switched from 'Rejected' to 'OnUpdate'");
 	}

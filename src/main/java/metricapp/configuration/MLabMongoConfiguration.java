@@ -16,6 +16,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 
 @Configuration
+//@PropertySource("application.properties")
 public class MLabMongoConfiguration {
 
 	@Value("${metricappdb.user}")

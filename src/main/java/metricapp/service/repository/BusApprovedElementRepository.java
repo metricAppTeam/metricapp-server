@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import metricapp.entity.Element;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
+import metricapp.entity.external.KeyValue;
 import metricapp.entity.external.PointerBus;
 import metricapp.entity.external.RichPointerBus;
 import metricapp.entity.measurementGoal.MeasurementGoal;
@@ -117,7 +118,7 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		
 		//read from the bus
 		String content = busRepository.read(pointerBus).get(0);
-
+		
 		//map received json to new element of the class clazz
 		T el = mapper.fromJson(mapper.getMapper().readTree(content).get(0).get("payload").toString(), clazz);
 		//set the correct version
@@ -193,14 +194,24 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 
 		pointerBus = new RichPointerBus();
 		pointerBus.setPayload(element);
-		pointerBus.setBusTags(element.getTags());
 		//TODO change this, tags must be useful to do queries. 
 		pointerBus.setInstance(element.getId());
 		// TODO change secure key in something safer (my idea is make a secret password in file /resource/application.properties. To generate this secret token we can do MD5(password XOR id)) In this way we have only to know the password, and not all the secret tokens.
 		pointerBus.setObjIdLocalToPhase(element.getId());
 		pointerBus.setTypeObj(element.getEntityType().name());
 
-		return pointerBus;
+		switch (element.getEntityType()){
+		case MeasurementGoal:
+			pointerBus.getBusTags().add(new KeyValue("OrganizationalGoalId", ((MeasurementGoal) element).getOrganizationalGoalId().getInstance()));
+			return pointerBus;
+		case Metric:
+			return pointerBus;
+		case Question:
+			return pointerBus;
+		default:
+			return pointerBus;
+		}
+		
 	}
 
 	/**
@@ -232,7 +243,6 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 
 		element.setSecretToken(pointer.getObjIdLocalToPhase());
 		element.setEntityType(Entity.valueOf(pointer.getTypeObj()));
-		element.setTags(pointer.getBusTags());
 		element.setVersionBus(pointer.getBusVersion());
 		return element;
 	}
