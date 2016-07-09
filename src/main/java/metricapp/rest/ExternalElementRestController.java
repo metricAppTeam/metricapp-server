@@ -46,19 +46,19 @@ public class ExternalElementRestController {
         } catch (IOException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ContextFactorDTO>(dto, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ContextFactorDTO>( HttpStatus.BAD_REQUEST);
         } catch (BusException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ContextFactorDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<ContextFactorDTO>( HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (NotFoundException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ContextFactorDTO>(dto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<ContextFactorDTO>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ContextFactorDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<ContextFactorDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -84,19 +84,19 @@ public class ExternalElementRestController {
         } catch (IOException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<AssumptionDTO>(dto, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<AssumptionDTO>(HttpStatus.BAD_REQUEST);
         } catch (BusException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<AssumptionDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<AssumptionDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (NotFoundException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<AssumptionDTO>(dto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<AssumptionDTO>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<AssumptionDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<AssumptionDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -122,19 +122,19 @@ public class ExternalElementRestController {
         } catch (IOException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<OrganizationalGoalDTO>(dto, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<OrganizationalGoalDTO>( HttpStatus.BAD_REQUEST);
         } catch (BusException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<OrganizationalGoalDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<OrganizationalGoalDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (NotFoundException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<OrganizationalGoalDTO>(dto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<OrganizationalGoalDTO>( HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<OrganizationalGoalDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<OrganizationalGoalDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -161,19 +161,19 @@ public class ExternalElementRestController {
         } catch (IOException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<InstanceProjectDTO>(dto, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<InstanceProjectDTO>(HttpStatus.BAD_REQUEST);
         } catch (BusException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<InstanceProjectDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<InstanceProjectDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (NotFoundException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<InstanceProjectDTO>(dto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<InstanceProjectDTO>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<InstanceProjectDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<InstanceProjectDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -191,15 +191,15 @@ public class ExternalElementRestController {
         } catch (IOException e) {
             dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ExternalElementsDTO>(dto, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ExternalElementsDTO>(HttpStatus.BAD_REQUEST);
         } catch (BusException e) {
             dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ExternalElementsDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<ExternalElementsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             dto.setError(e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<ExternalElementsDTO>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<ExternalElementsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
