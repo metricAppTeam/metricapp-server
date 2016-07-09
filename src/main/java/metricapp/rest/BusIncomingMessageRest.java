@@ -38,6 +38,7 @@ public class BusIncomingMessageRest {
 			MeasurementGoal goal = new MeasurementGoal();
 			goal.setState(State.Created);
 			goal.setEntityType(Entity.MeasurementGoal);
+			goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
 			goal.setOrganizationalGoalId(organizationalGoalPointer);
 			measurementGoalCrudController.createMeasurementGoal(goal);
 		} catch (IOException e) {
