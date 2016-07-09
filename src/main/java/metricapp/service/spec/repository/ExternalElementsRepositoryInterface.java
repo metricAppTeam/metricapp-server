@@ -31,4 +31,5 @@ public interface ExternalElementsRepositoryInterface {
 
 	public ArrayList<Assumption> getAssumptionsByPointerBusList(List<PointerBus> list) throws IOException, BusException, BadInputException;
 
+    public PointerBus pointerOfIncomingNotificationObject(String data) throws IOException;
 	}

@@ -11,6 +11,8 @@ import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
+import metricapp.utility.JacksonMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,10 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
 	@Autowired
 	private BusApprovedElementInterface busApprovedElementRepository; 
 
-
+	@Autowired
+	private JacksonMapper mapper;
+	
+	
     /**
      * this is the simple method to grab an assumption, version value could be null (last version is received)
      * @param id
@@ -192,6 +197,10 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         }
 
         return newList;
+    }
+    
+    public PointerBus pointerOfIncomingNotificationObject(String data) throws IOException{
+    	return mapper.fromJson(data, PointerBus.class);
     }
 
     // TODO
