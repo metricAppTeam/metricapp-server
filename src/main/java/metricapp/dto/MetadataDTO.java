@@ -53,11 +53,15 @@ public class MetadataDTO implements Serializable{
 	}
 	@JsonIgnore
 	public void setCreationDate(LocalDate date){
-		this.creationDate = date.toString();
+		if(date!=null){
+			this.creationDate = date.toString();
+			}
 	}
 	@JsonIgnore
 	public void setLastVersionDate(LocalDate date){
-		this.lastVersionDate = date.toString();
+		if(date != null){
+			this.lastVersionDate = date.toString();
+			}
 	}
 	
 	
