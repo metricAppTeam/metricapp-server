@@ -101,6 +101,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         request.setBusVersion(version);
         request.setTypeObj(Entity.InstanceProject.name());
         request.setInstance(id);
+        request.setBusVersion("");
 
         return (InstanceProject) busApprovedElementRepository.getApprovedElement(request, InstanceProject.class);
 	}

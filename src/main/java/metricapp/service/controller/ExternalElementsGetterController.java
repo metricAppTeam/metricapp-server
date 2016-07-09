@@ -109,7 +109,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
     public AssumptionDTO getAssumptionByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
-                    repository.getAssumptionByIdAndVersion(pointerBus.getObjIdLocalToPhase(), pointerBus.getBusVersion()),
+                    repository.getAssumptionByIdAndVersion(pointerBus.getInstance(), pointerBus.getBusVersion()),
                     AssumptionDTO.class);
         }catch(Exception e){
             throw new NotFoundException();
@@ -119,7 +119,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
     public ContextFactorDTO getContextFactorByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
-                    repository.getContextFactorByIdAndVersion(pointerBus.getObjIdLocalToPhase(), pointerBus.getBusVersion()),
+                    repository.getContextFactorByIdAndVersion(pointerBus.getInstance(), pointerBus.getBusVersion()),
                     ContextFactorDTO.class);
         }catch(Exception e){
             throw new NotFoundException();
@@ -129,7 +129,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
     public OrganizationalGoalDTO getOrganizationalGoalByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
-                    repository.getOrganizationalGoalByIdAndVersion(pointerBus.getObjIdLocalToPhase(), pointerBus.getBusVersion()),
+                    repository.getOrganizationalGoalByIdAndVersion(pointerBus.getInstance(), pointerBus.getBusVersion()),
                     OrganizationalGoalDTO.class);
         }catch(Exception e){
             throw new NotFoundException();
@@ -139,7 +139,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
     public InstanceProjectDTO getInstanceProjectByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
-                    repository.getInstanceProjectByIdAndVersion(pointerBus.getObjIdLocalToPhase(), pointerBus.getBusVersion()),
+                    repository.getInstanceProjectByIdAndVersion(pointerBus.getInstance(), pointerBus.getBusVersion()),
                     InstanceProjectDTO.class);
         }catch(Exception e){
             throw new NotFoundException();
