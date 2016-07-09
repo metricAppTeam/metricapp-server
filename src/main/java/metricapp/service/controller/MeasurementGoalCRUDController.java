@@ -342,9 +342,6 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		
 		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
 		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
-		if (oldGoal == null) {
-			throw new NotFoundException();
-		}
 
 		try {
 			dtoCrud.addMeasurementGoalToList(measurementGoalToDTO(updateMeasurementGoal(newGoal)));
