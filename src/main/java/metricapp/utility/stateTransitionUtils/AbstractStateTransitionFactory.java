@@ -4,7 +4,7 @@ import metricapp.entity.Element;
 import metricapp.entity.Entity;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
-import metricapp.utility.stateTransitionUtils.measurementGoalTransition.MeasurementGoalStateTransitionFactory;
+import metricapp.utility.stateTransitionUtils.measurementgoalTransition.MeasurementGoalStateTransitionFactory;
 import metricapp.utility.stateTransitionUtils.metricTransition.MetricStateTransitionFactory;
 import metricapp.utility.stateTransitionUtils.questionTransition.QuestionStateTransitionFactory;
 
