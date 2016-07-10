@@ -89,12 +89,20 @@ public class Element extends Object {
 
 	@JsonGetter("creationDate")
 	public String getCreationDateString(){
-		return creationDate.toString();
+		if(lastVersionDate == null){
+			return null;
+		}else{
+			return creationDate.toString();
+		}
 	}
 	
 	@JsonGetter("lastVersionDate")
 	public String getLastVersionDateString(){
-		return lastVersionDate.toString();
+		if(lastVersionDate == null){
+			return null;
+		}else{
+			return lastVersionDate.toString();
+		}
 	}
 	
 		

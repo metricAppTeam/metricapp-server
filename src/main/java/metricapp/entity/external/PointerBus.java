@@ -1,9 +1,9 @@
 package metricapp.entity.external;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import metricapp.utility.RandomGenerator;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,15 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class PointerBus {
 
 	public String objIdLocalToPhase;
 	public String typeObj;
 
-	@Id
+	
 	public String instance;
 
-	@Version
+	
 	public String busVersion;
 	@JsonProperty("tags")
 	public List<KeyValue> busTags;

@@ -304,6 +304,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			throws IllegalStateTransitionException, NotFoundException {
 		
 		newGoal.setLastVersionDate(LocalDate.now());
+		System.out.println(oldGoal.getState().toString()+"------>"+newGoal.getState().toString());
 		if (oldGoal.getState().equals(newGoal.getState())) {
 			 return;
 			 }
@@ -329,18 +330,19 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			throw new BadInputException("Measurement Goal must have a link to an Organizational Goal");
 		}
 		
-		MeasurementGoal oldGoal = measurementGoalRepository.findById(dto.getMetadata().getId());
-		MeasurementGoal newGoal = modelMapperFactory.getStandardModelMapper().map(oldGoal, MeasurementGoal.class);
+
+		MeasurementGoal oldGoal = new MeasurementGoal();
+		MeasurementGoal newGoal =measurementGoalRepository.findById(dto.getMetadata().getId());
+		oldGoal.setState(newGoal.getState());
 		
 		newGoal.setState(dto.getMetadata().getState());
 		newGoal.setReleaseNote(dto.getMetadata().getReleaseNote());
+		oldGoal.setVersion(newGoal.getVersion());
+
 		stateTransition(oldGoal, newGoal);
 		
 		MeasurementGoalCrudDTO dtoCrud = new MeasurementGoalCrudDTO();
 		dtoCrud.setRequest("update MeasurementGoal id" + dto.getMetadata().getId());
-		if (oldGoal == null) {
-			throw new NotFoundException();
-		}
 
 		try {
 			dtoCrud.addMeasurementGoalToList(measurementGoalToDTO(updateMeasurementGoal(newGoal)));

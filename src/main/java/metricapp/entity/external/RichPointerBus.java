@@ -18,5 +18,9 @@ public class RichPointerBus extends PointerBus {
 
 	private Object payload;
 	
+	public RichPointerBus(){
+		super();
+	}
+	
 	
 }

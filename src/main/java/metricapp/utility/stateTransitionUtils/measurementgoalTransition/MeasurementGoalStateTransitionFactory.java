@@ -1,4 +1,4 @@
-package metricapp.utility.stateTransitionUtils.measurementGoalTransition;
+package metricapp.utility.stateTransitionUtils.measurementgoalTransition;
 
 import metricapp.entity.Entity;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
