@@ -20,5 +20,7 @@ public interface MetricRepository extends MongoRepository<Metric, String>{
 	public Long countByStateAndMetricatorId(State state,String id);
 	
 	public ArrayList<Metric> findByStateAndMetricatorId(State state,String id);
+
+	public ArrayList<Metric> findByState(State state);
 	
 }

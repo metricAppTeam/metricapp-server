@@ -249,7 +249,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 	}
 	
 	@Override
-	public MetricCrudDTO getMetricByState(String state, String userId) throws NotFoundException, BadInputException {
+	public MetricCrudDTO getMetricByStateAndMetricatorId(String state, String userId) throws NotFoundException, BadInputException {
 		if (state == null) {
 			throw new BadInputException("Metric state cannot be null");
 		}
@@ -259,7 +259,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		}
 		
 		MetricCrudDTO dto = new MetricCrudDTO();
-		dto.setRequest("MeasurementGoal of " + userId);
+		dto.setRequest("Metric of " + userId);
 		Iterator<Metric> metricIter = metrics.iterator();
 		while (metricIter.hasNext()) {
 			dto.addMetricToList(modelMapperFactory.getStandardModelMapper().map(metricIter.next(), MetricDTO.class));
@@ -267,5 +267,25 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		
 		return dto;
 	}
+	
+	@Override
+	public MetricCrudDTO getMetricByState(String state) throws NotFoundException, BadInputException {
+		if (state == null) {
+			throw new BadInputException("Metric state cannot be null");
+		}
+		ArrayList<Metric> metrics = metricRepository.findByState(State.valueOf(state));
+		if (metrics.size() == 0) {
+			throw new NotFoundException("State " + state + " has no Metrics");
+		}
+		
+		MetricCrudDTO dto = new MetricCrudDTO();
+		Iterator<Metric> metricIter = metrics.iterator();
+		while (metricIter.hasNext()) {
+			dto.addMetricToList(modelMapperFactory.getStandardModelMapper().map(metricIter.next(), MetricDTO.class));
+		}
+		
+		return dto;
+	}
+
 
 }

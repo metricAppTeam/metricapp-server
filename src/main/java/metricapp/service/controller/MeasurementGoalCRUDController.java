@@ -74,6 +74,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			throw new BadInputException("MeasurementGoal id cannot be null");
 		}
 		// TODO get from bus
+		//MeasurementGoal last =busApprovedElementRepository.getLastApprovedElement(id, MeasurementGoal.class); 
 		MeasurementGoal measurementGoal = null;
 		if (measurementGoal == null) {
 			throw new NotFoundException("Approved MeasurementGoal with id " + id + "is not available");

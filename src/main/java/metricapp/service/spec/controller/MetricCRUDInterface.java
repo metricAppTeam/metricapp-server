@@ -23,6 +23,8 @@ public interface MetricCRUDInterface {
 	public MetricCrudDTO getMetricCrudDTOByIdLastApprovedVersion(String id)
 			throws BadInputException, NotFoundException, BusException, IOException;
 	long countMetricByState(String state, String userId) throws BadInputException, NotFoundException;
-	MetricCrudDTO getMetricByState(String state, String userId) throws NotFoundException, BadInputException;
+	MetricCrudDTO getMetricByState(String state) throws NotFoundException, BadInputException;
+	MetricCrudDTO getMetricByStateAndMetricatorId(String state, String userId)
+			throws NotFoundException, BadInputException;
 		
 }

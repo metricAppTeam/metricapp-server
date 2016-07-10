@@ -51,7 +51,11 @@ public class MetricRestController {
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			} 
 			if (!userId.equals("NA") && !state.equals("NA")) {
-				dto = metricCRUDController.getMetricByState(state,id);
+				dto = metricCRUDController.getMetricByStateAndMetricatorId(state,id);
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (userId.equals("NA") && !state.equals("NA")) {
+				dto = metricCRUDController.getMetricByState(state);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			} 
 			else {
