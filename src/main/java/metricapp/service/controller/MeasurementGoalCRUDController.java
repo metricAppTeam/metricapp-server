@@ -109,6 +109,28 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByQuestionerId(String questionerId) throws BadInputException, NotFoundException{
+		
+		if(questionerId == null){
+			throw new BadInputException("Questioner id cannot be null");
+		}
+		
+		MeasurementGoalCrudDTO measurementGoalCrudDTO = new MeasurementGoalCrudDTO();
+		
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoalRepository.findByQuestionerId(questionerId).iterator();
+		
+		if(!measurementGoalIter.hasNext()){
+			throw new NotFoundException("There are not measurement goals for the questioner");
+		}
+		
+		while(measurementGoalIter.hasNext()){
+			measurementGoalCrudDTO.addMeasurementGoalToList(modelMapperFactory.getLooseModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}	
+		
+		return measurementGoalCrudDTO;
+	}
+	
+	@Override
 	public MeasurementGoalCrudDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException {
 		if (userId == null) {
 			throw new BadInputException("MeasurementGoal userId cannot be null");

@@ -40,5 +40,8 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getMeasurementGoalByState(String state, String userId) throws NotFoundException, BadInputException;
 
+	MeasurementGoalCrudDTO getMeasurementGoalByQuestionerId(String questionerId)
+			throws BadInputException, NotFoundException;
+
 		
 }

@@ -65,8 +65,11 @@ public class QuestionRestController {
 			else if(!tag.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionByTag(tag);
 			}
-			else if(!creatorId.equals("NA") &&!state.equals("NA")){
-				questionCrudDTO = questionCRUDController.getQuestionByState(state, creatorId);
+			else if(!creatorId.equals("NA") && !state.equals("NA")){
+				questionCrudDTO = questionCRUDController.getQuestionByStateAndCreatorId(state, creatorId);
+			}
+			else if(!state.equals("NA")){
+				questionCrudDTO = questionCRUDController.getQuestionByState(state);
 			}
 			else{
 				questionCrudDTO.setError("No parameters given");

@@ -26,5 +26,7 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 	
 	public ArrayList<Question> findByStateAndCreatorId(State state, String id);
 
+	public ArrayList<Question> findByState(State state);
+
 	
 }

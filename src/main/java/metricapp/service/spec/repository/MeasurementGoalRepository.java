@@ -3,6 +3,7 @@ package metricapp.service.spec.repository;
 import java.util.ArrayList;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import metricapp.entity.State;
@@ -19,5 +20,8 @@ public interface MeasurementGoalRepository extends MongoRepository<MeasurementGo
 	
 	public Long countByStateAndMetricatorId(State state, String id);
 	
-	public ArrayList<MeasurementGoal> findByStateAndMetricatorId(State state, String id);	
+	public ArrayList<MeasurementGoal> findByStateAndMetricatorId(State state, String id);
+	
+	@Query("{'questionerId': { $in : [?0] } }")
+	public ArrayList<MeasurementGoal> findByQuestionerId(String questionerId);	
 }

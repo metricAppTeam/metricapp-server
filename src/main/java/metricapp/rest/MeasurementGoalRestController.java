@@ -30,6 +30,7 @@ public class MeasurementGoalRestController {
 			@RequestParam(value = "version", defaultValue = "NA") String version,
 			@RequestParam(value = "userid", defaultValue = "NA") String userId,
 			@RequestParam(value = "approved", defaultValue = "false") String approved,
+			@RequestParam(value = "questionerId", defaultValue = "NA") String questionerId,
 			@RequestParam(value = "state", defaultValue = "NA") String state){
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
@@ -52,6 +53,10 @@ public class MeasurementGoalRestController {
 			}
 			if (!userId.equals("NA") && !state.equals("NA")) {
 				dto = controller.getMeasurementGoalByState(state, userId);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			if (!questionerId.equals("NA")){
+				dto = controller.getMeasurementGoalByQuestionerId(questionerId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
 			else {

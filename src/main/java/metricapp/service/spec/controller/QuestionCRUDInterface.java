@@ -26,6 +26,8 @@ public interface QuestionCRUDInterface {
 	public QuestionCrudDTO getQuestionCrudDTOByIdLastApprovedVersion(String id)
 			throws BadInputException, NotFoundException, BusException, IOException;
 	long countQuestionByState(String state, String userId) throws BadInputException, NotFoundException;
-	QuestionCrudDTO getQuestionByState(String state, String userId) throws NotFoundException, BadInputException;
+	QuestionCrudDTO getQuestionByState(String state) throws NotFoundException, BadInputException;
+	QuestionCrudDTO getQuestionByStateAndCreatorId(String state, String userId)
+			throws NotFoundException, BadInputException;
 	
 }

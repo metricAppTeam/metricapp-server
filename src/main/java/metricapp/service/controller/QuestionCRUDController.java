@@ -257,9 +257,9 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	}
 	
 	@Override
-	public QuestionCrudDTO getQuestionByState(String state, String userId) throws NotFoundException, BadInputException {
+	public QuestionCrudDTO getQuestionByStateAndCreatorId(String state, String userId) throws NotFoundException, BadInputException {
 		if (state == null) {
-			throw new BadInputException("MeasurementGoal state cannot be null");
+			throw new BadInputException("Questioner state cannot be null");
 		}
 		ArrayList<Question> questions = questionRepository.findByStateAndCreatorId(State.valueOf(state),userId);
 		if (questions.size() == 0) {
@@ -268,6 +268,25 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		
 		QuestionCrudDTO dto = new QuestionCrudDTO();
 		dto.setRequest("Question of " + userId);
+		Iterator<Question> questionIter = questions.iterator();
+		while (questionIter.hasNext()) {
+			dto.addQuestionToList(modelMapperFactory.getStandardModelMapper().map(questionIter.next(), QuestionDTO.class));
+		}
+		
+		return dto;
+	}
+	
+	@Override
+	public QuestionCrudDTO getQuestionByState(String state) throws NotFoundException, BadInputException {
+		if (state == null) {
+			throw new BadInputException("MeasurementGoal state cannot be null");
+		}
+		ArrayList<Question> questions = questionRepository.findByState(State.valueOf(state));
+		if (questions.size() == 0) {
+			throw new NotFoundException("State " + state + " has no Questions");
+		}
+		
+		QuestionCrudDTO dto = new QuestionCrudDTO();
 		Iterator<Question> questionIter = questions.iterator();
 		while (questionIter.hasNext()) {
 			dto.addQuestionToList(modelMapperFactory.getStandardModelMapper().map(questionIter.next(), QuestionDTO.class));
