@@ -62,7 +62,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 			throw new BadInputException("Question id cannot be null");
 		}
 		
-		Question last = busApprovedElementRepository.getLastApprovedElement(id, Question.class);
+		Question last = busApprovedElementRepository.getLastApprovedElement(id, Question.class, Entity.Question);
 		
 		return modelMapperFactory.getLooseModelMapper().map(last, QuestionDTO.class);
 	}

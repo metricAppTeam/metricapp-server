@@ -120,7 +120,12 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		String content = busRepository.read(pointerBus).get(0);
 		
 		//map received json to new element of the class clazz
-		T el = mapper.fromJson(mapper.getMapper().readTree(content).get(0).get("payload").toString(), clazz);
+		T el;
+		try{
+			el = mapper.fromJson(mapper.getMapper().readTree(content).get(0).get("payload").toString(), clazz);
+		}catch(NullPointerException e){
+			throw new BusException(e);
+		}
 		//set the correct version
 		el.setVersionBus(mapper.getMapper().readTree(content).get(0).get("busVersion").asText());
 		
@@ -136,10 +141,11 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 	 * @throws BusException
 	 * @throws IOException
 	 */
-	public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz) 
+	public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz, Entity typeObj) 
 			throws BadInputException, BusException, IOException {
 		PointerBus pointer=new PointerBus();
 		pointer.setInstance(id);
+		pointer.setTypeObj(typeObj.name());
 		return getApprovedElement(pointer, clazz);
 	}
 	
@@ -172,7 +178,12 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 			JsonNode actual = iterator.next();
 			
 			//map received json to new element of the class clazz
-			T el = mapper.fromJson(actual.get("payload").toString(), clazz);
+			T el;
+			try{
+				el = mapper.fromJson(actual.get("payload").toString(), clazz);
+			}catch(NullPointerException e){
+				throw new BusException(e);
+			}
 			//set the correct version
 			el.setVersionBus(actual.get("busVersion").asText());
 		}

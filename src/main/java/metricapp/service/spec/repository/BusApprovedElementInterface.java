@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import metricapp.entity.Element;
+import metricapp.entity.Entity;
 import metricapp.entity.external.PointerBus;
 import metricapp.entity.external.RichPointerBus;
 import metricapp.exception.BadInputException;
@@ -28,6 +29,6 @@ public interface BusApprovedElementInterface {
 
 		public Element fromRichPointerBusToElement(RichPointerBus pointer) throws BusException, IOException ;
 
-		public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz) 
+		public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz, Entity typeObj) 
 				throws BadInputException, BusException, IOException;
 }

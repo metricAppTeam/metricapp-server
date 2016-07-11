@@ -74,7 +74,7 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			throw new BadInputException("Metric id cannot be null");
 		}
 		
-		Metric last =busApprovedElementRepository.getLastApprovedElement(id, Metric.class);
+		Metric last =busApprovedElementRepository.getLastApprovedElement(id, Metric.class, Entity.Metric);
 		
 		return modelMapperFactory.getLooseModelMapper().map(last, MetricDTO.class);
 	}
