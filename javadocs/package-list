@@ -22,6 +22,6 @@ metricapp.service.spec.controller
 metricapp.service.spec.repository
 metricapp.utility
 metricapp.utility.stateTransitionUtils
-metricapp.utility.stateTransitionUtils.measurementGoalTransition
+metricapp.utility.stateTransitionUtils.measurementgoalTransition
 metricapp.utility.stateTransitionUtils.metricTransition
 metricapp.utility.stateTransitionUtils.questionTransition
