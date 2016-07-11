@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 @Service
 public class ExternalElementsGetterController implements ExternalElementsGetterInterface{
@@ -65,23 +64,8 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
         InstanceProject instanceProject = repository.getInstanceProjectByIdAndVersion(organizationalGoal.getInstanceProjectId(), null);
         
         //get metrics and questions
-        ArrayList<MetricDTO> metricsDTO = new ArrayList<MetricDTO>();
-        Iterator<PointerBus> itM = measurementGoal.getMetrics().iterator();
-        while(itM.hasNext()){
-        	try {
-				metricsDTO.add(metricController.getMetricByIdLastApprovedVersion(itM.next().getInstance()));
-			} catch (NotFoundException e) {
-			}	
-        }
-        ArrayList<QuestionDTO> questionsDTO = new ArrayList<QuestionDTO>();
-        Iterator<PointerBus> itQ = measurementGoal.getQuestions().iterator();
-        while(itQ.hasNext()){
-        	try {
-				questionsDTO.add(questionController.getQuestionByIdLastApprovedVersion(itQ.next().getInstance()));
-			} catch (NotFoundException e) {
-			}	
-        }
-        
+        ArrayList<MetricDTO> metricsDTO =metricController.getMetricsByPointerBusList(measurementGoal.getMetrics());
+        ArrayList<QuestionDTO> questionsDTO = questionController.getQuestionsByPointerBusList(measurementGoal.getQuestions());
         
         //new Array
         ArrayList<AssumptionDTO> assumptionDTOs ;

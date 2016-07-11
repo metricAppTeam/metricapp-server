@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
+import metricapp.entity.external.PointerBus;
 import metricapp.entity.metric.Metric;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
@@ -104,6 +107,23 @@ public class MetricCRUDController implements MetricCRUDInterface {
 			dto.addMetricToList(modelMapperFactory.getLooseModelMapper().map(metricP.next(), MetricDTO.class));
 		}
 		return dto;
+	}
+	  
+	 
+	@Override
+	/**
+	 * This function returns an array of metrics, it accepts a list of pointer bus. Every Metric is grabbed from bus.
+	 */
+	public ArrayList<MetricDTO> getMetricsByPointerBusList(List<PointerBus> list){
+		ArrayList<MetricDTO> metricsDTO = new ArrayList<MetricDTO>();
+        Iterator<PointerBus> itM = list.iterator();
+        while(itM.hasNext()){
+        	try {
+				metricsDTO.add(this.getMetricByIdLastApprovedVersion(itM.next().getInstance()));
+			} catch (Exception e) {
+			}	
+        }
+        return metricsDTO;
 	}
 
 	@Override

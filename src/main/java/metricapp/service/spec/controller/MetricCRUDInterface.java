@@ -1,9 +1,12 @@
 package metricapp.service.spec.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import metricapp.dto.metric.MetricCrudDTO;
 import metricapp.dto.metric.MetricDTO;
+import metricapp.entity.external.PointerBus;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.DBException;
@@ -26,5 +29,6 @@ public interface MetricCRUDInterface {
 	MetricCrudDTO getMetricByState(String state) throws NotFoundException, BadInputException;
 	MetricCrudDTO getMetricByStateAndMetricatorId(String state, String userId)
 			throws NotFoundException, BadInputException;
+	ArrayList<MetricDTO> getMetricsByPointerBusList(List<PointerBus> list);
 		
 }

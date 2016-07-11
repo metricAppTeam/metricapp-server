@@ -5,13 +5,17 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
+import metricapp.entity.external.PointerBus;
 import metricapp.entity.question.Question;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
@@ -65,6 +69,19 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		Question last = busApprovedElementRepository.getLastApprovedElement(id, Question.class, Entity.Question);
 		
 		return modelMapperFactory.getLooseModelMapper().map(last, QuestionDTO.class);
+	}
+	
+	@Override
+	public ArrayList<QuestionDTO> getQuestionsByPointerBusList(List<PointerBus> list){
+		ArrayList<QuestionDTO> questionsDTO = new ArrayList<QuestionDTO>();
+        Iterator<PointerBus> itM = list.iterator();
+        while(itM.hasNext()){
+        	try {
+				questionsDTO.add(this.getQuestionByIdLastApprovedVersion(itM.next().getInstance()));
+			} catch (Exception e) {
+			}	
+        }
+        return questionsDTO;
 	}
 	
 	@Override

@@ -1,9 +1,12 @@
 package metricapp.service.spec.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
+import metricapp.entity.external.PointerBus;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.DBException;
@@ -29,5 +32,6 @@ public interface QuestionCRUDInterface {
 	QuestionCrudDTO getQuestionByState(String state) throws NotFoundException, BadInputException;
 	QuestionCrudDTO getQuestionByStateAndCreatorId(String state, String userId)
 			throws NotFoundException, BadInputException;
+	ArrayList<QuestionDTO> getQuestionsByPointerBusList(List<PointerBus> list);
 	
 }

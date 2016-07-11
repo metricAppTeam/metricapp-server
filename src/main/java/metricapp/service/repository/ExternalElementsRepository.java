@@ -112,7 +112,8 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
 	}
 
     /**
-     * this method is a loop of version and id getter
+     * this method is a loop of version and id getter. 
+     * If there's an error, function returns empty List
      * @param list
      * @return
      * @throws IOException
@@ -126,14 +127,16 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         ArrayList<Assumption> newList = new ArrayList<>(list.size());
 
         while(i.hasNext()){
-            newList.add(this.getAssumptionByIdAndVersion(i.next(), null));
+        	try{
+        		newList.add(this.getAssumptionByIdAndVersion(i.next(), null));
+        	}catch(Exception e){}
         }
 
         return newList;
 	}
 
     /**
-     * this method is a loop of version and id getter
+     * this method is a loop of version and id getter.If there's an error, function returns empty List
      * @param list
      * @return
      * @throws IOException
@@ -147,14 +150,16 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         ArrayList<ContextFactor> newList = new ArrayList<>(list.size());
 
         while(i.hasNext()){
-            newList.add(this.getContextFactorByIdAndVersion(i.next(),null));
+        	try{
+        		newList.add(this.getContextFactorByIdAndVersion(i.next(),null));
+        	}catch(Exception e){}
         }
 
         return newList;
 	}
 
     /**
-     * this method is a loop of version and id getter
+     * this method is a loop of version and id getter.If there's an error, function returns empty List
      * @param list
      * @return
      * @throws IOException
@@ -169,15 +174,17 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
 
         PointerBus pointer;
         while(i.hasNext()){
-            pointer = i.next();
-            newList.add(this.getAssumptionByIdAndVersion(pointer.getInstance(),pointer.getBusVersion()));
+        	try{
+        		pointer = i.next();
+        		newList.add(this.getAssumptionByIdAndVersion(pointer.getInstance(),pointer.getBusVersion()));
+        	}catch(Exception e){}
         }
 
         return newList;
     }
 
     /**
-     * this method is a loop of version and id getter
+     * this method is a loop of version and id getter.If there's an error, function returns empty List
      * @param list
      * @return
      * @throws IOException
@@ -192,8 +199,10 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
 
         PointerBus pointer;
         while(i.hasNext()){
-            pointer = i.next();
-            newList.add(this.getContextFactorByIdAndVersion(pointer.getInstance(),pointer.getBusVersion()));
+        	try{
+        		pointer = i.next();
+        		newList.add(this.getContextFactorByIdAndVersion(pointer.getInstance(),pointer.getBusVersion()));
+        	}catch(Exception e){}
         }
 
         return newList;
