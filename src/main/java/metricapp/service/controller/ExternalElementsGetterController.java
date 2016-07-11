@@ -1,12 +1,16 @@
 package metricapp.service.controller;
 
 import metricapp.dto.externalElements.*;
+import metricapp.dto.metric.MetricDTO;
+import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.external.*;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.ExternalElementsGetterInterface;
+import metricapp.service.spec.controller.MetricCRUDInterface;
+import metricapp.service.spec.controller.QuestionCRUDInterface;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 @Service
 public class ExternalElementsGetterController implements ExternalElementsGetterInterface{
@@ -31,7 +36,13 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
 
     @Autowired
     private ExternalElementsRepositoryInterface repository;
-
+    
+    @Autowired
+    private MetricCRUDInterface metricController;
+    
+    @Autowired
+    private QuestionCRUDInterface questionController;
+    
 
     /**
      * this method fills the return dto with every external informations that are related to
@@ -52,7 +63,26 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
         ArrayList<ContextFactor> contextFactors = repository.getContextFactorsByPointerBusList(measurementGoal.getContextFactors());;
         OrganizationalGoal organizationalGoal = repository.getOrganizationalGoalByIdAndVersion(measurementGoal.getOrganizationalGoalId().getInstance(), measurementGoal.getOrganizationalGoalId().getBusVersion());;
         InstanceProject instanceProject = repository.getInstanceProjectByIdAndVersion(organizationalGoal.getInstanceProjectId(), null);
-
+        
+        //get metrics and questions
+        ArrayList<MetricDTO> metricsDTO = new ArrayList<MetricDTO>();
+        Iterator<PointerBus> itM = measurementGoal.getMetrics().iterator();
+        while(itM.hasNext()){
+        	try {
+				metricsDTO.add(metricController.getMetricByIdLastApprovedVersion(itM.next().getInstance()));
+			} catch (NotFoundException e) {
+			}	
+        }
+        ArrayList<QuestionDTO> questionsDTO = new ArrayList<QuestionDTO>();
+        Iterator<PointerBus> itQ = measurementGoal.getQuestions().iterator();
+        while(itQ.hasNext()){
+        	try {
+				questionsDTO.add(questionController.getQuestionByIdLastApprovedVersion(itQ.next().getInstance()));
+			} catch (NotFoundException e) {
+			}	
+        }
+        
+        
         //new Array
         ArrayList<AssumptionDTO> assumptionDTOs ;
         ArrayList<ContextFactorDTO> contextFactorDTOs ;
@@ -79,6 +109,8 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
         dto.setInstanceProject(instanceProjectDTO);
         dto.setMeasurementGoalId(measurementGoalId);
         dto.setOrganizationalGoal(organizationalGoalDTO);
+        dto.setMetrics(metricsDTO);
+        dto.setQuestions(questionsDTO);
 
         return dto;
     }

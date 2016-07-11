@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import metricapp.dto.MessageDTO;
+import metricapp.dto.metric.MetricDTO;
+import metricapp.dto.question.QuestionDTO;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
@@ -19,5 +21,7 @@ public class ExternalElementsDTO extends MessageDTO {
 	public ArrayList<ContextFactorDTO> contextFactors;
 	public OrganizationalGoalDTO organizationalGoal;
 	public InstanceProjectDTO instanceProject; 
+	public ArrayList<MetricDTO> metrics;
+	public ArrayList<QuestionDTO> questions;
 	
 }
