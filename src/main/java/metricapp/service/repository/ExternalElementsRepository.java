@@ -199,8 +199,8 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
         return newList;
     }
     
-    public PointerBus pointerOfIncomingNotificationObject(String data) throws IOException{
-    	return mapper.fromJson(data, PointerBus.class);
+    public NotificationPointerBus pointerOfIncomingNotificationObject(String data) throws IOException{
+    	return mapper.fromJson(data, NotificationPointerBus.class);
     }
 
     // TODO

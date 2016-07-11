@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.bus.BusIncomingMessage;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
-import metricapp.entity.external.PointerBus;
+import metricapp.entity.external.NotificationPointerBus;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
@@ -31,20 +31,19 @@ public class BusIncomingMessageRest {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<BusIncomingMessage> post(@RequestBody BusIncomingMessage message) {
-		//TODO wait for bus documentation
 		System.out.println(message.getData());
 		try {
-			PointerBus organizationalGoalPointer = externalElementsRepository.pointerOfIncomingNotificationObject(message.getData());
+			NotificationPointerBus organizationalGoalPointer = externalElementsRepository.pointerOfIncomingNotificationObject(message.getData());
 			MeasurementGoal goal = new MeasurementGoal();
 			goal.setState(State.Created);
 			goal.setEntityType(Entity.MeasurementGoal);
 			goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
 			goal.setOrganizationalGoalId(organizationalGoalPointer);
 			measurementGoalCrudController.createMeasurementGoal(goal);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			
+		} catch (IOException e) {
+			e.printStackTrace();
+
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
