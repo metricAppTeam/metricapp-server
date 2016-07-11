@@ -2,6 +2,7 @@ package metricapp.entity.measurementGoal;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import metricapp.entity.Element;
@@ -21,6 +22,12 @@ public class MeasurementGoal extends Element {
 	
 	public MeasurementGoal(){
 		this.interpretationModel = new InterpretationModel();
+		this.assumptions = new ArrayList<PointerBus>();
+		this.contextFactors= new ArrayList<PointerBus>();
+		this.questionersId= new ArrayList<String>();
+		this.questions= new ArrayList<PointerBus>();
+		this.metrics= new ArrayList<PointerBus>();
+		
 		//this.contexts = new ArrayList<Context>();
 		//this.assumptions = new ArrayList<Assumption>();
 		//this.metrics = new ArrayList<Metric>();

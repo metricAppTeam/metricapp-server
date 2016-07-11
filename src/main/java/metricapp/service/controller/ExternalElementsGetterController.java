@@ -50,7 +50,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
         //get assumptions, contextfactors and organizational goal
         ArrayList<Assumption> assumptions = repository.getAssumptionsByPointerBusList(measurementGoal.getAssumptions());
         ArrayList<ContextFactor> contextFactors = repository.getContextFactorsByPointerBusList(measurementGoal.getContextFactors());;
-        OrganizationalGoal organizationalGoal = repository.getOrganizationalGoalByIdAndVersion(measurementGoal.getOrganizationalGoalId().getObjIdLocalToPhase(), measurementGoal.getOrganizationalGoalId().getBusVersion());;
+        OrganizationalGoal organizationalGoal = repository.getOrganizationalGoalByIdAndVersion(measurementGoal.getOrganizationalGoalId().getInstance(), measurementGoal.getOrganizationalGoalId().getBusVersion());;
         InstanceProject instanceProject = repository.getInstanceProjectByIdAndVersion(organizationalGoal.getInstanceProjectId(), null);
 
         //new Array
