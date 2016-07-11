@@ -202,6 +202,14 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
     public NotificationPointerBus pointerOfIncomingNotificationObject(String data) throws IOException{
     	return mapper.fromJson(data, NotificationPointerBus.class);
     }
+    
+    public PointerBus fromNotificationToPointerBus(NotificationPointerBus notification){
+    	PointerBus pointer = new PointerBus();
+    	pointer.setBusVersion(notification.getBusVersion());
+    	pointer.setInstance(notification.getInstance());
+    	pointer.setTypeObj(notification.getTypeObj());
+    	return pointer;
+    }
 
     // TODO
 	public ArrayList<Assumption> getAssumptionsByTags(@Nonnull List<String> tags) throws Exception {

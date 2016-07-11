@@ -34,16 +34,17 @@ public class BusIncomingMessageRest {
 		System.out.println(message.getData());
 		try {
 			NotificationPointerBus organizationalGoalPointer = externalElementsRepository.pointerOfIncomingNotificationObject(message.getData());
-			MeasurementGoal goal = new MeasurementGoal();
-			goal.setState(State.Created);
-			goal.setEntityType(Entity.MeasurementGoal);
-			goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
-			goal.setOrganizationalGoalId(organizationalGoalPointer);
-			measurementGoalCrudController.createMeasurementGoal(goal);
 			
+			if(organizationalGoalPointer.getOperation().equals("create")){
+				MeasurementGoal goal = new MeasurementGoal();
+				goal.setState(State.Created);
+				goal.setEntityType(Entity.MeasurementGoal);
+				goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
+				goal.setOrganizationalGoalId(externalElementsRepository.fromNotificationToPointerBus(organizationalGoalPointer));
+				measurementGoalCrudController.createMeasurementGoal(goal);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
