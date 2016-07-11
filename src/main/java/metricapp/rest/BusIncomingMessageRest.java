@@ -44,7 +44,7 @@ public class BusIncomingMessageRest {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
