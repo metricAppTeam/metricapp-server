@@ -46,7 +46,7 @@ public class BusIncomingMessageRest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<BusIncomingMessage>(message,HttpStatus.OK);
 	}
 
 }
