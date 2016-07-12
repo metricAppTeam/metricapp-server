@@ -72,6 +72,10 @@ public class MeasurementGoalRestController {
 				dto = controller.getMeasurementGoalByViewPoint(viewPoint);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
+			else if(userId.equals("NA") && !tag.equals("NA")){
+				dto = controller.getMeasurementGoalByTag(tag);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
 			else if (!id.equals("NA") && questionerId.equals("NA")) {
 				dto = controller.getMeasurementGoalById(id);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);

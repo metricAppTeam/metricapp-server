@@ -456,4 +456,25 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return dto;
 	}
 
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByTag(String tag) 
+			throws BadInputException, NotFoundException {
+		
+		if (tag == null) {
+			throw new BadInputException("MeasurementGoal tag cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByTag(tag);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("Tag " + tag + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
+	}
+
 }

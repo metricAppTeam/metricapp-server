@@ -54,5 +54,7 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getMeasurementGoalByViewPoint(String viewPoint) throws BadInputException, NotFoundException;
 
+	MeasurementGoalCrudDTO getMeasurementGoalByTag(String tag) throws BadInputException, NotFoundException;
+
 		
 }
