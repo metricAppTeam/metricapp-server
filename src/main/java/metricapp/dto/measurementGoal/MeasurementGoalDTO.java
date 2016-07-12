@@ -21,7 +21,7 @@ public class MeasurementGoalDTO extends GoalDTO{
 	private static final long serialVersionUID = 1L;
 	public String object;
 	public String viewPoint;
-	public String focus;
+	public String qualityFocus;
 	public String purpose;
 	public PointerBus OrganizationalGoalId;
 	public List<PointerBus> metrics;

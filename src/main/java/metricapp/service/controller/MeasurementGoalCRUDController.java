@@ -219,7 +219,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("id: " + dto.getMetadata().getId() + "\n");
 			System.out.println("object: " + dto.getObject() + "\n");
 			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
-			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
+			System.out.println("qualityFocus: " + dto.getQualityFocus() + "\n");
 			System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
 			System.out.println("purpose: " + dto.getPurpose() + "\n");
 			System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
