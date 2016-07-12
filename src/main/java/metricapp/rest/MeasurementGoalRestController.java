@@ -44,24 +44,16 @@ public class MeasurementGoalRestController {
 				dto = controller.getMeasurementGoalByUser(userId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
-			if (!id.equals("NA") && approved.equals("true")) {
+			else if (!id.equals("NA") && approved.equals("true")) {
 				dto = controller.getMeasurementGoalByIdAndLastApprovedVersion(id);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
-			if (!version.equals("NA") && !id.equals("NA")) {
+			else if (!version.equals("NA") && !id.equals("NA")) {
 				dto = controller.getMeasurementGoalByIdAndVersion(userId, version);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
-			if (!id.equals("NA")) {
-				dto = controller.getMeasurementGoalById(id);
-				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
-			}
-			if (!userId.equals("NA") && !state.equals("NA")) {
+			else if (!userId.equals("NA") && !state.equals("NA")) {
 				dto = controller.getMeasurementGoalByState(state, userId);
-				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
-			}
-			if (!questionerId.equals("NA")){
-				dto = controller.getMeasurementGoalByQuestionerId(questionerId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
 			else if(userId.equals("NA") && !qualityFocus.equals("NA")){
@@ -78,6 +70,14 @@ public class MeasurementGoalRestController {
 			}
 			else if(userId.equals("NA") && !viewPoint.equals("NA")){
 				dto = controller.getMeasurementGoalByViewPoint(viewPoint);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if (!id.equals("NA") && questionerId.equals("NA")) {
+				dto = controller.getMeasurementGoalById(id);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if (!questionerId.equals("NA")){
+				dto = controller.getMeasurementGoalByQuestionerId(questionerId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
 			else {
