@@ -32,7 +32,7 @@ public class MeasurementGoalRestController {
 			@RequestParam(value = "approved", defaultValue = "false") String approved,
 			@RequestParam(value = "questionerId", defaultValue = "NA") String questionerId,
 			@RequestParam(value = "state", defaultValue = "NA") String state,
-			@RequestParam(value="qualityfocus", defaultValue="NA") String qualityFocus,
+			@RequestParam(value="qualityFocus", defaultValue="NA") String qualityFocus,
 			@RequestParam(value="object", defaultValue="NA") String object,
 			@RequestParam(value="viewPoint", defaultValue="NA") String viewPoint,
 			@RequestParam(value="purpose", defaultValue="NA") String purpose,
