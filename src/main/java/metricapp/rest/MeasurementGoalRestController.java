@@ -31,7 +31,12 @@ public class MeasurementGoalRestController {
 			@RequestParam(value = "userid", defaultValue = "NA") String userId,
 			@RequestParam(value = "approved", defaultValue = "false") String approved,
 			@RequestParam(value = "questionerId", defaultValue = "NA") String questionerId,
-			@RequestParam(value = "state", defaultValue = "NA") String state){
+			@RequestParam(value = "state", defaultValue = "NA") String state,
+			@RequestParam(value="qualityfocus", defaultValue="NA") String qualityFocus,
+			@RequestParam(value="object", defaultValue="NA") String object,
+			@RequestParam(value="viewPoint", defaultValue="NA") String viewPoint,
+			@RequestParam(value="purpose", defaultValue="NA") String purpose,
+			@RequestParam(value="tag", defaultValue="NA") String tag){
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
@@ -57,6 +62,22 @@ public class MeasurementGoalRestController {
 			}
 			if (!questionerId.equals("NA")){
 				dto = controller.getMeasurementGoalByQuestionerId(questionerId);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if(userId.equals("NA") && !qualityFocus.equals("NA")){
+				dto = controller.getMeasurementGoalByQualityFocus(qualityFocus);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if(userId.equals("NA") && !object.equals("NA")){
+				dto = controller.getMeasurementGoalByObject(object);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if(userId.equals("NA") && !purpose.equals("NA")){
+				dto = controller.getMeasurementGoalByPurpose(purpose);
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if(userId.equals("NA") && !viewPoint.equals("NA")){
+				dto = controller.getMeasurementGoalByViewPoint(viewPoint);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
 			else {

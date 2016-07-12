@@ -1,11 +1,9 @@
 package metricapp.service.spec.repository;
 
 import java.util.ArrayList;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 import metricapp.entity.State;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 
@@ -23,5 +21,19 @@ public interface MeasurementGoalRepository extends MongoRepository<MeasurementGo
 	public ArrayList<MeasurementGoal> findByStateAndMetricatorId(State state, String id);
 	
 	@Query("{'questionersId': { $in : [?0] } }")
-	public ArrayList<MeasurementGoal> findByQuestionerId(String questionerId);	
+	public ArrayList<MeasurementGoal> findByQuestionerId(String questionerId);
+	
+	public ArrayList<MeasurementGoal> findByQualityFocusLike(String qualityFocus);
+	
+	public ArrayList<MeasurementGoal> findByViewPointLike(String viewPoint);
+	
+	@Query("{'tags': { $in : [?0] } }")
+	public ArrayList<MeasurementGoal> findByTag(String tag);
+	
+	public ArrayList<MeasurementGoal> findByPurposeLike(String purpose);
+	
+	public ArrayList<MeasurementGoal> findByObjectLike(String object);
+	
+	
+	
 }
