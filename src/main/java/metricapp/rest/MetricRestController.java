@@ -34,7 +34,7 @@ public class MetricRestController {
 			@RequestParam(value = "state", defaultValue = "NA") String state) {
 		MetricCrudDTO dto = new MetricCrudDTO();
 		try {
-			if (!userId.equals("NA")) {
+			if (!userId.equals("NA") && state.equals("NA")) {
 				dto = metricCRUDController.getMetricOfUser(userId);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			}
