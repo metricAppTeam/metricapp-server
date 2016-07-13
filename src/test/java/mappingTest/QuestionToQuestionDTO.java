@@ -42,6 +42,7 @@ public class QuestionToQuestionDTO {
 		this.question.setDescription(RandomGenerator.randomString());
 		this.question.setFocus(RandomGenerator.randomString());
 		this.question.setSubject(RandomGenerator.randomString());
+		this.question.setQuestionerId(RandomGenerator.randomString());
 		
 	}
 	

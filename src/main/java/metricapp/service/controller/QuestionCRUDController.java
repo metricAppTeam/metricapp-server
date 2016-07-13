@@ -76,13 +76,13 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	}
 
 	@Override
-	public QuestionCrudDTO getQuestionByCreatorId(String id) throws BadInputException, NotFoundException {
+	public QuestionCrudDTO getQuestionByQuestionerId(String id) throws BadInputException, NotFoundException {
 		
 		if(id == null){
 			throw new BadInputException("id cannot be null");
 		}
 		
-		ArrayList<Question> questionList = questionRepository.findQuestionByCreatorId(id);
+		ArrayList<Question> questionList = questionRepository.findQuestionByQuestionerId(id);
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		Iterator<Question> questionIter = questionList.iterator();
@@ -154,7 +154,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	@Override
 	public QuestionCrudDTO createQuestion(QuestionDTO questionDTO) throws BadInputException{
 		
-		if (questionDTO.getMetadata().getCreatorId() == null) {
+		if (questionDTO.getQuestionerId() == null) {
 			throw new BadInputException("Bad Input");
 		}
 		if (questionDTO.getMetadata().getId() != null) {
@@ -171,8 +171,26 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
-		questionCrudDTO.addQuestionToList(
-				modelMapperFactory.getLooseModelMapper().map(questionRepository.save(newQuestion), QuestionDTO.class));
+		if(/*newQuestion.getQuestionerId() != null &&*/newQuestion.getState() == State.Created){
+			questionRepository.save(newQuestion);
+			
+			Question updateQuestion = questionRepository.findQuestionById(newQuestion.getId());
+			updateQuestion.setState(State.OnUpdate);
+			
+			try {
+				stateTransition(newQuestion, updateQuestion);
+			} catch (IllegalStateTransitionException | NotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			questionCrudDTO.addQuestionToList(
+					modelMapperFactory.getLooseModelMapper().map(questionRepository.save(updateQuestion), QuestionDTO.class));
+		}
+		
+		else{
+			questionCrudDTO.addQuestionToList(
+					modelMapperFactory.getLooseModelMapper().map(questionRepository.save(newQuestion), QuestionDTO.class));
+		}
 		
 		return questionCrudDTO;
 	}
@@ -232,7 +250,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	}
 	
 	@Override
-	public QuestionCrudDTO getRecentQuestions(String creatorId){
+	public QuestionCrudDTO getRecentQuestions(String questionerId){
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
 		Sort sort = new Sort(Sort.Direction.DESC, "lastVersionDate");
@@ -253,15 +271,15 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 		if (state == null) {
 			throw new BadInputException("State cannot be null");
 		}
-		return questionRepository.countByStateAndCreatorId(State.valueOf(state), userId);
+		return questionRepository.countByStateAndQuestionerId(State.valueOf(state), userId);
 	}
 	
 	@Override
-	public QuestionCrudDTO getQuestionByStateAndCreatorId(String state, String userId) throws NotFoundException, BadInputException {
+	public QuestionCrudDTO getQuestionByStateAndQuestionerId(String state, String userId) throws NotFoundException, BadInputException {
 		if (state == null) {
 			throw new BadInputException("Questioner state cannot be null");
 		}
-		ArrayList<Question> questions = questionRepository.findByStateAndCreatorId(State.valueOf(state),userId);
+		ArrayList<Question> questions = questionRepository.findByStateAndQuestionerId(State.valueOf(state),userId);
 		if (questions.size() == 0) {
 			throw new NotFoundException("State " + state + " has no Questions");
 		}
