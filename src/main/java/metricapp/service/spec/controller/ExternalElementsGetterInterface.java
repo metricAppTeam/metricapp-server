@@ -22,4 +22,11 @@ public interface ExternalElementsGetterInterface {
 
     public InstanceProjectDTO getInstanceProjectByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException;
 
+    public ArrayList<ContextFactorDTO> getAllContextFactors() throws BusException, IOException, BadInputException;
+    
+    public ArrayList<InstanceProjectDTO> getAllInstanceProjects() throws BusException, IOException, BadInputException;
+    
+    public ArrayList<OrganizationalGoalDTO> getAllOrganizationalGoals() throws BusException, IOException, BadInputException;
+    
+    public ArrayList<AssumptionDTO> getAllAssumptions() throws BusException, IOException, BadInputException;
 }

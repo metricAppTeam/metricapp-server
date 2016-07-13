@@ -43,6 +43,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws IOException
      * @throws BadInputException 
      */
+	@Override
 	public Assumption getAssumptionByIdAndVersion(@Nonnull String id, String version) throws BusException, IOException, BadInputException {
         PointerBus request = new PointerBus();
 
@@ -62,6 +63,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+	@Override
 	public ContextFactor getContextFactorByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException, BadInputException {
         PointerBus request = new PointerBus();
 
@@ -81,6 +83,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+	@Override
 	public OrganizationalGoal getOrganizationalGoalByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException, BadInputException {
         PointerBus request = new PointerBus();
 
@@ -100,6 +103,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+	@Override
 	public InstanceProject getInstanceProjectByIdAndVersion(@Nonnull String id, String version) throws IOException, BusException, BadInputException {
         PointerBus request = new PointerBus();
 
@@ -120,6 +124,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+	@Override
 	public ArrayList<Assumption> getAssumptionsByIdList(@Nonnull List<String> list) throws IOException, BusException, BadInputException {
         Iterator<String> i = list.iterator();
 
@@ -143,6 +148,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+	@Override
 	public ArrayList<ContextFactor> getContextFactorsByIdList(@Nonnull List<String> list) throws IOException, BusException, BadInputException {
         Iterator<String> i = list.iterator();
 
@@ -166,6 +172,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+	@Override
     public ArrayList<Assumption> getAssumptionsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException, BadInputException {
         Iterator<PointerBus> i = list.iterator();
 
@@ -191,6 +198,7 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
      * @throws BusException
      * @throws BadInputException 
      */
+    @Override
     public ArrayList<ContextFactor> getContextFactorsByPointerBusList(@Nonnull List<PointerBus> list) throws IOException, BusException, BadInputException {
         Iterator<PointerBus> i = list.iterator();
 
@@ -207,11 +215,11 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
 
         return newList;
     }
-    
+    @Override
     public NotificationPointerBus pointerOfIncomingNotificationObject(String data) throws IOException{
     	return mapper.fromJson(data, NotificationPointerBus.class);
     }
-    
+    @Override
     public PointerBus fromNotificationToPointerBus(NotificationPointerBus notification){
     	PointerBus pointer = new PointerBus();
     	pointer.setBusVersion(notification.getBusVersion());
@@ -220,14 +228,70 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
     	return pointer;
     }
 
-    // TODO
+    @Override
 	public ArrayList<Assumption> getAssumptionsByTags(@Nonnull List<String> tags) throws Exception {
-        throw new Exception("not implemented");
+        throw new Exception("not Possible due to lack of Implementation from Bus");
 	}
 
-    // TODO
+    @Override
 	public ArrayList<ContextFactor> getContextFactorsByTags(@Nonnull List<String> tags) throws Exception {
-        throw new Exception("not implemented");
+        throw new Exception("not Possible due to lack of Implementation from Bus");
+	}
+	
+	 /**
+     * this is the simple method to grab all assumptions
+     * @return
+     * @throws BusException
+     * @throws IOException
+     * @throws BadInputException 
+     */
+	@Override
+	public ArrayList<Assumption> getAllAssumptions() throws BusException, IOException, BadInputException {
+        PointerBus request = new PointerBus();
+        request.setTypeObj(Entity.Assumption.name());
+        return busApprovedElementRepository.getApprovedElements(request, Assumption.class);
+	}
+	
+	 /**
+     * this is the simple method to grab all ContextFactors
+     * @return
+     * @throws BusException
+     * @throws IOException
+     * @throws BadInputException 
+     */
+	@Override
+	public ArrayList<ContextFactor> getAllContextFactors() throws BusException, IOException, BadInputException {
+        PointerBus request = new PointerBus();
+        request.setTypeObj(Entity.ContextFactor.name());
+        return busApprovedElementRepository.getApprovedElements(request, ContextFactor.class);
+	}
+	
+	 /**
+     * this is the simple method to grab all OrganizationalGoals
+     * @return
+     * @throws BusException
+     * @throws IOException
+     * @throws BadInputException 
+     */
+	@Override
+	public ArrayList<OrganizationalGoal> getAllOrganizationalGoals() throws BusException, IOException, BadInputException {
+        PointerBus request = new PointerBus();
+        request.setTypeObj(Entity.OrganizationalGoal.name());
+        return busApprovedElementRepository.getApprovedElements(request, OrganizationalGoal.class);
+	}
+	
+	 /**
+     * this is the simple method to grab all InstanceProjects
+     * @return
+     * @throws BusException
+     * @throws IOException
+     * @throws BadInputException 
+     */
+	@Override
+	public ArrayList<InstanceProject> getAllInstanceProjects() throws BusException, IOException, BadInputException {
+        PointerBus request = new PointerBus();
+        request.setTypeObj(Entity.InstanceProject.name());
+        return busApprovedElementRepository.getApprovedElements(request, InstanceProject.class);
 	}
 	
 	

@@ -2,6 +2,7 @@ package metricapp.rest;
 
 import metricapp.dto.externalElements.*;
 import metricapp.entity.external.PointerBus;
+import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.ExternalElementsGetterInterface;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @CrossOrigin
 @RestController
@@ -23,7 +25,7 @@ public class ExternalElementRestController {
 
     @Autowired
     private ExternalElementsGetterInterface externalElementsGetterController;
-
+    
     @RequestMapping(value = "/contextfactor",method = RequestMethod.GET)
     public ResponseEntity<ContextFactorDTO> getContextFactorDTO(@RequestParam(value = "id", defaultValue = "NA") String id,
                                                                 @RequestParam(value = "version", defaultValue = "NA") String version){
@@ -40,9 +42,9 @@ public class ExternalElementRestController {
                 pointerBus.setObjIdLocalToPhase(id);
                 dto = externalElementsGetterController.getContextFactorByPointerBus(pointerBus);
                 return new ResponseEntity<ContextFactorDTO>(dto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<ContextFactorDTO>(HttpStatus.BAD_REQUEST);
             }
+            return new ResponseEntity<ContextFactorDTO>(HttpStatus.BAD_REQUEST);
+            
         } catch (IOException e) {
             //dto.setError(e.getMessage());
             e.printStackTrace();
@@ -61,7 +63,79 @@ public class ExternalElementRestController {
             return new ResponseEntity<ContextFactorDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
+    @RequestMapping(value = "/assumption/all",method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<AssumptionDTO>> getAllAssumptionsDTO(){
+    	ArrayList<AssumptionDTO> list = new ArrayList<AssumptionDTO>();
+    	try {
+			list = externalElementsGetterController.getAllAssumptions();
+		} catch (BusException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<AssumptionDTO>>(HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<AssumptionDTO>>(HttpStatus.OK);
+		} catch (BadInputException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<AssumptionDTO>>(HttpStatus.OK);
+		}
+        return new ResponseEntity<ArrayList<AssumptionDTO>>(list,HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/contextfactor/all",method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<ContextFactorDTO>> getAllContextFactorsDTO(){
+    	ArrayList<ContextFactorDTO> list = new ArrayList<ContextFactorDTO>();
+    	try {
+			list = externalElementsGetterController.getAllContextFactors();
+		} catch (BusException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<ContextFactorDTO>>(HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<ContextFactorDTO>>(HttpStatus.OK);
+		} catch (BadInputException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<ContextFactorDTO>>(HttpStatus.OK);
+		}
+        return new ResponseEntity<ArrayList<ContextFactorDTO>>(list,HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/instanceproject/all",method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<InstanceProjectDTO>> getAllInstanceProjectsDTO(){
+    	ArrayList<InstanceProjectDTO> list = new ArrayList<InstanceProjectDTO>();
+    	try {
+			list = externalElementsGetterController.getAllInstanceProjects();
+		} catch (BusException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<InstanceProjectDTO>>(HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<InstanceProjectDTO>>(HttpStatus.OK);
+		} catch (BadInputException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<InstanceProjectDTO>>(HttpStatus.OK);
+		}
+        return new ResponseEntity<ArrayList<InstanceProjectDTO>>(list,HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/organizationalgoal/all",method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<OrganizationalGoalDTO>> getAllOrganizationalGoalsDTO(){
+    	ArrayList<OrganizationalGoalDTO> list = new ArrayList<OrganizationalGoalDTO>();
+    	try {
+			list = externalElementsGetterController.getAllOrganizationalGoals();
+		} catch (BusException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<OrganizationalGoalDTO>>(HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<OrganizationalGoalDTO>>(HttpStatus.OK);
+		} catch (BadInputException e) {
+			e.printStackTrace();
+	        return new ResponseEntity<ArrayList<OrganizationalGoalDTO>>(HttpStatus.OK);
+		}
+        return new ResponseEntity<ArrayList<OrganizationalGoalDTO>>(list,HttpStatus.OK);
+    }
+    
     @RequestMapping(value = "/assumption",method = RequestMethod.GET)
     public ResponseEntity<AssumptionDTO> getAssumptionDTO(@RequestParam(value = "id", defaultValue = "NA") String id,
                                                           @RequestParam(value = "version", defaultValue = "NA") String version){

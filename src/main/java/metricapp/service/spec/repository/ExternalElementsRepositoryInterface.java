@@ -34,5 +34,14 @@ public interface ExternalElementsRepositoryInterface {
     public NotificationPointerBus pointerOfIncomingNotificationObject(String data) throws IOException;
 	
     public PointerBus fromNotificationToPointerBus(NotificationPointerBus notification);
+    
+    public ArrayList<ContextFactor> getAllContextFactors() throws BusException, IOException, BadInputException;
+        
+    public ArrayList<Assumption> getAllAssumptions() throws BusException, IOException, BadInputException;
+    
+    public ArrayList<OrganizationalGoal> getAllOrganizationalGoals() throws BusException, IOException, BadInputException;
+    
+    public ArrayList<InstanceProject> getAllInstanceProjects() throws BusException, IOException, BadInputException;
+
 
 }

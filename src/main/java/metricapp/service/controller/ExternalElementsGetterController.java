@@ -52,6 +52,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
      * context factors and assumptions of that goal
      * @throws BadInputException 
      */
+    @Override
     public ExternalElementsDTO getMeasurementGoalExternalElements(String measurementGoalId) throws IOException, BusException, BadInputException {
 
         //get measurement goal
@@ -110,6 +111,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
      * @param <Z> Z is the type of parameter for the old array
      * @return
      */
+    @Override
     public<T,Z> ArrayList<T> fromArrayListToArrayListDTO(ArrayList<Z> input, Class<T>clazz){
 
         //get modelMapper instance
@@ -121,7 +123,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
 
         return dTOs;
     }
-
+    @Override
     public AssumptionDTO getAssumptionByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
@@ -131,7 +133,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
             throw new NotFoundException();
         }
     }
-
+    @Override
     public ContextFactorDTO getContextFactorByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
@@ -141,7 +143,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
             throw new NotFoundException();
         }
     }
-
+    @Override
     public OrganizationalGoalDTO getOrganizationalGoalByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
@@ -151,7 +153,7 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
             throw new NotFoundException();
         }
     }
-
+    @Override
     public InstanceProjectDTO getInstanceProjectByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
             return modelMapperFactory.getLooseModelMapper().map(
@@ -161,6 +163,20 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
             throw new NotFoundException();
         }
     }
-
-
+    @Override
+    public ArrayList<ContextFactorDTO> getAllContextFactors() throws BusException, IOException, BadInputException{
+    	return fromArrayListToArrayListDTO(repository.getAllContextFactors(), ContextFactorDTO.class);
+    }
+    @Override
+    public ArrayList<InstanceProjectDTO> getAllInstanceProjects() throws BusException, IOException, BadInputException{
+    	return fromArrayListToArrayListDTO(repository.getAllInstanceProjects(), InstanceProjectDTO.class);
+    }
+    @Override
+    public ArrayList<OrganizationalGoalDTO> getAllOrganizationalGoals() throws BusException, IOException, BadInputException{
+    	return fromArrayListToArrayListDTO(repository.getAllOrganizationalGoals(), OrganizationalGoalDTO.class);
+    }
+    @Override
+    public ArrayList<AssumptionDTO> getAllAssumptions() throws BusException, IOException, BadInputException{
+    	return fromArrayListToArrayListDTO(repository.getAllAssumptions(), AssumptionDTO.class);
+    }
 }
