@@ -1,9 +1,12 @@
 package metricapp.service.spec.controller;
 
+import java.io.IOException;
+
 import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
@@ -31,7 +34,7 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException;
 
-	MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException;
+	MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException;
 
 	MeasurementGoalCrudDTO changeStateMeasurementGoal(MeasurementGoalDTO dto)
 			throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException;
@@ -42,6 +45,16 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getMeasurementGoalByQuestionerId(String questionerId)
 			throws BadInputException, NotFoundException;
+
+	MeasurementGoalCrudDTO  getMeasurementGoalByQualityFocus(String qualityFocus) throws BadInputException, NotFoundException;
+
+	MeasurementGoalCrudDTO getMeasurementGoalByObject(String object) throws BadInputException, NotFoundException;
+
+	MeasurementGoalCrudDTO getMeasurementGoalByPurpose(String purpose) throws BadInputException, NotFoundException;
+
+	MeasurementGoalCrudDTO getMeasurementGoalByViewPoint(String viewPoint) throws BadInputException, NotFoundException;
+
+	MeasurementGoalCrudDTO getMeasurementGoalByTag(String tag) throws BadInputException, NotFoundException;
 
 		
 }

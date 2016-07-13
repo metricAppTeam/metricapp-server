@@ -165,7 +165,7 @@ public class MeasurementGoalRestControllerTest {
 		measurementGoalDTO1 = modelMapperFactory.getLooseModelMapper().map(measurementGoal1, MeasurementGoalDTO.class);
 		// we can assert that every field is used in the same way during the
 		// update
-		measurementGoalDTO1.setFocus("Updated Focus");
+		measurementGoalDTO1.setQualityFocus("Updated Focus");
 		measurementGoalDTO1.getMetadata().setId(measurementGoal1.getId());
 	
 		String s = setIdOnJacksonJson(json(measurementGoalDTO1), measurementGoal1.getId());

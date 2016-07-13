@@ -1,6 +1,8 @@
 package metricapp.service.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.modelmapper.ModelMapper;
@@ -13,11 +15,13 @@ import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.service.spec.repository.BusApprovedElementInterface;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
 import metricapp.service.spec.repository.MetricRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
@@ -31,6 +35,9 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	
 	@Autowired
 	private MetricRepository metricRepository;
+	
+	@Autowired
+	private BusApprovedElementInterface busApprovedElementRepository;
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
@@ -69,18 +76,16 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
-	public MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException {
+	public MeasurementGoalCrudDTO getMeasurementGoalByIdAndLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException {
 		if (id == null) {
 			throw new BadInputException("MeasurementGoal id cannot be null");
 		}
-		// TODO get from bus
-		//MeasurementGoal last =busApprovedElementRepository.getLastApprovedElement(id, MeasurementGoal.class); 
-		MeasurementGoal measurementGoal = null;
+
+		MeasurementGoal measurementGoal = busApprovedElementRepository.getLastApprovedElement(id, MeasurementGoal.class, Entity.MeasurementGoal);
 		if (measurementGoal == null) {
 			throw new NotFoundException("Approved MeasurementGoal with id " + id + "is not available");
 		}
 		
-		@SuppressWarnings("unused")
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		dto.setRequest("MeasurementGoal, id=" + id + ";state=Approved");
 		dto.addMeasurementGoalToList(measurementGoalToDTO(measurementGoal));
@@ -203,9 +208,6 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 //			throw new BadInputException("New Measurement Goal must have at least a question");
 //		}
 		
-		//TODO Check if id of metricator exists into the db
-		//TODO Check if questioner exists into the db
-		
 //		if (dto.getMetadata().getState() != State.Created){
 //			throw new BadInputException("MeasurementGoal must be in CREATED state");
 //		}
@@ -219,7 +221,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			System.out.println("id: " + dto.getMetadata().getId() + "\n");
 			System.out.println("object: " + dto.getObject() + "\n");
 			System.out.println("viewPoint: " + dto.getViewPoint() + "\n");
-			System.out.println("qualityFocus: " + dto.getFocus() + "\n");
+			System.out.println("qualityFocus: " + dto.getQualityFocus() + "\n");
 			System.out.println("releaseNote: " + dto.getMetadata().getReleaseNote() + "\n");
 			System.out.println("purpose: " + dto.getPurpose() + "\n");
 			System.out.println("version: " + dto.getMetadata().getVersion() + "\n");
@@ -373,6 +375,106 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		}
 
 		return dtoCrud;
+	}
+
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByQualityFocus(String qualityFocus) throws BadInputException, NotFoundException {
+		if (qualityFocus == null) {
+			throw new BadInputException("MeasurementGoal qualityFocus cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByQualityFocusLike(qualityFocus);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("QualityFocus " + qualityFocus + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByObject(String object)
+			throws BadInputException, NotFoundException {
+		if (object == null) {
+			throw new BadInputException("MeasurementGoal object cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByObjectLike(object);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("Object " + object + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByPurpose(String purpose)
+			throws BadInputException, NotFoundException {
+		if (purpose == null) {
+			throw new BadInputException("MeasurementGoal purpose cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByPurposeLike(purpose);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("Purpose " + purpose + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByViewPoint(String viewPoint)
+			throws BadInputException, NotFoundException {
+		if (viewPoint == null) {
+			throw new BadInputException("MeasurementGoal viewPoint cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByViewPointLike(viewPoint);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("ViewPointviewPoint " + viewPoint + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public MeasurementGoalCrudDTO getMeasurementGoalByTag(String tag) 
+			throws BadInputException, NotFoundException {
+		
+		if (tag == null) {
+			throw new BadInputException("MeasurementGoal tag cannot be null");
+		}
+		ArrayList<MeasurementGoal> measurementGoals = measurementGoalRepository.findByTag(tag);
+		if (measurementGoals.size() == 0) {
+			throw new NotFoundException("Tag " + tag + " has no Measurement Goals");
+		}
+		
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		Iterator<MeasurementGoal> measurementGoalIter = measurementGoals.iterator();
+		while (measurementGoalIter.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
+		}
+		
+		return dto;
 	}
 
 }

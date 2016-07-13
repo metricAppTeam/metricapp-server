@@ -181,11 +181,12 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 			T el;
 			try{
 				el = mapper.fromJson(actual.get("payload").toString(), clazz);
+				//set the correct version
+				el.setVersionBus(actual.get("busVersion").asText());
+				
+				list.add(el);
 			}catch(NullPointerException e){
-				throw new BusException(e);
 			}
-			//set the correct version
-			el.setVersionBus(actual.get("busVersion").asText());
 		}
 		return list;
 	}
