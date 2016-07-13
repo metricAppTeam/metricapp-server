@@ -40,7 +40,7 @@ public class MeasurementGoalRestController {
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
-			if (!userId.equals("NA") && id.equals("NA")) {
+			if (!userId.equals("NA") && id.equals("NA") && state.equals("NA")) {
 				dto = controller.getMeasurementGoalByUser(userId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}

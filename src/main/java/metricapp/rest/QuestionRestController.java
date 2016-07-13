@@ -30,7 +30,7 @@ public class QuestionRestController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<QuestionCrudDTO> getQuestionDTO(
 			@RequestParam(value="id", defaultValue="NA") String id,
-			@RequestParam(value="creatorId", defaultValue="NA") String creatorId,
+			@RequestParam(value="questionerId", defaultValue="NA") String questionerId,
 			@RequestParam(value="focus", defaultValue="NA") String focus,
 			@RequestParam(value="subject", defaultValue="NA") String subject,
 			@RequestParam(value="tag", defaultValue="NA") String tag,
@@ -41,8 +41,8 @@ public class QuestionRestController {
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
 		try{
-			if(!creatorId.equals("NA") && !recent.equals("false")){
-				questionCrudDTO = questionCRUDController.getRecentQuestions(creatorId);
+			if(!questionerId.equals("NA") && !recent.equals("false")){
+				questionCrudDTO = questionCRUDController.getRecentQuestions(questionerId);
 			}
 			else if(!id.equals("NA") && !id.equals("all") && approved.equals("false")){
 				questionCrudDTO = questionCRUDController.getQuestionById(id);
@@ -53,8 +53,8 @@ public class QuestionRestController {
 			else if(id.equals("all")){
 				questionCrudDTO = questionCRUDController.getAllQuestions();
 			}
-			else if(!creatorId.equals("NA")){
-				questionCrudDTO = questionCRUDController.getQuestionByCreatorId(creatorId);
+			else if(!questionerId.equals("NA")){
+				questionCrudDTO = questionCRUDController.getQuestionByQuestionerId(questionerId);
 			}
 			else if(!focus.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionByFocus(focus);
@@ -65,8 +65,8 @@ public class QuestionRestController {
 			else if(!tag.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionByTag(tag);
 			}
-			else if(!creatorId.equals("NA") && !state.equals("NA")){
-				questionCrudDTO = questionCRUDController.getQuestionByStateAndCreatorId(state, creatorId);
+			else if(!questionerId.equals("NA") && !state.equals("NA")){
+				questionCrudDTO = questionCRUDController.getQuestionByStateAndQuestionerId(state, questionerId);
 			}
 			else if(!state.equals("NA")){
 				questionCrudDTO = questionCRUDController.getQuestionByState(state);

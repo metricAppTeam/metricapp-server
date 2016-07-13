@@ -22,6 +22,7 @@ public class QuestionDTO extends DTO implements Serializable{
 	public String focus;
 	public String subject;
 	public String description;
+	public String questionerId;
 	
 	public QuestionDTO(){
 		setMetadata(new MetadataDTO());

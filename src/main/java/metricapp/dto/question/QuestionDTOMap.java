@@ -21,6 +21,7 @@ public class QuestionDTOMap extends PropertyMap<QuestionDTO, Question>{
 		map().setCreationDate(source.getMetadata().getCreationDate());
 		map().setLastVersionDate(source.getMetadata().getLastVersionDate());
 		map().setVersionBus(source.getMetadata().getVersionBus());
+		map().setQuestionerId(source.getQuestionerId());
 
 	}
 
