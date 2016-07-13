@@ -86,7 +86,7 @@ public class QuestionRestControllerTest {
 		QuestionDTO questionDTO = new QuestionDTO();
 		
 		questionDTO.getMetadata().setReleaseNote(RandomGenerator.randomString());
-		questionDTO.getMetadata().setCreatorId(RandomGenerator.randomString());
+		questionDTO.setQuestionerId(RandomGenerator.randomString());
 		questionDTO.getMetadata().setTags(RandomGenerator.randomArrayList());
 		questionDTO.getMetadata().setState(State.OnUpdate);
 		
@@ -145,13 +145,13 @@ public class QuestionRestControllerTest {
 			for(int i=0; i<20; i++){
 				QuestionDTO tempQuestionDTO = randomQuestionDTO();
 				
-				tempQuestionDTO.getMetadata().setCreatorId("questioner");
+				tempQuestionDTO.setQuestionerId("questioner");
 				questionCRUDController.createQuestion(tempQuestionDTO);
 			}
 			
 
 			MvcResult result = this.mockMvc
-					.perform(get("/question?creatorId=questioner&recent=true"))
+					.perform(get("/question?questionerId=questioner&recent=true"))
 					.andExpect(status().isOk())
 					.andReturn();
 			

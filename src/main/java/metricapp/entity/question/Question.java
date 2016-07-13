@@ -19,6 +19,7 @@ public class Question extends Element{
 	private String focus;
 	private String subject;
 	private String description;
+	private String questionerId;
 
 }
 

@@ -13,7 +13,7 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 
 	public Question findQuestionById(String id);
 	
-	public ArrayList<Question> findQuestionByCreatorId(String id);
+	public ArrayList<Question> findQuestionByQuestionerId(String id);
 	
 	public ArrayList<Question> findQuestionByFocusLike(String focus);
 	
@@ -22,11 +22,10 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 	@Query("{'tags': { $in : [?0] } }")
 	public ArrayList<Question> findQuestionByTag(String tag);
 	
-	public Long countByStateAndCreatorId(State state, String id);
+	public Long countByStateAndQuestionerId(State state, String id);
 	
-	public ArrayList<Question> findByStateAndCreatorId(State state, String id);
+	public ArrayList<Question> findByStateAndQuestionerId(State state, String id);
 
 	public ArrayList<Question> findByState(State state);
 
-	
 }

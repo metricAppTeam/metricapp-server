@@ -39,6 +39,7 @@ public class QuestionDTOToQuestion {
 		this.questionDTO.getMetadata().setState(State.Created);
 		this.questionDTO.getMetadata().setTags(RandomGenerator.randomArrayList());
 		
+		this.questionDTO.setQuestionerId(RandomGenerator.randomString());
 		this.questionDTO.setDescription(RandomGenerator.randomString());
 		this.questionDTO.setFocus(RandomGenerator.randomString());
 		this.questionDTO.setSubject(RandomGenerator.randomString());
