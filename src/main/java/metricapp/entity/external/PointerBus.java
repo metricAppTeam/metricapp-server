@@ -12,8 +12,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Data
 @AllArgsConstructor
+@Document
 public class PointerBus {
 
 	public String objIdLocalToPhase;
