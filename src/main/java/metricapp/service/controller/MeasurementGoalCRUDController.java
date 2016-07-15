@@ -136,6 +136,14 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
+	public long countByQuestionerIdAndState(String questionerId, String state) throws BadInputException, NotFoundException{
+		if (state == null) {
+			throw new BadInputException("State cannot be null");
+		}
+		return measurementGoalRepository.countByQuestionerIdAndState(questionerId, State.valueOf(state));
+	}
+	
+	@Override
 	public MeasurementGoalCrudDTO getMeasurementGoalByUser(String userId) throws NotFoundException, BadInputException {
 		if (userId == null) {
 			throw new BadInputException("MeasurementGoal userId cannot be null");

@@ -56,5 +56,7 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getMeasurementGoalByTag(String tag) throws BadInputException, NotFoundException;
 
+	long countByQuestionerIdAndState(String questionerId, String state) throws BadInputException, NotFoundException;
+
 		
 }
