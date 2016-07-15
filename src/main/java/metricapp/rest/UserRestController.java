@@ -34,7 +34,7 @@ public class UserRestController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<UserCrudDTO> getQuestionDTO(
+	public ResponseEntity<UserCrudDTO> getUserDTO(
 			@RequestParam(value="username", defaultValue="NA") String username){
 		
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
@@ -42,9 +42,11 @@ public class UserRestController {
 		try{
 			if(!username.equals("NA") && !username.equals("all")){
 				userCrudDTO = userCRUDController.getUserByUsername(username);
-			}else if(username.equals("all")){
+			}
+			else if(username.equals("all")){
 				userCrudDTO = userCRUDController.getAllUsers();
-			}else{
+			}
+			else{
 				userCrudDTO.setError("No parameters given");
 				return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
 			}

@@ -34,7 +34,7 @@ public class TeamRestController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<TeamCrudDTO> getQuestionDTO(
+	public ResponseEntity<TeamCrudDTO> getTeamDTO(
 			@RequestParam(value="id", defaultValue="NA") String id){
 		
 		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
