@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import metricapp.dto.DTO;
 import metricapp.entity.stakeholders.Role;
-import metricapp.entity.user.User.Gender;
+import metricapp.entity.stakeholders.User.Gender;
 
 @Getter
 @Setter()

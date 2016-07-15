@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
-import metricapp.entity.user.User;
+import metricapp.entity.stakeholders.User;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
 import metricapp.exception.IllegalStateTransitionException;

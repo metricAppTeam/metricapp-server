@@ -1,4 +1,4 @@
-package metricapp.entity.user;
+package metricapp.entity.stakeholders;
 
 import java.time.LocalDate;
 
@@ -10,8 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import metricapp.entity.stakeholders.Person;
-import metricapp.entity.stakeholders.Role;
 
 @Setter
 @Getter

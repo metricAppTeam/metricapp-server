@@ -2,7 +2,7 @@ package metricapp.dto.user;
 
 import org.modelmapper.PropertyMap;
 
-import metricapp.entity.user.User;
+import metricapp.entity.stakeholders.User;
 
 public class UserDTOMap extends PropertyMap<UserDTO, User>{
 
