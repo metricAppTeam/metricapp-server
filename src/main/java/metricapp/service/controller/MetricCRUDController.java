@@ -89,6 +89,33 @@ public class MetricCRUDController implements MetricCRUDInterface {
 		return dto;
 		
 	}
+	
+	@Override
+	public MetricCrudDTO getAll() throws NotFoundException{
+		ArrayList<Metric> metrics = metricRepository.findAll();
+		if (metrics.size() == 0) {
+			throw new NotFoundException("no Metrics");
+		}
+		MetricCrudDTO dto = new MetricCrudDTO();
+		dto.setRequest("All Metrics available on DB" );
+		Iterator<Metric> metricP = metrics.iterator();
+		while (metricP.hasNext()) {
+			dto.addMetricToList(modelMapperFactory.getLooseModelMapper().map(metricP.next(), MetricDTO.class));
+		}
+		return dto;
+		}
+	
+	@Override
+	public MetricCrudDTO getAllApproved() throws BadInputException, BusException, IOException{
+		MetricCrudDTO dto= new MetricCrudDTO();
+		ArrayList<Metric> metrics = busApprovedElementRepository.getAllApprovedMetrics();
+		dto.setRequest("All approved metrics");
+		Iterator<Metric> metricP = metrics.iterator();
+		while (metricP.hasNext()) {
+			dto.addMetricToList(modelMapperFactory.getLooseModelMapper().map(metricP.next(), MetricDTO.class));
+		}
+		return dto;
+	}
 
 
 	@Override

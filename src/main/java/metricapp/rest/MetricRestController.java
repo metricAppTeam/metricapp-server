@@ -58,8 +58,13 @@ public class MetricRestController {
 				dto = metricCRUDController.getMetricByState(state);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			} 
+			if (approved.equals("true")) {
+				dto = metricCRUDController.getAllApproved();
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
+			} 
 			else {
-				return new ResponseEntity<MetricCrudDTO>(HttpStatus.BAD_REQUEST);
+				dto = metricCRUDController.getAll();
+				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			}
 		} catch (BadInputException e) {
 			dto.setError(e.getMessage());

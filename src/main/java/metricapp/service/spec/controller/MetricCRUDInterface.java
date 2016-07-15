@@ -30,5 +30,7 @@ public interface MetricCRUDInterface {
 	MetricCrudDTO getMetricByStateAndMetricatorId(String state, String userId)
 			throws NotFoundException, BadInputException;
 	ArrayList<MetricDTO> getMetricsByPointerBusList(List<PointerBus> list);
+	MetricCrudDTO getAll() throws NotFoundException;
+	MetricCrudDTO getAllApproved() throws BadInputException, BusException, IOException;
 		
 }
