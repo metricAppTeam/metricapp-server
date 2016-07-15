@@ -264,4 +264,22 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		element.setVersionBus(pointer.getBusVersion());
 		return element;
 	}
+	@Override
+	public ArrayList<Question> getAllApprovedQuestions() throws BadInputException, BusException, IOException{
+		PointerBus pointer = new PointerBus();
+		pointer.setTypeObj(Entity.Question.name());
+		return getApprovedElements(pointer, Question.class);
+	}
+	@Override
+	public ArrayList<MeasurementGoal> getAllApprovedMeasurementGoals() throws BadInputException, BusException, IOException{
+		PointerBus pointer = new PointerBus();
+		pointer.setTypeObj(Entity.MeasurementGoal.name());
+		return getApprovedElements(pointer, MeasurementGoal.class);
+	}
+	@Override
+	public ArrayList<Metric> getAllApprovedMetrics() throws BadInputException, BusException, IOException{
+		PointerBus pointer = new PointerBus();
+		pointer.setTypeObj(Entity.Metric.name());
+		return getApprovedElements(pointer, Metric.class);
+	}
 }

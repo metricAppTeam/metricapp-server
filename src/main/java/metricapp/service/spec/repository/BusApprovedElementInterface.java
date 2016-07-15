@@ -11,6 +11,9 @@ import metricapp.entity.Element;
 import metricapp.entity.Entity;
 import metricapp.entity.external.PointerBus;
 import metricapp.entity.external.RichPointerBus;
+import metricapp.entity.measurementGoal.MeasurementGoal;
+import metricapp.entity.metric.Metric;
+import metricapp.entity.question.Question;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 
@@ -31,4 +34,10 @@ public interface BusApprovedElementInterface {
 
 		public <T extends Element> T getLastApprovedElement(@Nonnull String id, Class<T> clazz, Entity typeObj) 
 				throws BadInputException, BusException, IOException;
+
+		ArrayList<Metric> getAllApprovedMetrics() throws BadInputException, BusException, IOException;
+
+		ArrayList<MeasurementGoal> getAllApprovedMeasurementGoals() throws BadInputException, BusException, IOException;
+
+		ArrayList<Question> getAllApprovedQuestions() throws BadInputException, BusException, IOException;
 }
