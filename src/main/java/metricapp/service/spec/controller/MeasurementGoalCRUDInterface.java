@@ -60,5 +60,7 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getAllApproved() throws BadInputException, BusException, IOException;
 
+	long countByQuestionerIdAndState(String questionerId, String state) throws BadInputException, NotFoundException;
+
 		
 }

@@ -108,11 +108,18 @@ public class MeasurementGoalRestController {
 	}
 	
 	@RequestMapping(value="/count",method = RequestMethod.GET)
-	public ResponseEntity<MeasurementGoalCrudDTO> getCountMeasurementGoalDTOByState(@RequestParam(value="state") String state,
-			@RequestParam(value="userid") String userId){
+	public ResponseEntity<MeasurementGoalCrudDTO> getCountMeasurementGoalDTOByState(
+			@RequestParam(value = "state") String state,
+			@RequestParam(value = "userid", defaultValue="NA") String userId,
+			@RequestParam(value = "questionerId", defaultValue="NA") String questionerId){
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
-			dto.setCount(controller.countMeasurementGoalByState(state,userId));
+			if(!userId.equals("NA")){
+				dto.setCount(controller.countMeasurementGoalByState(state,userId));
+			}
+			else if(!questionerId.equals("NA")){
+				dto.setCount(controller.countByQuestionerIdAndState(questionerId, state));
+			}
 			return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 		} catch (BadInputException | NotFoundException e) {
 			e.printStackTrace();

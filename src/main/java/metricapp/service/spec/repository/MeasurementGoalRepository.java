@@ -20,6 +20,9 @@ public interface MeasurementGoalRepository extends MongoRepository<MeasurementGo
 	
 	public ArrayList<MeasurementGoal> findByStateAndMetricatorId(State state, String id);
 	
+	@Query(value = "{'questionersId': { $in : [?0] }, 'state' : ?1 }", count = true)
+	public Long countByQuestionerIdAndState(String questionerId, State state);
+	
 	@Query("{'questionersId': { $in : [?0] } }")
 	public ArrayList<MeasurementGoal> findByQuestionerId(String questionerId);
 	
