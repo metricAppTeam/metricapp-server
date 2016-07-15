@@ -34,6 +34,7 @@ public interface MeasurementGoalRepository extends MongoRepository<MeasurementGo
 	
 	public ArrayList<MeasurementGoal> findByObjectLike(String object);
 	
+	public ArrayList<MeasurementGoal> findAll();
 	
 	
 }

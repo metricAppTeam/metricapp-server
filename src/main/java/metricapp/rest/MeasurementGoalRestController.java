@@ -84,8 +84,13 @@ public class MeasurementGoalRestController {
 				dto = controller.getMeasurementGoalByQuestionerId(questionerId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
+			else if (approved.equals("true")) {
+				dto = controller.getAllApproved();
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			} 
 			else {
-				return new ResponseEntity<MeasurementGoalCrudDTO>(HttpStatus.BAD_REQUEST);
+				dto = controller.getAll();
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}
 		} catch (BadInputException e) {
 			dto.setError(e.getMessage());

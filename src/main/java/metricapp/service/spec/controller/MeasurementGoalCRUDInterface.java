@@ -56,5 +56,9 @@ public interface MeasurementGoalCRUDInterface {
 
 	MeasurementGoalCrudDTO getMeasurementGoalByTag(String tag) throws BadInputException, NotFoundException;
 
+	MeasurementGoalCrudDTO getAll() throws NotFoundException;
+
+	MeasurementGoalCrudDTO getAllApproved() throws BadInputException, BusException, IOException;
+
 		
 }

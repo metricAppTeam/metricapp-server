@@ -68,6 +68,21 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 	
 	@Override
+	public MeasurementGoalCrudDTO getAll() throws NotFoundException{
+		ArrayList<MeasurementGoal> goals = measurementGoalRepository.findAll();
+		if (goals.size() == 0) {
+			throw new NotFoundException("no Metrics");
+		}
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		dto.setRequest("All MeasurementGoals available on DB" );
+		Iterator<MeasurementGoal> goalsP = goals.iterator();
+		while (goalsP.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getLooseModelMapper().map(goalsP.next(), MeasurementGoalDTO.class));
+		}
+		return dto;
+		}
+	
+	@Override
 	public long countMeasurementGoalByState(String state, String userId) throws BadInputException, NotFoundException{
 		if (state == null) {
 			throw new BadInputException("State cannot be null");
@@ -172,6 +187,18 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(measurementGoalIter.next(), MeasurementGoalDTO.class));
 		}
 		
+		return dto;
+	}
+	
+	@Override
+	public MeasurementGoalCrudDTO getAllApproved() throws BadInputException, BusException, IOException{
+		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
+		ArrayList<MeasurementGoal> measurementGoals = busApprovedElementRepository.getAllApprovedMeasurementGoals();
+		dto.setRequest("All approved metrics");
+		Iterator<MeasurementGoal> goalP = measurementGoals.iterator();
+		while (goalP.hasNext()) {
+			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(goalP.next(), MeasurementGoalDTO.class));
+		}
 		return dto;
 	}
 	
