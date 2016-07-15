@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public interface ExternalElementsGetterInterface {
     ExternalElementsDTO getMeasurementGoalExternalElements(String measurementGoalId) throws IOException, BusException, BadInputException;
 
-    public<T,Z> ArrayList<T> fromArrayListToArrayListDTO(ArrayList<Z> input, Class<T>clazz);
+    public<Z,T> ArrayList<T> fromArrayListToArrayListDTO(ArrayList<Z> input, Class<T>clazz);
 
     public AssumptionDTO getAssumptionByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException;
 
@@ -29,4 +29,8 @@ public interface ExternalElementsGetterInterface {
     public ArrayList<OrganizationalGoalDTO> getAllOrganizationalGoals() throws BusException, IOException, BadInputException;
     
     public ArrayList<AssumptionDTO> getAllAssumptions() throws BusException, IOException, BadInputException;
+
+	<Z> ArrayList<ContextFactorDTO> fromArrayListToContextFactorArrayListDTO(ArrayList<Z> input);
+
+	<Z>ArrayList<AssumptionDTO> fromArrayListToAssumptionArrayListDTO(ArrayList<Z> input);
 }

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ExternalElementsGetterController implements ExternalElementsGetterInterface{
@@ -73,10 +74,10 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
         ArrayList<ContextFactorDTO> contextFactorDTOs ;
 
         //conversion ArrayList<Assumption> to ArrayList<AssumptionDTO> -- see ModelMapper Doc
-        assumptionDTOs = fromArrayListToArrayListDTO(assumptions,AssumptionDTO.class);
+        assumptionDTOs = fromArrayListToAssumptionArrayListDTO(assumptions);
 
         //conversion ArrayList<ContextFactor> to ArrayList<ContextFactorDTO> -- see ModelMapper Doc
-        contextFactorDTOs = fromArrayListToArrayListDTO(contextFactors,ContextFactorDTO.class );
+        contextFactorDTOs = fromArrayListToContextFactorArrayListDTO(contextFactors );
 
         //get modelMapper instance
         ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
@@ -112,17 +113,71 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
      * @return
      */
     @Override
-    public<T,Z> ArrayList<T> fromArrayListToArrayListDTO(ArrayList<Z> input, Class<T>clazz){
+    public<Z,T> ArrayList<T> fromArrayListToArrayListDTO(ArrayList<Z> input, Class<T>clazz){
 
         //get modelMapper instance
         ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
 
         //-- see ModelMapper Doc
-        Type listType = new TypeToken<ArrayList<T>>() {}.getType();
+        Type listType = new TypeToken<List<T>>() {}.getType();
         ArrayList<T> dTOs = modelMapper.map(input, listType);
+        input=null;
+        System.out.println(" to" + clazz.getName());
+        System.out.println(dTOs.toString());
 
         return dTOs;
     }
+    
+    /**
+     * This function converts ArrayList of entities in ArrayList of DTO, and viceversa.
+     * Implementation is derived by ModelMapper Documentation.
+     * <p>
+     * e.g. fromArrayListToArrayListDTO(listOfAssumption, AssumptionDTO.class)
+     * @param input is the arraylist to map
+     * @param clazz is the parameter of the new arrayList to fill up
+     * @param <T> T is the type of parameter for the new array
+     * @param <Z> Z is the type of parameter for the old array
+     * @return
+     */
+    @Override
+    public<Z> ArrayList<AssumptionDTO> fromArrayListToAssumptionArrayListDTO(ArrayList<Z> input){
+
+        //get modelMapper instance
+        ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+
+        //-- see ModelMapper Doc
+        Type listType = new TypeToken<List<AssumptionDTO>>() {}.getType();
+        ArrayList<AssumptionDTO> dTOs = modelMapper.map(input, listType);
+        input=null;
+        System.out.println(dTOs.toString());
+
+        return dTOs;
+    }
+    
+    /**
+     * This function converts ArrayList of entities in ArrayList of DTO, and viceversa.
+     * Implementation is derived by ModelMapper Documentation.
+     * <p>
+     * e.g. fromArrayListToArrayListDTO(listOfAssumption, AssumptionDTO.class)
+     * @param input is the arraylist to map
+     * @param clazz is the parameter of the new arrayList to fill up
+     * @param <T> T is the type of parameter for the new array
+     * @param <Z> Z is the type of parameter for the old array
+     * @return
+     */
+    @Override
+    public<Z> ArrayList<ContextFactorDTO> fromArrayListToContextFactorArrayListDTO(ArrayList<Z> input){
+
+        //get modelMapper instance
+        ModelMapper modelMapper = modelMapperFactory.getLooseModelMapper();
+
+        //-- see ModelMapper Doc
+        Type listType = new TypeToken<List<ContextFactorDTO>>() {}.getType();
+        ArrayList<ContextFactorDTO> dTOs = modelMapper.map(input, listType);
+        input=null;
+        return dTOs;
+    }
+    
     @Override
     public AssumptionDTO getAssumptionByPointerBus(PointerBus pointerBus) throws IOException, BusException, NotFoundException {
         try {
