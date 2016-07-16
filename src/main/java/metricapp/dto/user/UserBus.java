@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class UserBus {
 		this.instance="";
 	}
 	
-	
+	@JsonIgnore
 	public String getLastname(){
 		return this.getSurname();
 	}
@@ -43,7 +44,7 @@ public class UserBus {
 
 		this.setSurname(surname);
 	}
-	
+	@JsonIgnore
 	public String getFirstname(){
 		return this.getName();
 	}
@@ -51,7 +52,7 @@ public class UserBus {
 	public void setFirstname(String firstname){
 		this.setName(firstname);
 	}
-	
+	@JsonIgnore
 	public String getBirthday(){
 		return this.dob;
 	}
@@ -75,11 +76,15 @@ public class UserBus {
 	public void setRole(Role role){
 		this.setRole(role.name());
 	}
-	
+	@JsonProperty(value="role")
+	public String getRoleString(){
+		return this.role;
+	}
 	/**
 	 * due to different role implementation, we use the highest ranking role
 	 * @return
 	 */
+	@JsonIgnore
 	public Role getRole(){
 		String cleanArray = role.replace("[","").replace("]", "");
 		
