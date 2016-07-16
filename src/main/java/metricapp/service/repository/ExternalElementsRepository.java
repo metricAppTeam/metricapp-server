@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import metricapp.dto.bus.BusMessageOtherPhases;
 import metricapp.entity.Entity;
 import metricapp.entity.external.*;
 import metricapp.exception.BadInputException;
@@ -219,6 +220,12 @@ public class ExternalElementsRepository implements ExternalElementsRepositoryInt
     public NotificationPointerBus pointerOfIncomingNotificationObject(String data) throws IOException{
     	return mapper.fromJson(data, NotificationPointerBus.class);
     }
+    
+    @Override
+    public BusMessageOtherPhases messageFromOtherPhases(String data) throws IOException{
+    	return mapper.fromJson(data, BusMessageOtherPhases.class);
+    }
+    
     @Override
     public PointerBus fromNotificationToPointerBus(NotificationPointerBus notification){
     	PointerBus pointer = new PointerBus();

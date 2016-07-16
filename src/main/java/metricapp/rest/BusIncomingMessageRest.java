@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.bus.BusIncomingMessage;
+import metricapp.dto.bus.BusMessageOtherPhases;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.external.NotificationPointerBus;
@@ -62,4 +63,27 @@ public class BusIncomingMessageRest {
 		return new ResponseEntity<BusIncomingMessage>(message,HttpStatus.OK);
 	}
 
+	
+	/**
+	 * this method manages the incoming notifications. When an OrganizationalGoal is created, message contains the instance of it.
+	 * According to Confluence Sequence Diagram about MeasurementGoal Creation, the new notification triggers the creation of a empty MeasurementGoal in state of "Created"
+	 * and sets organizationalGoalId field to correct pointerBus. 
+	 * Due to bus implementation, the response must be not empty, so we returns the incoming message. 
+	 * @param message incoming notification
+	 * @return the same message received
+	 */
+	@RequestMapping(value="/messages",method = RequestMethod.POST)
+	public ResponseEntity<BusIncomingMessage> postMessage(@RequestBody BusIncomingMessage message) {
+		System.out.println(message.getData());
+		try {
+			BusMessageOtherPhases m = externalElementsRepository.messageFromOtherPhases(message.getData());
+			System.out.println(m.getBody());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//TODO send notification with message to expert
+		return new ResponseEntity<BusIncomingMessage>(message,HttpStatus.OK);
+	}
+
+	
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import metricapp.dto.bus.BusMessageOtherPhases;
 import metricapp.entity.external.*;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
@@ -42,6 +43,8 @@ public interface ExternalElementsRepositoryInterface {
     public ArrayList<OrganizationalGoal> getAllOrganizationalGoals() throws BusException, IOException, BadInputException;
     
     public ArrayList<InstanceProject> getAllInstanceProjects() throws BusException, IOException, BadInputException;
+
+	BusMessageOtherPhases messageFromOtherPhases(String data) throws IOException;
 
 
 }
