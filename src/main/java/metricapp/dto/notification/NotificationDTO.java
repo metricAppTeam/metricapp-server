@@ -8,32 +8,26 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import metricapp.dto.DTO;
-import metricapp.entity.notification.NotificationScope;
-
+import metricapp.entity.event.EventScope;
 
 @Getter
 @Setter()
 @ToString(callSuper=true)
 @EqualsAndHashCode(callSuper=true)
-public class
-
-NotificationDTO extends DTO implements Serializable {
-
-	private static final long serialVersionUID = -2073939437602304884L;
+public class NotificationDTO extends DTO implements Serializable {
+	
+	private static final long serialVersionUID = -3515906896966614256L;
 	
 	public String id;
 	public LocalDate creationDate;
 	public String authorId;
-	public NotificationScope scope;
+	public EventScope scope;
 	public String artifactId;	
 	public String description;	
-	public boolean isRead;
+	public boolean read;
 	
 	public NotificationDTO() {
 		super();
 	}
-	
-	
-
 	
 }
