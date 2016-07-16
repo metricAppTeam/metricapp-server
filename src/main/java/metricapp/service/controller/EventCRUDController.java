@@ -14,7 +14,7 @@ import metricapp.dto.event.EventDTO;
 import metricapp.entity.event.Event;
 import metricapp.entity.event.EventScope;
 import metricapp.entity.notification.Notification;
-import metricapp.entity.notification.NotificationBox;
+import metricapp.entity.notification.box.NotificationBox;
 import metricapp.entity.stakeholders.User;
 import metricapp.entity.topic.Topic;
 import metricapp.exception.BadInputException;
