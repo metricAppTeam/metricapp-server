@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import metricapp.dto.bus.BusRequestDTO;
 import metricapp.dto.bus.BusResponseDTO;
+import metricapp.dto.user.UserBus;
 import metricapp.entity.Entity;
 import metricapp.entity.external.KeyValue;
 import metricapp.entity.external.PointerBus;
@@ -69,6 +70,9 @@ public class BusRepository implements BusInterface {
     
     @Value("${bus.usersBus}")
     private String usersBus;
+    
+    @Value("${bus.createUserBus}")
+    private String createUserBus;
 
     @Autowired
     private JacksonMapper mapper;
@@ -150,6 +154,23 @@ public class BusRepository implements BusInterface {
         content.add(0, this.usersBus);
         content.add(1, this.getUsersBus);
         content.add(2, mapper.toJson(username));
+
+        return content;
+    }
+    
+    /**
+     * Simple function to create and fill the content array in case of users.
+     * field2 is converted to string with JacksonMapper
+     * @see JacksonMapper
+     *
+     * @param it's the keyvalue json to pass to bus. it contains username: value
+     * @return the filled array of elements
+     */
+    private ArrayList<String> fillContentToRegisterUsers(UserBus user) throws JsonProcessingException {
+        ArrayList<String> content = new ArrayList<String>(3);
+        content.add(0, this.usersBus);
+        content.add(1, this.createUserBus);
+        content.add(2, mapper.toJson(user));
 
         return content;
     }
@@ -243,6 +264,17 @@ public class BusRepository implements BusInterface {
     	ObjectNode kv = JsonNodeFactory.instance.objectNode();
     	kv.put(username.key, username.value);
     	return rawPost(fillContentForUsers(kv));
+    }
+    
+    /**
+     * This function is a public method to execute a registration for a user to the bus.
+     * @param user
+     * @return
+     * @throws JsonProcessingException
+     * @throws BusException
+     */
+    public ArrayList<String> registerUser(UserBus user) throws JsonProcessingException, BusException{
+    	return rawPost(fillContentToRegisterUsers(user));
     }
 
 

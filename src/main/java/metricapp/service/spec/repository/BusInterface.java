@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import metricapp.dto.user.UserBus;
 import metricapp.entity.external.KeyValue;
 import metricapp.entity.external.PointerBus;
 import metricapp.entity.external.RichPointerBus;
@@ -24,5 +25,6 @@ public interface BusInterface {
     
     public ArrayList<String> getUser(KeyValue username) throws JsonProcessingException, BusException;
 
+    public ArrayList<String> registerUser(UserBus user) throws JsonProcessingException, BusException;
 
 }

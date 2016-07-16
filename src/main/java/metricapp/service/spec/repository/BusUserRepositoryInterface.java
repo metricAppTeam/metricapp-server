@@ -7,6 +7,8 @@ public interface BusUserRepositoryInterface {
 
 	User findUserByUsername(String username) throws BusException;
 
+	User registerUser(User user) throws BusException;
+
 	
 
 }

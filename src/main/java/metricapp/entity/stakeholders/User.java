@@ -60,4 +60,5 @@ public class User extends Person {
 	public void setBirthday(LocalDate date){
 		this.birthday=date;
 	}
+	
 }
