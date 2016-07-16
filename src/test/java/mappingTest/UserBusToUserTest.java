@@ -28,7 +28,7 @@ public class UserBusToUserTest {
 	
 	@Before
 	public void before(){
-		userBus = new UserBus("password", "[role, Metricator]", "Male", "surname", "02-12-2012", "name", "pic", "username", "instance", "busVersion", "typeObj");
+		userBus = new UserBus("password", "[role, Metricator]", "Male", "surname", "2012-02-12", "name", "pic", "username", "instance", "busVersion", "typeObj");
 	}
 	
 	@Test

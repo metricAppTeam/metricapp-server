@@ -49,7 +49,7 @@ public class User extends Person {
 	public void setBirthday(String date){
 		if(date!=null){
 			try{
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				this.birthday = LocalDate.parse(date, formatter);
 			}catch(Exception e){
 				return;
