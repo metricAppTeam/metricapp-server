@@ -10,6 +10,8 @@ public class LogoutMap extends PropertyMap<Login, LogoutDTO>{
 	protected void configure() {
 		
 		map().setResponse(source.getResponse());
+		map().setUsername(source.getUsername());
+		map().setTimestamp(source.getTimestamp());
 	}
 
 }
