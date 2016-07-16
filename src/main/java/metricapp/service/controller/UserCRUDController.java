@@ -9,10 +9,12 @@ import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.entity.stakeholders.User;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
 import metricapp.exception.IDException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.repository.BusUserRepository;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.UserCRUDInterface;
 import metricapp.service.spec.repository.UserRepository;
@@ -22,6 +24,9 @@ public class UserCRUDController implements UserCRUDInterface {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private BusUserRepository busUserRepository;
 	
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory; 
@@ -34,6 +39,7 @@ public class UserCRUDController implements UserCRUDInterface {
 		}
 		
 		User user = userRepository.findUserByUsername(username);
+		
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
 		try{
 			userCrudDTO.addUserToList(modelMapperFactory.getLooseModelMapper().map(user, UserDTO.class));
@@ -46,7 +52,7 @@ public class UserCRUDController implements UserCRUDInterface {
 	
 	
 	@Override
-	public UserCrudDTO createUser(UserDTO userDTO) throws BadInputException, IDException{
+	public UserCrudDTO createUser(UserDTO userDTO) throws BadInputException, IDException, DBException, BusException{
 		
 		if (userDTO.getUsername() == null) {
 			throw new BadInputException("Username field is empty");
@@ -82,16 +88,40 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new BadInputException("Gender field is empty");
 		}
 		
-		User newUser = modelMapperFactory.getLooseModelMapper().map(userDTO, User.class);
+		User newUser;
+		
+		try{
+			newUser = modelMapperFactory.getLooseModelMapper().map(userDTO, User.class);			
+		}
+		catch(Exception e){
+			throw new DBException("Error in saving data in repository");
+		}
 		
 		if(userRepository.exists(newUser.getUsername())){
 			throw new IDException("Username it is already in use");
 		}
 		
+		/*
+		User busUser;
+		try{
+			busUser = busUserRepository.registerUser(newUser);
+		}
+		catch(Exception e){
+			throw new BusException("Error in saving data in bus repository");
+		}
+		System.out.println("2");
+		if(!(busUser.getUsername() == newUser.getUsername() && busUser.getPassword() == newUser.getPassword()))
+			throw new BusException("Error in saving data in bus repository");
+		*/
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
 		userCrudDTO.setRequest("create User");
-		userCrudDTO.addUserToList(
-					modelMapperFactory.getLooseModelMapper().map(userRepository.save(newUser), UserDTO.class));
+		
+		try{
+			userCrudDTO.addUserToList(modelMapperFactory.getLooseModelMapper().map(userRepository.save(newUser), UserDTO.class));
+		}
+		catch(Exception e){
+			throw new DBException("Error in saving data in repository");
+		}
 		return userCrudDTO;
 	}
 
@@ -111,7 +141,6 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new NotFoundException("User not be found");
 		}
 		
-		//Upgrade User
 		try{
 			if(userDTO.getFirstname() != null)
 				oldUser.setFirstname(userDTO.getFirstname());
@@ -170,5 +199,31 @@ public class UserCRUDController implements UserCRUDInterface {
 			
 		}	
 		return userCrudDTO;
+	}
+
+
+	@Override
+	public UserCrudDTO getBusUserByUsername(String username) throws NotFoundException, BadInputException, BusException {
+		
+		if(username == null){
+			throw new BadInputException("Id cannot be null");
+		}
+		
+		User busUser;
+		try{
+			busUser = busUserRepository.findUserByUsername(username);
+		}
+		catch(Exception e){
+			throw new BusException("User not found in bus repository");
+		}
+		
+		UserCrudDTO userCrudDTO = new UserCrudDTO();
+		try{
+			userCrudDTO.addUserToList(modelMapperFactory.getLooseModelMapper().map(busUser, UserDTO.class));
+			return userCrudDTO;
+		}
+		catch(IllegalArgumentException e){
+			throw new NotFoundException("No User found");
+		}
 	}
 }
