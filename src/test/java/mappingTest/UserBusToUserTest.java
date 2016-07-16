@@ -39,7 +39,7 @@ public class UserBusToUserTest {
 		assertEquals(Role.Metricator, user.getRole());
 		assertEquals(User.Gender.Male, user.getGender());
 		assertEquals("surname", user.getLastname());
-		assertEquals(LocalDate.parse("2012-12-02"), user.getBirthday());
+		assertEquals(LocalDate.parse("2012-02-12"), user.getBirthday());
 		assertEquals("name", user.getFirstname());
 		assertEquals("pic", user.getPic());
 		assertEquals("username", user.getUsername());
