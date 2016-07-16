@@ -1,0 +1,19 @@
+package metricapp.utility.stateTransitionUtils.metricTransition;
+
+import metricapp.entity.Element;
+
+public class PendingToRejected extends MetricStateTransitionCommand {
+
+	public PendingToRejected(Element before, Element after) {
+		super(before, after);
+	}
+
+	@Override
+	public void execute() throws Exception {
+		super.execute();
+		
+		System.out.println("pending to approved");
+		// TODO alert newMetric.getMetricatorId() with newMetric.getReleaseNote() \n TODO send to bus the new metric ->need to convert: wipe securekey, change id, ermesLastVersion
+	}
+	
+}
