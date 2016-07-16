@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.login.LoginCrudDTO;
 import metricapp.dto.logout.LogoutCrudDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.LoginException;
 import metricapp.exception.NotFoundException;
-import metricapp.service.controller.LoginCRUDController;
 import metricapp.service.controller.LogoutCRUDController;
 
 @CrossOrigin 
