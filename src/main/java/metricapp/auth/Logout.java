@@ -1,5 +1,7 @@
 package metricapp.auth;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,6 +20,8 @@ import lombok.Setter;
 public class Logout {
 	
 	@Id
+	private LocalDate timestamp;
 	private String response;
+	private String username;
 	
 }
