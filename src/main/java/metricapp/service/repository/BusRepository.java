@@ -103,7 +103,7 @@ public class BusRepository implements BusInterface {
 		//		throw new BusException(mapper.getMapper().readTree(incomingContent.get(0)).get(0).get("msg").toString());
 		//	}
 		//} catch (IOException e) {
-		//	throw new BusException(e);
+		//	throw new BusException(e);su che issue stai
 		//}
         
         return incomingContent;

@@ -1,6 +1,7 @@
 package metricapp.entity.stakeholders;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,24 +18,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class User extends Person {
+public class Team extends Person {
 	
 	@Id
-	private String username;
-	private String password;
-	private String firstname;
-	private String lastname;
-	private Gender gender;
-	private LocalDate birthday;
-	private String pic;
-	private String email;
-	private String mobile;
-	private String online;
-	private String website;
-	private Role role; 
+	private String id;
+	private String name;
+	private String grid_name;
+	private LocalDate ts_create;
+	private LocalDate ts_update;
+	private ArrayList<User> expert;
+	private ArrayList<User> questioners;
+	private ArrayList<User> metricators;
 	
-	public enum Gender{
-		Male,
-		Female
-	}
 }
