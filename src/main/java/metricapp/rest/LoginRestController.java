@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.login.LoginCrudDTO;
 import metricapp.dto.login.LoginDTO;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
+import metricapp.exception.IDException;
 import metricapp.exception.LoginException;
 import metricapp.service.controller.LoginCRUDController;
 
@@ -26,7 +28,7 @@ public class LoginRestController {
 	LoginCRUDController loginCRUDController;
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<LoginCrudDTO> createLoginDTO(@RequestBody LoginDTO loginDTO){
+	public ResponseEntity<LoginCrudDTO> createLoginDTO(@RequestBody LoginDTO loginDTO) throws IDException{
 		LoginCrudDTO loginCrudDTO = new LoginCrudDTO();
 		try{
 			loginCrudDTO = loginCRUDController.createLogin(loginDTO);
@@ -35,10 +37,13 @@ public class LoginRestController {
 		} catch (BadInputException e){
 			loginCrudDTO.setError("Bad Request");
 			return new ResponseEntity<LoginCrudDTO>(loginCrudDTO, HttpStatus.BAD_REQUEST);
+		} catch (BusException e){
+			loginCrudDTO.setError("User not found in bus repository");
+			return new ResponseEntity<LoginCrudDTO>(loginCrudDTO, HttpStatus.BAD_REQUEST);
 		}catch (LoginException e){
 			loginCrudDTO.setError("Incorrect password");
 			return new ResponseEntity<LoginCrudDTO>(loginCrudDTO, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			loginCrudDTO.setError("Server Error");
 			return new ResponseEntity<LoginCrudDTO>(loginCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
