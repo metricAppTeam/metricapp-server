@@ -3,7 +3,9 @@ package metricapp.entity.stakeholders;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -23,11 +25,13 @@ public class Team extends Person {
 	@Id
 	private String id;
 	private String name;
-	private String grid_name;
-	private LocalDate ts_create;
-	private LocalDate ts_update;
+	private String gridName;
+	@CreatedDate
+	private LocalDate tsCreate;
+	@LastModifiedDate
+	private LocalDate tsUpdate;
 	private ArrayList<User> expert;
 	private ArrayList<User> questioners;
 	private ArrayList<User> metricators;
-	
+
 }
