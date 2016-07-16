@@ -30,6 +30,7 @@ public class MetricRestController {
 	public ResponseEntity<MetricCrudDTO> getMetricDTO(@RequestParam(value = "id", defaultValue = "NA") String id,
 			@RequestParam(value = "version", defaultValue = "NA") String version,
 			@RequestParam(value = "userid", defaultValue = "NA") String userId,
+			@RequestParam(value = "bus", defaultValue = "NA") String bus,
 			@RequestParam(value = "approved", defaultValue = "false") String approved,
 			@RequestParam(value = "state", defaultValue = "NA") String state) {
 		MetricCrudDTO dto = new MetricCrudDTO();
@@ -58,7 +59,7 @@ public class MetricRestController {
 				dto = metricCRUDController.getMetricByState(state);
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			} 
-			if (approved.equals("true")) {
+			if (bus.equals("true")) {
 				dto = metricCRUDController.getAllApproved();
 				return new ResponseEntity<MetricCrudDTO>(dto, HttpStatus.OK);
 			} 
