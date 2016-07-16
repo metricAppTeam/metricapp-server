@@ -1,6 +1,7 @@
 package metricapp.entity.stakeholders;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
@@ -17,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper=false)
+@ToString
 public class User extends Person {
 	
 	@Id
@@ -36,5 +39,25 @@ public class User extends Person {
 	public enum Gender{
 		Male,
 		Female
+	}
+	
+	/**
+	 * This method is needed to convert parameter dob of Bus to birthday. 
+	 * According to Bus documentation, date are stored in string of type dd-MM-yyyy
+	 * @param date
+	 */
+	public void setBirthday(String date){
+		if(date!=null){
+			try{
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				this.birthday = LocalDate.parse(date, formatter);
+			}catch(Exception e){
+				return;
+			}
+		}
+	}
+	
+	public void setBirthday(LocalDate date){
+		this.birthday=date;
 	}
 }
