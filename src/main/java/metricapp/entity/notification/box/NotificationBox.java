@@ -1,4 +1,4 @@
-package metricapp.entity.notification;
+package metricapp.entity.notification.box;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
+import metricapp.entity.notification.Notification;
 import metricapp.utility.RandomGenerator;
 
 @Data
