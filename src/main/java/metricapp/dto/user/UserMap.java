@@ -22,7 +22,7 @@ public class UserMap extends PropertyMap<User, UserDTO>{
 		map().setOnline(source.getOnline());
 		
 		map().setRole(source.getRole());
-		map().setPicture(source.getPic());
+		map().setPic(source.getPic());
 		map().setWebsite(source.getWebsite());
 	}
 

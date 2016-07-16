@@ -15,6 +15,7 @@ import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
+import metricapp.exception.IDException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.controller.UserCRUDController;
@@ -88,6 +89,9 @@ public class UserRestController {
 		} catch (BadInputException e) {
 			userCrudDTO.setError("Bad Input");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+		}catch (IDException e) {
+			userCrudDTO.setError("Username error");
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
 			userCrudDTO.setError("Not Found");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.NOT_FOUND);
@@ -110,7 +114,7 @@ public class UserRestController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<UserCrudDTO> createQuestionDTO(@RequestBody UserDTO userDTO){
+	public ResponseEntity<UserCrudDTO> createUserDTO(@RequestBody UserDTO userDTO){
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
 		try{
 			userCrudDTO = userCRUDController.createUser(userDTO);
@@ -119,6 +123,9 @@ public class UserRestController {
 		} catch (BadInputException e){
 			userCrudDTO.setError("Bad Request");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+		} catch (IDException e) {
+				userCrudDTO.setError("Username already in use");
+				return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			userCrudDTO.setError("Server Error");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
