@@ -9,8 +9,7 @@ import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.entity.stakeholders.User;
 import metricapp.exception.BadInputException;
-import metricapp.exception.DBException;
-import metricapp.exception.LoginException;
+import metricapp.exception.IDException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.LogoutCRUDInterface;
@@ -26,18 +25,18 @@ public class LogoutCRUDController implements LogoutCRUDInterface {
 	private ModelMapperFactoryInterface modelMapperFactory;
 		
 	@Override
-	public LogoutCrudDTO getLogout(String username) throws NotFoundException, BadInputException, DBException, LoginException{
+	public LogoutCrudDTO createLogout(LogoutDTO logoutDTO) throws NotFoundException, BadInputException, IDException{
 		
-		if(username == null){
-			throw new BadInputException("Id cannot be null");
+		if (logoutDTO.getUsername() == null) {
+			throw new IDException("Username field is empty");
 		}
 		
 		User user;
 		
-		if(userRepository.exists(username))
-			user = userRepository.findUserByUsername(username);
+		if(userRepository.exists(logoutDTO.getUsername()))
+			user = userRepository.findUserByUsername(logoutDTO.getUsername());
 		else{
-			throw new NotFoundException("User not be found");
+			throw new IDException("Username not be found");
 		}
 		
 		user.setOnline("false");
@@ -47,12 +46,11 @@ public class LogoutCRUDController implements LogoutCRUDInterface {
 		userCrudDTO.addUserToList(
 					modelMapperFactory.getLooseModelMapper().map(userRepository.save(user), UserDTO.class));
 		
-		LogoutDTO newLogout = new LogoutDTO();
-		newLogout.response =  "OK";
+		logoutDTO.setResponse("OK");
 		
 		LogoutCrudDTO logoutCrudDTO = new LogoutCrudDTO();
 		try{
-			logoutCrudDTO.addLogoutToList(modelMapperFactory.getLooseModelMapper().map(newLogout, LogoutDTO.class));
+			logoutCrudDTO.addLogoutToList(modelMapperFactory.getLooseModelMapper().map(logoutDTO, LogoutDTO.class));
 			return logoutCrudDTO;
 		}
 		catch(IllegalArgumentException e){

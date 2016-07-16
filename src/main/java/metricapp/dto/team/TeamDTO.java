@@ -24,9 +24,9 @@ public class TeamDTO extends DTO implements Serializable{
 	
 	public String id;
 	public String name;
-	public String grid_name;
-	public LocalDate ts_create;
-	public LocalDate ts_update;
+	public String gridName;
+	public LocalDate tsCreate;
+	public LocalDate tsUpdate;
 	public ArrayList<User> expert;
 	public ArrayList<User> questioners;
 	public ArrayList<User> metricators;

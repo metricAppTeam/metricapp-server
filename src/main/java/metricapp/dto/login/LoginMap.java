@@ -2,7 +2,7 @@ package metricapp.dto.login;
 
 import org.modelmapper.PropertyMap;
 
-import metricapp.entity.auth.Login;
+import metricapp.auth.Login;
 
 public class LoginMap extends PropertyMap<Login, LoginDTO>{
 
@@ -10,6 +10,9 @@ public class LoginMap extends PropertyMap<Login, LoginDTO>{
 	protected void configure() {
 		
 		map().setResponse(source.getResponse());
+		map().setPassword(source.getPassword());
+		map().setUsername(source.getUsername());
+		map().setTimestamp(source.getTimestamp());
 	}
 
 }

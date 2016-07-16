@@ -9,7 +9,6 @@ import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.entity.stakeholders.User;
 import metricapp.exception.BadInputException;
-import metricapp.exception.DBException;
 import metricapp.exception.LoginException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
@@ -24,27 +23,26 @@ public class LoginCRUDController implements LoginCRUDInterface {
 	
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
-		
+
 	@Override
-	public LoginCrudDTO getLogin(String username, String password) throws NotFoundException, BadInputException, DBException, LoginException{
+	public LoginCrudDTO createLogin(LoginDTO loginDTO) throws NotFoundException, BadInputException, LoginException{
 		
-		if(username == null){
-			throw new BadInputException("Id cannot be null");
+		if (loginDTO.getUsername() == null) {
+			throw new LoginException("Username field is empty");
 		}
-		if(password == null){
-			throw new BadInputException("Password cannot be null");
+		if (loginDTO.getPassword() == null) {
+			throw new LoginException("Password field is empty");
 		}
 		
 		User user;
 		
-		if(userRepository.exists(username))
-			user = userRepository.findUserByUsername(username);
-		
+		if(userRepository.exists(loginDTO.getUsername()))
+			user = userRepository.findUserByUsername(loginDTO.getUsername());
 		else{
 			throw new NotFoundException("User not be found");
 		}
 		
-		if(!user.getPassword().equals(password))
+		if(!user.getPassword().equals(loginDTO.getPassword()))
 			throw new LoginException("Password is incorrect");
 		
 		user.setOnline("true");
@@ -54,12 +52,11 @@ public class LoginCRUDController implements LoginCRUDInterface {
 		userCrudDTO.addUserToList(
 					modelMapperFactory.getLooseModelMapper().map(userRepository.save(user), UserDTO.class));
 		
-		LoginDTO newLogin = new LoginDTO();
-		newLogin.response =  "OK";
+		loginDTO.setResponse("OK");
 		
 		LoginCrudDTO loginCrudDTO = new LoginCrudDTO();
 		try{
-			loginCrudDTO.addLoginToList(modelMapperFactory.getLooseModelMapper().map(newLogin, LoginDTO.class));
+			loginCrudDTO.addLoginToList(modelMapperFactory.getLooseModelMapper().map(loginDTO, LoginDTO.class));
 			return loginCrudDTO;
 		}
 		catch(IllegalArgumentException e){
