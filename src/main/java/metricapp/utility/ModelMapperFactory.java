@@ -11,6 +11,8 @@ import metricapp.dto.measurementGoal.MeasurementGoalDTOMap;
 import metricapp.dto.measurementGoal.MeasurementGoalMap;
 import metricapp.dto.metric.MetricDTOMap;
 import metricapp.dto.metric.MetricMap;
+import metricapp.dto.notification.NotificationDTOMap;
+import metricapp.dto.notification.NotificationMap;
 
 /**
  * This class is a Utility with the scope of managing ModelMapper instances.
@@ -88,6 +90,8 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		modelMapper.addMappings(new QuestionDTOMap());
 		modelMapper.addMappings(new MeasurementGoalDTOMap());
 		modelMapper.addMappings(new MeasurementGoalMap());
+		modelMapper.addMappings(new NotificationMap());
+		modelMapper.addMappings(new NotificationDTOMap());
         return modelMapper;
 		
 	}
