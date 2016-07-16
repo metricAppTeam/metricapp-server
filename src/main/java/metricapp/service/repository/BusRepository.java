@@ -2,10 +2,13 @@ package metricapp.service.repository;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import metricapp.dto.bus.BusRequestDTO;
 import metricapp.dto.bus.BusResponseDTO;
 import metricapp.entity.Entity;
+import metricapp.entity.external.KeyValue;
 import metricapp.entity.external.PointerBus;
 import metricapp.entity.external.RichPointerBus;
 import metricapp.exception.BusException;
@@ -60,6 +63,12 @@ public class BusRepository implements BusInterface {
 
     @Value("${bus.rollbackBus}")
     private String rollbackBus;
+    
+    @Value("${bus.getUsersBus}")
+    private String getUsersBus;
+    
+    @Value("${bus.usersBus}")
+    private String usersBus;
 
     @Autowired
     private JacksonMapper mapper;
@@ -103,7 +112,7 @@ public class BusRepository implements BusInterface {
 		//		throw new BusException(mapper.getMapper().readTree(incomingContent.get(0)).get(0).get("msg").toString());
 		//	}
 		//} catch (IOException e) {
-		//	throw new BusException(e);su che issue stai
+		//	throw new BusException(e);
 		//}
         
         return incomingContent;
@@ -128,6 +137,22 @@ public class BusRepository implements BusInterface {
         return content;
     }
 
+    /**
+     * Simple function to create and fill the content array in case of users.
+     * field2 is converted to string with JacksonMapper
+     * @see JacksonMapper
+     *
+     * @param it's the keyvalue json to pass to bus. it contains username: value
+     * @return the filled array of elements
+     */
+    private ArrayList<String> fillContentForUsers(ObjectNode username) throws JsonProcessingException {
+        ArrayList<String> content = new ArrayList<String>(3);
+        content.add(0, this.usersBus);
+        content.add(1, this.getUsersBus);
+        content.add(2, mapper.toJson(username));
+
+        return content;
+    }
 
     /**
      * this method permits to interact with the bus through a read request.
@@ -206,6 +231,19 @@ public class BusRepository implements BusInterface {
     	return Entity.valueOf(pointerBus.getTypeObj()).getPhase();
     }
 
+    /**
+     * This function is a public method to execute an operation of get user from the bus.
+     * It only asks for the username inside a KeyValue element.
+     * @param username
+     * @return
+     * @throws JsonProcessingException
+     * @throws BusException
+     */
+    public ArrayList<String> getUser(KeyValue username) throws JsonProcessingException, BusException{
+    	ObjectNode kv = JsonNodeFactory.instance.objectNode();
+    	kv.put(username.key, username.value);
+    	return rawPost(fillContentForUsers(kv));
+    }
 
 
 }
