@@ -8,27 +8,13 @@ import metricapp.exception.NotFoundException;
 
 public interface NotificationCRUDInterface {
 	
-	public NotificationCrudDTO getNotificationById(String id) throws BadInputException, NotFoundException;
-	public NotificationCrudDTO createNotification(NotificationDTO dto) throws BadInputException;
-	public void deleteNotificationById(String id) throws BadInputException;
-	public NotificationCrudDTO setNotificationReadById(String id, boolean read) throws BadInputException, NotFoundException, DBException;
-	
-	/*
-	public MetricCrudDTO getMetricById(String id) throws BadInputException, NotFoundException ;
-	public MetricCrudDTO getMetricByIdAndVersion(String id, String version) throws BadInputException, NotFoundException;
-	public MetricCrudDTO getMetricOfUser(String userId) throws NotFoundException, BadInputException ;
-	public MetricCrudDTO updateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException ;
-	public void deleteMetricById(String id) throws BadInputException, IllegalStateTransitionException ;
-	public MetricDTO getMetricByIdLastApprovedVersion(String id) throws BadInputException, NotFoundException, BusException, IOException ;
-	public MetricCrudDTO createMetric(MetricDTO dto) throws BadInputException;
-	public MetricCrudDTO changeStateMetric(MetricDTO dto) throws BadInputException, IllegalStateTransitionException, NotFoundException, DBException ;
-	public MetricCrudDTO getMetricCrudDTOByIdLastApprovedVersion(String id)
-			throws BadInputException, NotFoundException, BusException, IOException;
-	long countMetricByState(String state, String userId) throws BadInputException, NotFoundException;
-	MetricCrudDTO getMetricByState(String state) throws NotFoundException, BadInputException;
-	MetricCrudDTO getMetricByStateAndMetricatorId(String state, String userId)
-			throws NotFoundException, BadInputException;
-	ArrayList<MetricDTO> getMetricsByPointerBusList(List<PointerBus> list);
-	*/
+	public NotificationCrudDTO getNotificationById(String username, String id) throws BadInputException, NotFoundException;
+	public NotificationCrudDTO getNotificationByAuthorId(String username, String authorId) throws BadInputException, NotFoundException;
+	public NotificationCrudDTO getNotificationByScope(String username, String scope) throws BadInputException, NotFoundException;
+	public NotificationCrudDTO getNotificationByArtifactId(String username, String artifactId) throws BadInputException, NotFoundException;
+	public NotificationCrudDTO createNotification(String username, NotificationDTO dto) throws BadInputException;
+	public NotificationCrudDTO updateNotification(String username, NotificationDTO dto) throws BadInputException, NotFoundException;	
+	public NotificationCrudDTO patchNotificationReadById(String username, String id, boolean read) throws BadInputException, NotFoundException, DBException;
+	public void deleteNotificationById(String username, String id) throws BadInputException;
 		
 }
