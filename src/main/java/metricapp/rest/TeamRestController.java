@@ -15,6 +15,7 @@ import metricapp.dto.team.TeamCrudDTO;
 import metricapp.dto.team.TeamDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
+import metricapp.exception.IDException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.controller.TeamCRUDController;
@@ -108,7 +109,7 @@ public class TeamRestController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<TeamCrudDTO> createQuestionDTO(@RequestBody TeamDTO teamDTO){
+	public ResponseEntity<TeamCrudDTO> createTeam(@RequestBody TeamDTO teamDTO){
 		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
 		try{
 			teamCrudDTO = teamCRUDController.createTeam(teamDTO);
@@ -117,10 +118,16 @@ public class TeamRestController {
 		} catch (BadInputException e){
 			teamCrudDTO.setError("Bad Request");
 			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
+		}catch (IDException e){
+			teamCrudDTO.setError("Id or Username is already in use");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
+		
 		} catch (Exception e) {
 			teamCrudDTO.setError("Server Error");
 			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		
 		
 	}
 }
