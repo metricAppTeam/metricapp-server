@@ -110,7 +110,7 @@ public class UserRestController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<UserCrudDTO> createQuestionDTO(@RequestBody UserDTO userDTO){
+	public ResponseEntity<UserCrudDTO> createUserDTO(@RequestBody UserDTO userDTO){
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
 		try{
 			userCrudDTO = userCRUDController.createUser(userDTO);
@@ -123,6 +123,5 @@ public class UserRestController {
 			userCrudDTO.setError("Server Error");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 }
