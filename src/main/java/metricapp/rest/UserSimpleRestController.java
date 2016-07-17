@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import metricapp.dto.user.simple.UserSimpleCrudDTO;
 import metricapp.dto.user.simple.UserSimpleDTO;
 import metricapp.entity.user.UserSimple;
@@ -35,14 +36,14 @@ public class UserSimpleRestController {
 			@RequestHeader(name = "Authorization", defaultValue="NA") String auth) {
 		
 		try {
-			if (!auth.equals("NA")) {
-				if (!authController.checkAuthorization(auth)) {
-					return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
-				}
-		        return new ResponseEntity<String>(HttpStatus.OK);
-			} else {
+			
+			if (auth.equals("NA")) {
 				return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
-			}		
+			}
+			
+			authController.checkAuthorization(auth);
+			
+			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
