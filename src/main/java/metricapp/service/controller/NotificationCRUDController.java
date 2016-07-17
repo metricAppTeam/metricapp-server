@@ -1,7 +1,7 @@
 package metricapp.service.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -43,8 +43,8 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		}
 		
 		NotificationBox nbox = new NotificationBox();
-		nbox.setCreationDate(LocalDate.now());
-		nbox.setLastPushDate(LocalDate.now());
+		nbox.setCreationDate(Calendar.getInstance().getTimeInMillis());
+		nbox.setLastPushDate(Calendar.getInstance().getTimeInMillis());
 		nbox.setOwnerId(username);
 		nbox.setNotifications(new ArrayList<Notification>());
 		
@@ -81,7 +81,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		}
 		
 		Notification notification = modelMapperFactory.getStandardModelMapper().map(dto, Notification.class);
-		notification.setCreationDate(LocalDate.now());
+		notification.setCreationDate(Calendar.getInstance().getTimeInMillis());
 		notification.setRead(false);
 		
 		notification = notificationRepo.insert(notification);
@@ -122,7 +122,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification id cannot be null");
 		}
 		
-		Notification notification = notificationRepo.findNotificationById(id);
+		Notification notification = notificationRepo.findNotificationByRecipientAndId(username, id);
 		
 		if (notification == null) {
 			throw new NotFoundException("Cannot find Notification with id=" + id);
@@ -145,7 +145,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification authorId cannot be null");
 		}
 		
-		List<Notification> notifications = notificationRepo.findNotificationByAuthorId(authorId);
+		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndAuthorId(username, authorId);
 		
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with authorId=" + authorId);
@@ -168,7 +168,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification scope cannot be null");
 		}
 		
-		List<Notification> notifications = notificationRepo.findNotificationByScope(EventScope.valueOf(scope));
+		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndScope(username, EventScope.valueOf(scope));
 		
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with scope=" + scope);
@@ -191,7 +191,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification artifactId cannot be null");
 		}
 		
-		List<Notification> notifications = notificationRepo.findNotificationByArtifactId(artifactId);
+		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndArtifactId(username, artifactId);
 		
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with artifactId=" + artifactId);
@@ -211,14 +211,14 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		}
 		
 		if (read == null) {
-			throw new BadInputException("Notification scope cannot be null");
+			throw new BadInputException("Notification read cannot be null");
 		}
 		
 		List<Notification> notifications;
-		if (Boolean.getBoolean(read) == true) {
-			notifications = notificationRepo.findNotificationByReadIsTrue();
+		if (Boolean.parseBoolean(read)) {
+			notifications = notificationRepo.findNotificationByRecipientAndReadIsTrue(username);
 		} else {
-			notifications = notificationRepo.findNotificationByReadIsFalse();
+			notifications = notificationRepo.findNotificationByRecipientAndReadIsFalse(username);
 		}		
 		
 		if (notifications.isEmpty()) {
@@ -272,13 +272,15 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification id cannot be null");
 		}
 		
-		Notification notification = notificationRepo.findNotificationById(id);
+		Notification notification = notificationRepo.findNotificationByRecipientAndId(username, id);
 		
 		if (notification == null) {
 			throw new NotFoundException("Cannot find Notification with id=" + id);
 		}
 		
 		notification.setRead(dto.isRead());
+		
+		notification = notificationRepo.save(notification);
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("PATCH (read=" + dto.isRead() + ") Notification WITH id=" + id);		
@@ -297,7 +299,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification id cannot be null");
 		}
 		
-		notificationRepo.delete(id);
+		notificationRepo.deleteNotificationByRecipientAndId(username, id);
 	}	
 
 }

@@ -13,20 +13,22 @@ import metricapp.entity.notification.Notification;
 @RepositoryRestResource(exported = false)
 public interface NotificationRepository extends MongoRepository<Notification, String> {
 	
-	public Notification findNotificationById(String id);
+	public List<Notification> findNotificationByRecipient(String username);
 	
-	public List<Notification> findNotificationByAuthorId(String authorId);
+	public Page<Notification> findNotificationByRecipient(String username, Pageable page);
 	
-	public List<Notification> findNotificationByScope(EventScope scope);
+	public Notification findNotificationByRecipientAndId(String username, String id);
 	
-	public List<Notification> findNotificationByArtifactId(String artifactId);
+	public List<Notification> findNotificationByRecipientAndAuthorId(String username, String authorId);
 	
-	public List<Notification> findNotificationByRecipient(String recipient);
+	public List<Notification> findNotificationByRecipientAndScope(String username, EventScope scope);
 	
-	public List<Notification> findNotificationByReadIsTrue();
+	public List<Notification> findNotificationByRecipientAndArtifactId(String username, String artifactId);	
 	
-	public List<Notification> findNotificationByReadIsFalse();
+	public List<Notification> findNotificationByRecipientAndReadIsTrue(String username);
 	
-	public Page<Notification> findNotificationByRecipient(String recipient, Pageable page);
+	public List<Notification> findNotificationByRecipientAndReadIsFalse(String username);
+	
+	public Notification deleteNotificationByRecipientAndId(String username, String id);
 	
 }
