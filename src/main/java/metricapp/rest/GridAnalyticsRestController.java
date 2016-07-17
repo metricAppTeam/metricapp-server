@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.analytics.AnalyticsCrudDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.GridAnalyticsCRUDInterface;
 
 @CrossOrigin
@@ -21,7 +22,10 @@ import metricapp.service.spec.controller.GridAnalyticsCRUDInterface;
 public class GridAnalyticsRestController {
 	
 	@Autowired
-	private GridAnalyticsCRUDInterface analyticsController;
+	private AuthCRUDInterface authController;
+	
+	@Autowired
+	private GridAnalyticsCRUDInterface analyticsController;	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<AnalyticsCrudDTO> getGridAnalytics(
@@ -35,6 +39,8 @@ public class GridAnalyticsRestController {
 			if (auth.equals("NA")) {
 				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
+			
+			authController.checkAuthorization(auth);
 	
 			if (!gridid.equals("NA")) {
 				responseDTO = analyticsController.getAnalyticsByGridId(gridid);
