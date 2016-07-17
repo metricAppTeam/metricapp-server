@@ -94,9 +94,9 @@ public class EventRestController {
 				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.authenticate(auth);
+			String username = authController.authenticate(auth);
 			
-			responseDTO = eventController.createEvent(requestDTO);
+			responseDTO = eventController.createEvent(username, requestDTO);
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.CREATED);
 			

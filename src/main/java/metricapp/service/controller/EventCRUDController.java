@@ -1,7 +1,7 @@
 package metricapp.service.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -13,14 +13,12 @@ import metricapp.dto.event.EventDTO;
 import metricapp.entity.event.Event;
 import metricapp.entity.event.EventScope;
 import metricapp.entity.notification.Notification;
-import metricapp.entity.notification.box.NotificationBox;
 import metricapp.entity.topic.Topic;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.EventCRUDInterface;
 import metricapp.service.spec.repository.EventRepository;
-import metricapp.service.spec.repository.NotificationBoxRepository;
 import metricapp.service.spec.repository.NotificationRepository;
 import metricapp.service.spec.repository.TopicRepository;
 
@@ -32,9 +30,6 @@ public class EventCRUDController implements EventCRUDInterface {
 	
 	@Autowired
 	private TopicRepository topicRepo;
-	
-	@Autowired 
-	private NotificationBoxRepository nboxRepo;
 
 	@Autowired 
 	private NotificationRepository notificationRepo;
@@ -43,7 +38,10 @@ public class EventCRUDController implements EventCRUDInterface {
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
 	@Override
-	public EventCrudDTO createEvent(@Nonnull EventDTO dto) throws BadInputException {
+	public EventCrudDTO createEvent(String username, @Nonnull EventDTO dto) throws BadInputException {
+		if (username == null) {
+			throw new BadInputException("Username cannot be set manually");
+		}
 		
 		if (dto.getId() != null) {
 			throw new BadInputException("Event id cannot be set manually");
@@ -59,7 +57,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		}		
 		
 		Event event = modelMapperFactory.getStandardModelMapper().map(dto, Event.class);		
-		event.setCreationDate(LocalDate.now());
+		event.setCreationDate(Calendar.getInstance().getTimeInMillis());
 		
 		event = eventRepo.insert(event);
 		
@@ -70,20 +68,15 @@ public class EventCRUDController implements EventCRUDInterface {
 		if (topic == null) {
 			topic = new Topic();
 			topic.setName(topicName);
-			topic.setCreationDate(LocalDate.now());
+			topic.setCreationDate(Calendar.getInstance().getTimeInMillis());
 			topic.setSubscribers(new ArrayList<String>());
 			topicRepo.insert(topic);
 			//implement topic queue
 		} else {
 			for (String subscriber : topic.getSubscribers()) {
+				if (subscriber.equals(username)) continue;
 				Notification notification = Notification.fromEvent(event, subscriber);
-				NotificationBox nbox = nboxRepo.findByOwnerId(subscriber);
-				if (nbox != null) {
-					nbox.getNotifications().add(notification);
-					nbox.setLastPushDate(LocalDate.now());
-					nboxRepo.save(nbox);
-					notificationRepo.save(notification);
-				}
+				notificationRepo.save(notification);
 			}
 		}		
 		
