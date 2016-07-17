@@ -44,9 +44,9 @@ public class UserSimpleRestController {
 				return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.authenticate(auth);
+			String authUsername = authController.authenticate(auth);
 			
-			return new ResponseEntity<String>(HttpStatus.OK);
+			return new ResponseEntity<String>(authUsername, HttpStatus.OK);
 		} catch (UnauthorizedException e) {
 			responseDTO = e.getMessage();
 			e.printStackTrace();
@@ -79,7 +79,7 @@ public class UserSimpleRestController {
 				return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 			}			
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

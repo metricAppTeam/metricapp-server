@@ -52,19 +52,19 @@ public class UserAnalyticsRestController {
 			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.OK);
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		}  catch (NotFoundException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

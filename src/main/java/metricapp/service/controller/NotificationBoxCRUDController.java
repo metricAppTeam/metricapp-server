@@ -27,6 +27,15 @@ public class NotificationBoxCRUDController implements NotificationBoxCRUDInterfa
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
+	
+	@Override
+	public NotificationCrudDTO getAllNotificationsForUser(String username) throws BadInputException {
+		if (username == null) {
+			throw new BadInputException("NotificationBox username cannot be null");
+		}
+		
+		return null;
+	}	
 
 	@Override
 	public NotificationBoxCrudDTO createNotificationBoxForUser(String username) throws BadInputException {
@@ -127,6 +136,8 @@ public class NotificationBoxCRUDController implements NotificationBoxCRUDInterfa
 	public NotificationCrudDTO deleteNotificationForUserById(String username, String id) throws BadInputException {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
+
+	
 
 }

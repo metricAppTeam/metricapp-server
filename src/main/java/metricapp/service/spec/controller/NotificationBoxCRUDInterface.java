@@ -8,6 +8,7 @@ import metricapp.exception.NotFoundException;
 
 public interface NotificationBoxCRUDInterface {
 	
+	public NotificationCrudDTO getAllNotificationsForUser(String username) throws BadInputException;
 	public NotificationBoxCrudDTO createNotificationBoxForUser(String username) throws BadInputException;
 	public NotificationCrudDTO getNotificationForUserById(String username, String id) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO getNotificationsForUserByAuthorId(String username, String authorId) throws BadInputException, NotFoundException;
@@ -17,5 +18,6 @@ public interface NotificationBoxCRUDInterface {
 	public NotificationCrudDTO getNotificationsForUserFromTo(String username, String from, String to) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO patchNotificationBoxForUser(String username, NotificationDTO dto) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO deleteNotificationForUserById(String username, String id) throws BadInputException;
+	
 		
 }
