@@ -1,9 +1,5 @@
 package metricapp.rest;
 
-import java.nio.charset.Charset;
-import java.util.Base64;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.analytics.AnalyticsCrudDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.UserAnalyticsCRUDInterface;
 
 @CrossOrigin
 @RestController
 @RequestMapping(("/analytics/users"))
 public class UserAnalyticsRestController {
+	
+	@Autowired
+	private AuthCRUDInterface authController;
 	
 	@Autowired
 	private UserAnalyticsCRUDInterface analyticsController;
@@ -35,15 +35,12 @@ public class UserAnalyticsRestController {
 		AnalyticsCrudDTO responseDTO = new AnalyticsCrudDTO();
 		
 		try {
-			if (!auth.equals("NA") && auth.startsWith("Basic")) {
-				String b64Credentials = auth.substring("Basic".length()).trim();
-				final String[] credentials = new String(Base64.getDecoder().decode(b64Credentials), Charset.forName("UTF-8")).split(":", 2);
-		        final String uname = credentials[0];
-		        final String psswd = credentials[1];
-		        System.out.println("AUTHORIZATION: USERNAME=" + uname + " PASSWORD=" + psswd);
-			} else {
+			
+			if (auth.equals("NA")) {
 				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
+			
+			authController.checkAuthorization(auth);
 	
 			if (!username.equals("NA")) {
 				responseDTO = analyticsController.getAnalyticsByUsername(username);
