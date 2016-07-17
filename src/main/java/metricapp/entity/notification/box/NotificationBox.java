@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -29,7 +28,6 @@ public class NotificationBox {
 	private LocalDate creationDate;
 	@LastModifiedDate
 	private LocalDate lastPushDate;
-	@DBRef
 	private List<Notification> notifications;
 
 	public static NotificationBox randomNotificationBox(){

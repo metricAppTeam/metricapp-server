@@ -8,6 +8,6 @@ import metricapp.entity.notification.box.NotificationBox;
 @RepositoryRestResource(exported = false)
 public interface NotificationBoxRepository extends MongoRepository<NotificationBox, String> {
 	
-	public NotificationBox findByOwnerId(String owner);
+	public NotificationBox findByOwnerId(String ownerId);
 	
 }

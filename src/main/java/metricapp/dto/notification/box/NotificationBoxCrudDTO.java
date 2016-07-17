@@ -22,7 +22,7 @@ public class NotificationBoxCrudDTO extends MessageDTO {
 		this.setNotificationBoxesDTO(new ArrayList<NotificationBoxDTO>());
 	}
 	
-	public void addNotificationToList(NotificationBoxDTO notificationbox) {
+	public void addNotificationBoxToList(NotificationBoxDTO notificationbox) {
 		try {
 			this.notificationBoxesDTO.add(notificationbox);
 		} catch(NullPointerException e){
