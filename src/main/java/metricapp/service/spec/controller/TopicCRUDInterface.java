@@ -8,6 +8,7 @@ import metricapp.exception.NotFoundException;
 
 public interface TopicCRUDInterface {
 	
+	public TopicCrudDTO getAllTopics();
 	public TopicCrudDTO getTopicById(String id) throws BadInputException, NotFoundException;
 	public TopicCrudDTO getTopicByName(String name) throws BadInputException, NotFoundException;
 	public TopicCrudDTO createTopic(TopicDTO dto) throws BadInputException;

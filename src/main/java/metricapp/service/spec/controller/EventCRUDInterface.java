@@ -7,6 +7,7 @@ import metricapp.exception.NotFoundException;
 
 public interface EventCRUDInterface {
 	
+	public EventCrudDTO getAllEvents();
 	public EventCrudDTO getEventById(String id) throws BadInputException, NotFoundException;
 	public EventCrudDTO getEventByAuthorId(String authorId) throws BadInputException, NotFoundException;
 	public EventCrudDTO getEventByScope(String scope) throws BadInputException, NotFoundException;

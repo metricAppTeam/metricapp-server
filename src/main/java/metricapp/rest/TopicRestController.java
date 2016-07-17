@@ -52,25 +52,25 @@ public class TopicRestController {
 			} else if (!name.equals("NA")) {
 				responseDTO = topicController.getTopicByName(name);
 			} else {
-				return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
+				responseDTO = topicController.getAllTopics();
 			}			
 
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -96,15 +96,15 @@ public class TopicRestController {
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.CREATED);
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -141,23 +141,23 @@ public class TopicRestController {
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
 		} catch (DBException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.CONFLICT);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -190,15 +190,15 @@ public class TopicRestController {
 			return new ResponseEntity<TopicCrudDTO>(HttpStatus.OK);			
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			e.printStackTrace();
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}		

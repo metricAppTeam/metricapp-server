@@ -57,25 +57,25 @@ public class EventRestController {
 			} else if (!artifactId.equals("NA")) {
 				responseDTO = eventController.getEventByArtifactId(artifactId);				
 			} else {
-				return new ResponseEntity<EventCrudDTO>(HttpStatus.BAD_REQUEST);
+				responseDTO = eventController.getAllEvents();
 			}
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -101,15 +101,15 @@ public class EventRestController {
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.CREATED);
 			
 		} catch (UnauthorizedException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			responseDTO.setError(e.getMessage());
+			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

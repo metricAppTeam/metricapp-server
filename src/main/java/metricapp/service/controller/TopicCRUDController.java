@@ -27,6 +27,12 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
 	@Override
+	public TopicCrudDTO getAllTopics() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public TopicCrudDTO getTopicById(String id) throws BadInputException, NotFoundException {
 		if (id == null) {
 			throw new BadInputException("Topic id cannot be null");
@@ -159,5 +165,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			topicRepo.delete(topic);
 		}		
 	}
+
+	
 
 }

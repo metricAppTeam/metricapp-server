@@ -44,6 +44,20 @@ public class EventCRUDController implements EventCRUDInterface {
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
 	@Override
+	public EventCrudDTO getAllEvents() {
+		List<Event> events = eventRepo.findAll();
+		
+		EventCrudDTO crud = new EventCrudDTO();
+		
+		crud.setRequest("GET ALL Events");
+		for (Event event : events) {
+			crud.addEventToList(modelMapperFactory.getStandardModelMapper().map(event, EventDTO.class));
+		}
+		
+		return crud;
+	}
+	
+	@Override
 	public EventCrudDTO getEventById(String id) throws BadInputException, NotFoundException {
 		if (id == null) {
 			throw new BadInputException("Event id cannot be null");
@@ -144,10 +158,13 @@ public class EventCRUDController implements EventCRUDInterface {
 		if (dto.getAuthorId() == null || dto.getScope() == null || 
 				dto.getArtifactId() == null || dto.getDescription() == null) {
 			throw new BadInputException("Event must have an author id, a scope, an artifact id and a description");
-		}
+		}		
 		
-		dto.setCreationDate(LocalDate.now());
 		Event event = modelMapperFactory.getStandardModelMapper().map(dto, Event.class);
+		
+		event.setCreationDate(LocalDate.now());
+		
+		event = eventRepo.insert(event);
 		
 		String topicName = event.getTopicName();
 		
@@ -159,6 +176,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			topic.setCreationDate(LocalDate.now());
 			topic.setSubscribers(new ArrayList<String>());
 			topicRepo.insert(topic);
+			//implement topic queue
 		} else {
 			for (String subscriber : topic.getSubscribers()) {
 				Notification notification = Notification.fromEvent(event, subscriber);
@@ -174,7 +192,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO dtoCRUD = new EventCrudDTO();
 		dtoCRUD.setRequest("CREATE Event");
-		dtoCRUD.addEventToList(modelMapperFactory.getStandardModelMapper().map(eventRepo.insert(event), EventDTO.class));
+		dtoCRUD.addEventToList(modelMapperFactory.getStandardModelMapper().map(event, EventDTO.class));
 		
 		return dtoCRUD;
 	}
