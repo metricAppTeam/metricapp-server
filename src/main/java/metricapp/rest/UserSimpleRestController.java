@@ -15,7 +15,7 @@ import metricapp.dto.user.simple.UserSimpleDTO;
 import metricapp.entity.user.UserSimple;
 import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
-import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
+import metricapp.service.spec.controller.NotificationCRUDInterface;
 import metricapp.service.spec.repository.UserSimpleRepository;
 
 @CrossOrigin
@@ -30,7 +30,7 @@ public class UserSimpleRestController {
 	private UserSimpleRepository userRepo;
 	
 	@Autowired
-	private NotificationBoxCRUDInterface nboxController;
+	private NotificationCRUDInterface notificationController;
 	
 	@RequestMapping(value = "/secure", method = RequestMethod.GET)
 	public ResponseEntity<String> testAuthentication(
@@ -70,7 +70,7 @@ public class UserSimpleRestController {
 				user.setUsername(requestDTO.getUsername());
 				user.setPassword(requestDTO.getPassword());
 				if (userRepo.insert(user) != null) {
-					nboxController.createNotificationBoxForUser(user.getUsername());
+					notificationController.createNotificationBoxForUser(user.getUsername());
 					return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.CREATED);
 				} else {
 					return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);

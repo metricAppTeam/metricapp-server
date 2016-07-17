@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import metricapp.dto.analytics.AnalyticsCrudDTO;
-import metricapp.dto.analytics.AnalyticsDTO;
 import metricapp.entity.analytics.Analytics;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
@@ -23,6 +23,8 @@ public class GridAnalyticsCRUDController implements GridAnalyticsCRUDInterface {
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
+	
+	private ModelMapper mapper = modelMapperFactory.getStandardModelMapper();
 	
 	@Override
 	public AnalyticsCrudDTO getAnalyticsByGridId(String gridid) throws BadInputException, NotFoundException {
@@ -93,7 +95,7 @@ public class GridAnalyticsCRUDController implements GridAnalyticsCRUDInterface {
 		
 		AnalyticsCrudDTO crud = new AnalyticsCrudDTO();
 		crud.setRequest("GET GridAnalytics WITH gridid=" + gridid);
-		crud.addAnalyticsToList(modelMapperFactory.getStandardModelMapper().map(gridAnalytics, AnalyticsDTO.class));
+		crud.addAnalytics(gridAnalytics, mapper);
 		
 		return crud;
 	}

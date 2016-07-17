@@ -1,11 +1,15 @@
 package metricapp.dto.user.simple;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import metricapp.dto.SimpleDTO;
+import metricapp.entity.user.UserSimple;
 
 @Getter
 @Setter
@@ -21,14 +25,41 @@ public class UserSimpleCrudDTO extends SimpleDTO {
 		this.setUsersSimpleDTO(new ArrayList<UserSimpleDTO>());
 	}
 	
-	public void addTopicToList(UserSimpleDTO userSimple) {
-		try {
-			this.usersSimpleDTO.add(userSimple);
-		} catch(NullPointerException e) {
+	public void addUserDTO(UserSimpleDTO user) {
+		if (this.usersSimpleDTO == null) {
 			this.usersSimpleDTO = new ArrayList<UserSimpleDTO>();
-			this.usersSimpleDTO.add(userSimple);
-		} finally {
-			this.count++;
-		}		
+		}
+		this.usersSimpleDTO.add(user);		
+		this.count = this.usersSimpleDTO.size();
+	}
+	
+	public void addAllUserSimpleDTO(List<UserSimpleDTO> users) {
+		if (this.usersSimpleDTO == null) {
+			this.usersSimpleDTO = new ArrayList<UserSimpleDTO>();
+		}
+		for (UserSimpleDTO user : users) {
+			this.usersSimpleDTO.add(user);
+		}
+		this.count = this.usersSimpleDTO.size();
+	}
+	
+	public void addUserSimple(UserSimple user, ModelMapper mapper) {
+		if (this.usersSimpleDTO == null) {
+			this.usersSimpleDTO = new ArrayList<UserSimpleDTO>();
+		}
+		UserSimpleDTO userDTO = mapper.map(user, UserSimpleDTO.class);
+		this.usersSimpleDTO.add(userDTO);		
+		this.count = this.usersSimpleDTO.size();
+	}
+	
+	public void addAllUserSimple(List<UserSimple> users, ModelMapper mapper) {
+		if (this.usersSimpleDTO == null) {
+			this.usersSimpleDTO = new ArrayList<UserSimpleDTO>();
+		}
+		for (UserSimple user : users) {
+			UserSimpleDTO userDTO = mapper.map(user, UserSimpleDTO.class);
+			this.usersSimpleDTO.add(userDTO);
+		}
+		this.count = this.usersSimpleDTO.size();
 	}
 }

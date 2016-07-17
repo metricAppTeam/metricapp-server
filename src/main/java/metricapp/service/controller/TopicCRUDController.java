@@ -2,9 +2,11 @@ package metricapp.service.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +28,49 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
+	private ModelMapper mapper = modelMapperFactory.getStandardModelMapper();
+	
 	@Override
-	public TopicCrudDTO getAllTopics() {
-		// TODO Auto-generated method stub
-		return null;
+	public TopicCrudDTO createTopic(@Nonnull TopicDTO dto) throws BadInputException {
+		
+		if (dto.getId() != null) {
+			throw new BadInputException("Topic id cannot be set manually");
+		}
+		
+		if (dto.getCreationDate() != null) {
+			throw new BadInputException("Topic creation date canot be set manually");
+		}
+		
+		if (dto.getName() == null) {
+			throw new BadInputException("Topic name cannot be null");
+		}		
+		
+		Topic topic = mapper.map(dto, Topic.class);
+		topic.setCreationDate(LocalDate.now());
+		topic.setSubscribers(new ArrayList<String>());
+		
+		topic = topicRepo.insert(topic);
+		
+		TopicCrudDTO crud = new TopicCrudDTO();
+		crud.setRequest("CREATE Topic WITH id=" + topic.getId());
+		crud.addTopic(topic, mapper);
+		
+		return crud;
+	}
+	
+	@Override
+	public TopicCrudDTO getAllTopics() throws NotFoundException {		
+		List<Topic> topics = topicRepo.findAll();
+		
+		if (topics.isEmpty()) {
+			throw new NotFoundException("Cannot find Topic");
+		}
+		
+		TopicCrudDTO crud = new TopicCrudDTO();		
+		crud.setRequest("GET ALL Topics");
+		crud.addAllTopic(topics, mapper);
+		
+		return crud;
 	}
 	
 	@Override
@@ -46,7 +87,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("GET Topic WITH id=" + id);
-		crud.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topic, TopicDTO.class));
+		crud.addTopic(topic, mapper);
 		
 		return crud;
 	}
@@ -65,36 +106,10 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("GET Topic WITH name=" + name);
-		crud.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topic, TopicDTO.class));
+		crud.addTopic(topic, mapper);
 		
 		return crud;
-	}
-
-	@Override
-	public TopicCrudDTO createTopic(@Nonnull TopicDTO dto) throws BadInputException {
-		
-		if (dto.getId() != null) {
-			throw new BadInputException("Topic id cannot be set manually");
-		}
-		
-		if (dto.getCreationDate() != null) {
-			throw new BadInputException("Topic creation date canot be set manually");
-		}
-		
-		if (dto.getName() == null) {
-			throw new BadInputException("Topic name cannot be null");
-		}
-		
-		dto.setCreationDate(LocalDate.now());
-		dto.setSubscribers(new ArrayList<String>());
-		Topic newTopic = modelMapperFactory.getStandardModelMapper().map(dto, Topic.class);
-		
-		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("CREATE Topic");
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.insert(newTopic), TopicDTO.class));
-		
-		return dtoCRUD;
-	}
+	}	
 
 	@Override
 	public TopicCrudDTO patchTopicAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
@@ -113,11 +128,13 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		topic.getSubscribers().addAll(dto.getSubscribers());
 		
-		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
+		topic = topicRepo.save(topic);
 		
-		return dtoCRUD;
+		TopicCrudDTO crud = new TopicCrudDTO();
+		crud.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));		
+		crud.addTopic(topic, mapper);
+		
+		return crud;
 	}
 	
 	@Override
@@ -137,35 +154,51 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		topic.getSubscribers().removeAll(dto.getSubscribers());
 		
-		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));	
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
+		topic = topicRepo.save(topic);
 		
-		return dtoCRUD;
+		TopicCrudDTO crud = new TopicCrudDTO();
+		crud.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));	
+		crud.addTopic(topic, mapper);
+		
+		return crud;
 	}
 
 	@Override
-	public void deleteTopicById(String id) throws BadInputException {
+	public TopicCrudDTO deleteTopicById(String id) throws BadInputException, NotFoundException {
 		if (id == null) {
 			throw new BadInputException("Topic id cannot be null");
 		}
 		
-		topicRepo.delete(id);
+		Topic topic = topicRepo.deleteTopicById(id);
+		
+		if (topic == null) {
+			throw new NotFoundException("Cannot find Topic with id=" + id);
+		}
+		
+		TopicCrudDTO crud = new TopicCrudDTO();
+		crud.setRequest("DELETE Topic WITH id=" + id);
+		crud.addTopic(topic, mapper);
+		
+		return crud;
 	}
 
 	@Override
-	public void deleteTopicByName(String name) throws BadInputException {
+	public TopicCrudDTO deleteTopicByName(String name) throws BadInputException, NotFoundException {
 		if (name == null) {
 			throw new BadInputException("Topic name cannot be null");
 		}
 		
-		Topic topic = topicRepo.findTopicByName(name);
+		Topic topic = topicRepo.deleteTopicByName(name);
 		
-		if (topic != null) {
-			topicRepo.delete(topic);
-		}		
-	}
-
-	
+		if (topic == null) {
+			throw new NotFoundException("Cannot find Topic with name=" + name);
+		}
+		
+		TopicCrudDTO crud = new TopicCrudDTO();
+		crud.setRequest("DELETE Topic WITH name=" + name);
+		crud.addTopic(topic, mapper);
+		
+		return crud;	
+	}	
 
 }

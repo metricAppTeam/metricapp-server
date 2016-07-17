@@ -7,11 +7,12 @@ import metricapp.exception.NotFoundException;
 
 public interface EventCRUDInterface {
 	
-	public EventCrudDTO getAllEvents();
+	public EventCrudDTO createEvent(EventDTO dto) throws BadInputException;
+	
+	public EventCrudDTO getAllEvents() throws NotFoundException;
 	public EventCrudDTO getEventById(String id) throws BadInputException, NotFoundException;
 	public EventCrudDTO getEventByAuthorId(String authorId) throws BadInputException, NotFoundException;
 	public EventCrudDTO getEventByScope(String scope) throws BadInputException, NotFoundException;
 	public EventCrudDTO getEventByArtifactId(String artifactId) throws BadInputException, NotFoundException;
-	public EventCrudDTO createEvent(EventDTO dto) throws BadInputException;
 	
 }

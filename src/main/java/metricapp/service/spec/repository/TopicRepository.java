@@ -11,4 +11,7 @@ public interface TopicRepository extends MongoRepository<Topic, String> {
 	public Topic findTopicById(String id);
 	public Topic findTopicByName(String name);
 	
+	public Topic deleteTopicById(String id);
+	public Topic deleteTopicByName(String name);
+	
 }
