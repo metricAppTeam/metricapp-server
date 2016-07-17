@@ -16,6 +16,7 @@ import metricapp.dto.topic.TopicDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
 import metricapp.exception.NotFoundException;
+import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.TopicCRUDInterface;
 
@@ -44,20 +45,22 @@ public class TopicRestController {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.checkAuthorization(auth);
+			authController.authenticate(auth);
 			
 			if (!id.equals("NA")) {
 				responseDTO = topicController.getTopicById(id);
-				return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!name.equals("NA")) {
+			} else if (!name.equals("NA")) {
 				responseDTO = topicController.getTopicByName(name);
-				return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
-			}	
+			} else {
+				return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
+			}			
+
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			
-			return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
-			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -81,10 +84,21 @@ public class TopicRestController {
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {			
+			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}			
-			return new ResponseEntity<TopicCrudDTO>(topicController.createTopic(requestDTO), HttpStatus.CREATED);
+			
+			authController.authenticate(auth);
+			
+			responseDTO = topicController.createTopic(requestDTO);
+			
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.CREATED);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -105,28 +119,31 @@ public class TopicRestController {
 		TopicCrudDTO responseDTO = new TopicCrudDTO();			
 		
 		try {
+			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
-			if (requestDTO.getId() != null && !action.equals("NA")) {
+			
+			authController.authenticate(auth);
+			
+			if (!action.equals("NA")) {
 				if (action.equals("subscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByIdAddSubscribers(requestDTO), HttpStatus.OK);
+					responseDTO = topicController.patchTopicAddSubscribers(requestDTO);
 				} else if (action.equals("unsubscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByIdRemoveSubscribers(requestDTO), HttpStatus.OK);
-				} else {
-					return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
-				}
-			} else if (requestDTO.getName() != null && !action.equals("NA")) {
-				if (action.equals("subscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByNameAddSubscribers(requestDTO), HttpStatus.OK);
-				} else if (action.equals("unsubscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByNameRemoveSubscribers(requestDTO), HttpStatus.OK);
+					responseDTO = topicController.patchTopicRemoveSubscribers(requestDTO);
 				} else {
 					return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
 				}
 			} else {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
-			}			
+			}
+			
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -155,17 +172,27 @@ public class TopicRestController {
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
+			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
+			
+			authController.authenticate(auth);
+			
 			if (!id.equals("NA")) {
 				topicController.deleteTopicById(id);
-			}
-			if (!name.equals("NA")) {
+			} else if (!name.equals("NA")) {
 				topicController.deleteTopicByName(name);
 			} else {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
-			}			
+			}
+			
+			return new ResponseEntity<TopicCrudDTO>(HttpStatus.OK);			
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			e.printStackTrace();
 			responseDTO.setError(e.getMessage());
@@ -174,9 +201,8 @@ public class TopicRestController {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}		
 		
-		return new ResponseEntity<TopicCrudDTO>(HttpStatus.OK);
 	}	
 
 }

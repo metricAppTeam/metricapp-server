@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.analytics.AnalyticsCrudDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.GridAnalyticsCRUDInterface;
 
@@ -40,13 +41,20 @@ public class GridAnalyticsRestController {
 				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.checkAuthorization(auth);
+			authController.authenticate(auth);
 	
 			if (!gridid.equals("NA")) {
 				responseDTO = analyticsController.getAnalyticsByGridId(gridid);
-				return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.OK);
-			}		
-			return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.BAD_REQUEST);
+			} else {
+				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.BAD_REQUEST);
+			}
+			
+			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();

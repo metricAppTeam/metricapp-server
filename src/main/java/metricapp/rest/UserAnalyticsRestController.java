@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.analytics.AnalyticsCrudDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.UserAnalyticsCRUDInterface;
 
@@ -40,17 +41,24 @@ public class UserAnalyticsRestController {
 				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.checkAuthorization(auth);
+			authController.authenticate(auth);
 	
 			if (!username.equals("NA")) {
-				responseDTO = analyticsController.getAnalyticsByUsername(username);
-				return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.OK);
-			}		
-			return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.BAD_REQUEST);
+				responseDTO = analyticsController.getAnalyticsByUsername(username);				
+			} else {
+				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.BAD_REQUEST);
+			}
+			
+			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		}  catch (NotFoundException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();

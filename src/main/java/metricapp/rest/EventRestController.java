@@ -15,6 +15,7 @@ import metricapp.dto.event.EventCrudDTO;
 import metricapp.dto.event.EventDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.EventCRUDInterface;
 
@@ -45,29 +46,26 @@ public class EventRestController {
 				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.checkAuthorization(auth);
+			authController.authenticate(auth);
 			
 			if (!id.equals("NA")) {
 				responseDTO = eventController.getEventById(id);
-				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!authorId.equals("NA")) {
+			} else if (!authorId.equals("NA")) {
 				responseDTO = eventController.getEventByAuthorId(authorId);
-				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!scope.equals("NA")) {
+			} else if (!scope.equals("NA")) {
 				responseDTO = eventController.getEventByScope(scope);
-				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
+			} else if (!artifactId.equals("NA")) {
+				responseDTO = eventController.getEventByArtifactId(artifactId);				
+			} else {
+				return new ResponseEntity<EventCrudDTO>(HttpStatus.BAD_REQUEST);
 			}
 			
-			if (!artifactId.equals("NA")) {
-				responseDTO = eventController.getEventByArtifactId(artifactId);
-				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
-			}
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			
-			return new ResponseEntity<EventCrudDTO>(HttpStatus.BAD_REQUEST);
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -91,15 +89,26 @@ public class EventRestController {
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
+			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
-			return new ResponseEntity<EventCrudDTO>(eventController.createEvent(requestDTO), HttpStatus.CREATED);
+			
+			authController.authenticate(auth);
+			
+			responseDTO = eventController.createEvent(requestDTO);
+			
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.CREATED);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
-		} catch (Exception e){
+		} catch (Exception e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);

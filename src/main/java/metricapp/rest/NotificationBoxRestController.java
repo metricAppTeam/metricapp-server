@@ -15,6 +15,7 @@ import metricapp.dto.notification.NotificationCrudDTO;
 import metricapp.dto.notification.NotificationDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
 
@@ -48,40 +49,30 @@ public class NotificationBoxRestController {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.checkAuthorization(auth);
+			authController.authenticate(auth);
 			
 			if (!id.equals("NA")) {
-				responseDTO = nboxController.getNotificationForUserById(auth, id);
-				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!authorId.equals("NA")) {
+				responseDTO = nboxController.getNotificationForUserById(auth, id);				
+			} else if (!authorId.equals("NA")) {
 				responseDTO = nboxController.getNotificationsForUserByAuthorId(auth, authorId);
-				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!scope.equals("NA")) {
+			} else if (!scope.equals("NA")) {
 				responseDTO = nboxController.getNotificationsForUserByScope(auth, scope);
-				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!artifactId.equals("NA")) {
+			} else if (!artifactId.equals("NA")) {
 				responseDTO = nboxController.getNotificationsForUserByArtifactId(auth, artifactId);
-				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!read.equals("NA")) {
+			} else if (!read.equals("NA")) {
 				responseDTO = nboxController.getNotificationsForUserByRead(auth, read);
-				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
-			}
-			
-			if (!from.equals("NA") && !to.equals("NA")) {
+			} else if (!from.equals("NA") && !to.equals("NA")) {
 				responseDTO = nboxController.getNotificationsForUserFromTo(auth, from, to);
-				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.BAD_REQUEST);
 			}
 			
-			return new ResponseEntity<NotificationCrudDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);			
 			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -110,8 +101,16 @@ public class NotificationBoxRestController {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			return new ResponseEntity<NotificationCrudDTO>(nboxController.patchNotificationBoxForUser(auth, requestDTO), HttpStatus.OK);	
+			authController.authenticate(auth);
 			
+			responseDTO = nboxController.patchNotificationBoxForUser(auth, requestDTO);
+			
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);	
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -120,7 +119,7 @@ public class NotificationBoxRestController {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
-		} catch (Exception e){
+		} catch (Exception e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -140,23 +139,29 @@ public class NotificationBoxRestController {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
+			authController.authenticate(auth);
+			
 			if (!id.equals("NA")) {
-				nboxController.deleteNotificationForUserById(auth, id);
+				responseDTO = nboxController.deleteNotificationForUserById(auth, id);
 			} else {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.BAD_REQUEST);
 			}	
 			
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setError(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			e.printStackTrace();
 			responseDTO.setError(e.getMessage());
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
-		} catch (Exception e){
+		} catch (Exception e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		return new ResponseEntity<NotificationCrudDTO>(HttpStatus.OK);
 	}	
 
 }

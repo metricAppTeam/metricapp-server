@@ -91,84 +91,48 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	}
 
 	@Override
-	public TopicCrudDTO patchTopicByIdAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
-		String id = dto.getId();
-		if (id == null) {
-			throw new BadInputException("Topic id cannot be null");
-		}		
+	public TopicCrudDTO patchTopicAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
+		Topic topic;
+		if (dto.getId() != null) {
+			topic = topicRepo.findTopicById(dto.getId());			
+		} else if (dto.getName() != null) {
+			topic = topicRepo.findTopicByName(dto.getName());
+		} else {
+			throw new BadInputException("Topic id or name cannot be null");
+		}
 		
-		Topic topic = topicRepo.findTopicById(id);
 		if (topic == null) {
-			throw new NotFoundException("Cannot find Topic with id=" + id);
+			throw new NotFoundException("Cannot find Topic with " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));
 		}
 		
 		topic.getSubscribers().addAll(dto.getSubscribers());
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
+		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));		
 		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
 		
 		return dtoCRUD;
 	}
 	
 	@Override
-	public TopicCrudDTO patchTopicByIdRemoveSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
-		String id = dto.getId();
-		if (id == null) {
-			throw new BadInputException("Topic id cannot be null");
+	public TopicCrudDTO patchTopicRemoveSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
+		Topic topic;
+		if (dto.getId() != null) {
+			topic = topicRepo.findTopicById(dto.getId());			
+		} else if (dto.getName() != null) {
+			topic = topicRepo.findTopicByName(dto.getName());
+		} else {
+			throw new BadInputException("Topic id or name cannot be null");
 		}
 		
-		Topic topic = topicRepo.findTopicById(id);
 		if (topic == null) {
-			throw new NotFoundException("Cannot find Topic with id=" + id);
+			throw new NotFoundException("Cannot find Topic with " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));
 		}
 		
 		topic.getSubscribers().removeAll(dto.getSubscribers());
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("PATCH (subscribers-=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
-		
-		return dtoCRUD;
-	}
-	
-	@Override
-	public TopicCrudDTO patchTopicByNameAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
-		String name = dto.getName();
-		if (name == null) {
-			throw new BadInputException("Topic name cannot be null");
-		}		
-		
-		Topic topic = topicRepo.findTopicByName(name);
-		if (topic == null) {
-			throw new NotFoundException("Cannot find Topic with name=" + name);
-		}
-		
-		topic.getSubscribers().addAll(dto.getSubscribers());
-		
-		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH name=" + name);		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
-		
-		return dtoCRUD;
-	}
-	
-	@Override
-	public TopicCrudDTO patchTopicByNameRemoveSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
-		String id = dto.getId();
-		if (id == null) {
-			throw new BadInputException("Topic id cannot be null");
-		}
-		
-		Topic topic = topicRepo.findTopicById(id);
-		if (topic == null) {
-			throw new NotFoundException("Cannot find Topic with id=" + id);
-		}
-		
-		topic.getSubscribers().removeAll(dto.getSubscribers());
-		
-		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
-		dtoCRUD.setRequest("PATCH (subscribers-=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
+		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));	
 		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
 		
 		return dtoCRUD;
