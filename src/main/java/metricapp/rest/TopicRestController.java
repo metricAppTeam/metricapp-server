@@ -16,6 +16,7 @@ import metricapp.dto.topic.TopicDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.TopicCRUDInterface;
 
 @CrossOrigin
@@ -24,7 +25,10 @@ import metricapp.service.spec.controller.TopicCRUDInterface;
 public class TopicRestController {
 	
 	@Autowired
-	private TopicCRUDInterface topicController;
+	private AuthCRUDInterface authController;
+	
+	@Autowired
+	private TopicCRUDInterface topicController;	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<TopicCrudDTO> getTopic(
@@ -38,7 +42,9 @@ public class TopicRestController {
 			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}	
+			}
+			
+			authController.checkAuthorization(auth);
 			
 			if (!id.equals("NA")) {
 				responseDTO = topicController.getTopicById(id);
