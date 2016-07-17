@@ -25,7 +25,7 @@ public class GridAnalyticsRestController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<AnalyticsCrudDTO> getGridAnalytics(
-			@RequestHeader(value = "auth", 	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "gridid", defaultValue = "NA") String gridid) {
 		
 		AnalyticsCrudDTO responseDTO = new AnalyticsCrudDTO();

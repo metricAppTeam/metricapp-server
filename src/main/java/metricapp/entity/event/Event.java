@@ -7,10 +7,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import metricapp.utility.RandomGenerator;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @TypeAlias("metricapp.Event")
 @Document(collection = "events")
 public class Event {

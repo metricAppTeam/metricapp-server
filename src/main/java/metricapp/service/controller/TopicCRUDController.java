@@ -21,7 +21,7 @@ import metricapp.service.spec.repository.TopicRepository;
 public class TopicCRUDController implements TopicCRUDInterface {
 
 	@Autowired
-	private TopicRepository topicRepository;
+	private TopicRepository topicRepo;
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
@@ -32,7 +32,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic id cannot be null");
 		}
 		
-		Topic topic = topicRepository.findTopicById(id);
+		Topic topic = topicRepo.findTopicById(id);
 		
 		if (topic == null) {
 			throw new NotFoundException("Cannot find Topic with id=" + id);
@@ -51,7 +51,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic name cannot be null");
 		}
 		
-		Topic topic = topicRepository.findTopicByName(name);
+		Topic topic = topicRepo.findTopicByName(name);
 		
 		if (topic == null) {
 			throw new NotFoundException("Cannot find Topic with name=" + name);
@@ -85,7 +85,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
 		dtoCRUD.setRequest("CREATE Topic");
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.insert(newTopic), TopicDTO.class));
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.insert(newTopic), TopicDTO.class));
 		
 		return dtoCRUD;
 	}
@@ -97,7 +97,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic id cannot be null");
 		}		
 		
-		Topic topic = topicRepository.findTopicById(id);
+		Topic topic = topicRepo.findTopicById(id);
 		if (topic == null) {
 			throw new NotFoundException("Cannot find Topic with id=" + id);
 		}
@@ -106,7 +106,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
 		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.save(topic), TopicDTO.class));
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
 		
 		return dtoCRUD;
 	}
@@ -118,7 +118,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic id cannot be null");
 		}
 		
-		Topic topic = topicRepository.findTopicById(id);
+		Topic topic = topicRepo.findTopicById(id);
 		if (topic == null) {
 			throw new NotFoundException("Cannot find Topic with id=" + id);
 		}
@@ -127,7 +127,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
 		dtoCRUD.setRequest("PATCH (subscribers-=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.save(topic), TopicDTO.class));
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
 		
 		return dtoCRUD;
 	}
@@ -139,7 +139,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic name cannot be null");
 		}		
 		
-		Topic topic = topicRepository.findTopicByName(name);
+		Topic topic = topicRepo.findTopicByName(name);
 		if (topic == null) {
 			throw new NotFoundException("Cannot find Topic with name=" + name);
 		}
@@ -148,7 +148,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
 		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH name=" + name);		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.save(topic), TopicDTO.class));
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
 		
 		return dtoCRUD;
 	}
@@ -160,7 +160,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic id cannot be null");
 		}
 		
-		Topic topic = topicRepository.findTopicById(id);
+		Topic topic = topicRepo.findTopicById(id);
 		if (topic == null) {
 			throw new NotFoundException("Cannot find Topic with id=" + id);
 		}
@@ -169,7 +169,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
 		dtoCRUD.setRequest("PATCH (subscribers-=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
-		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.save(topic), TopicDTO.class));
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepo.save(topic), TopicDTO.class));
 		
 		return dtoCRUD;
 	}
@@ -180,7 +180,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic id cannot be null");
 		}
 		
-		topicRepository.delete(id);
+		topicRepo.delete(id);
 	}
 
 	@Override
@@ -189,10 +189,10 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic name cannot be null");
 		}
 		
-		Topic topic = topicRepository.findTopicByName(name);
+		Topic topic = topicRepo.findTopicByName(name);
 		
 		if (topic != null) {
-			topicRepository.delete(topic);
+			topicRepo.delete(topic);
 		}		
 	}
 

@@ -4,10 +4,14 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import metricapp.utility.RandomGenerator;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Analytics {
 	
 	private double gqmScore;

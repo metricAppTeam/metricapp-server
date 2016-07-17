@@ -28,7 +28,7 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<TopicCrudDTO> getTopic(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 	defaultValue = "NA") String id,
 			@RequestParam(value = "name", 	defaultValue = "NA") String name) {
 		
@@ -69,7 +69,7 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<TopicCrudDTO> createTopic(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestBody TopicDTO requestDTO) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
@@ -92,7 +92,7 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<TopicCrudDTO> patchTopic(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "action",	defaultValue = "NA") String action,
 			@RequestBody TopicDTO requestDTO) {
 		
@@ -142,7 +142,7 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<TopicCrudDTO> deleteTopic(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 	defaultValue = "NA") String id,
 			@RequestParam(value = "name", 	defaultValue = "NA") String name) {
 		

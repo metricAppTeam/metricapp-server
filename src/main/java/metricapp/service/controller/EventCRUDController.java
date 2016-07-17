@@ -22,20 +22,24 @@ import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.EventCRUDInterface;
 import metricapp.service.spec.repository.EventRepository;
 import metricapp.service.spec.repository.NotificationBoxRepository;
+import metricapp.service.spec.repository.NotificationRepository;
 import metricapp.service.spec.repository.TopicRepository;
 
 @Service
 public class EventCRUDController implements EventCRUDInterface {
 
 	@Autowired
-	private EventRepository eventRepository;
+	private EventRepository eventRepo;
 	
 	@Autowired
-	private TopicRepository topicRepository;
+	private TopicRepository topicRepo;
 	
 	@Autowired 
-	private NotificationBoxRepository notificationboxRepository;
+	private NotificationBoxRepository nboxRepo;
 
+	@Autowired 
+	private NotificationRepository notificationRepo;
+	
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
@@ -45,7 +49,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event id cannot be null");
 		}
 		
-		Event event = eventRepository.findEventById(id);
+		Event event = eventRepo.findEventById(id);
 		
 		if (event == null) {
 			throw new NotFoundException("Cannot find Event with id=" + id);
@@ -66,7 +70,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event authorId cannot be null");
 		}
 		
-		List<Event> events = eventRepository.findEventByAuthorId(authorId);
+		List<Event> events = eventRepo.findEventByAuthorId(authorId);
 		
 		if (events.size() == 0) {
 			throw new NotFoundException("Cannot find Event with authorId=" + authorId);
@@ -88,7 +92,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event scope cannot be null");
 		}
 		
-		List<Event> events = eventRepository.findEventByScope(EventScope.valueOf(scope));
+		List<Event> events = eventRepo.findEventByScope(EventScope.valueOf(scope));
 		
 		if (events.size() == 0) {
 			throw new NotFoundException("Cannot find Event with scope=" + scope);
@@ -110,7 +114,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event artifactId cannot be null");
 		}
 		
-		List<Event> events = eventRepository.findEventByArtifactId(artifactId);
+		List<Event> events = eventRepo.findEventByArtifactId(artifactId);
 		
 		if (events.size() == 0) {
 			throw new NotFoundException("Cannot find Event with artifactId=" + artifactId);
@@ -147,29 +151,30 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		String topicName = event.getTopicName();
 		
-		Topic topic = topicRepository.findTopicByName(topicName);
+		Topic topic = topicRepo.findTopicByName(topicName);
 		
 		if (topic == null) {
 			topic = new Topic();
 			topic.setName(topicName);
 			topic.setCreationDate(LocalDate.now());
 			topic.setSubscribers(new ArrayList<String>());
-			topicRepository.insert(topic);
+			topicRepo.insert(topic);
 		} else {
 			for (String subscriber : topic.getSubscribers()) {
-				Notification notification = Notification.fromEvent(event);
-				NotificationBox notificationbox = notificationboxRepository.findByOwnerId(subscriber);
-				if (notificationbox != null) {
-					notificationbox.getNotifications().add(notification);
-					notificationbox.setLastPushDate(LocalDate.now());
-					notificationboxRepository.save(notificationbox);
+				Notification notification = Notification.fromEvent(event, subscriber);
+				NotificationBox nbox = nboxRepo.findByOwnerId(subscriber);
+				if (nbox != null) {
+					nbox.getNotifications().add(notification);
+					nbox.setLastPushDate(LocalDate.now());
+					nboxRepo.save(nbox);
+					notificationRepo.save(notification);
 				}
 			}
 		}		
 		
 		EventCrudDTO dtoCRUD = new EventCrudDTO();
 		dtoCRUD.setRequest("CREATE Event");
-		dtoCRUD.addEventToList(modelMapperFactory.getStandardModelMapper().map(eventRepository.insert(event), EventDTO.class));
+		dtoCRUD.addEventToList(modelMapperFactory.getStandardModelMapper().map(eventRepo.insert(event), EventDTO.class));
 		
 		return dtoCRUD;
 	}

@@ -1,5 +1,9 @@
 package metricapp.rest;
 
+import java.nio.charset.Charset;
+import java.util.Base64;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +29,19 @@ public class UserAnalyticsRestController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<AnalyticsCrudDTO> getUserAnalytics(
-			@RequestHeader(value = "auth", 		defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "username", 	defaultValue = "NA") String username) {
 		
 		AnalyticsCrudDTO responseDTO = new AnalyticsCrudDTO();
 		
 		try {
-			
-			if (auth.equals("NA")) {
+			if (!auth.equals("NA") && auth.startsWith("Basic")) {
+				String b64Credentials = auth.substring("Basic".length()).trim();
+				final String[] credentials = new String(Base64.getDecoder().decode(b64Credentials), Charset.forName("UTF-8")).split(":", 2);
+		        final String uname = credentials[0];
+		        final String psswd = credentials[1];
+		        System.out.println("AUTHORIZATION: USERNAME=" + uname + " PASSWORD=" + psswd);
+			} else {
 				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 	

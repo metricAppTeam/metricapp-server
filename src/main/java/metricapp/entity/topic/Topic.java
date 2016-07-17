@@ -10,10 +10,14 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import metricapp.utility.RandomGenerator;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @TypeAlias("metricapp.Topic")
 @Document(collection = "topics")
 public class Topic {

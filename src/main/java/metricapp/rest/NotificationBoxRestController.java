@@ -27,7 +27,7 @@ public class NotificationBoxRestController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<NotificationCrudDTO> getNotification(
-			@RequestHeader(value = "auth",		defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
 			@RequestParam(value = "scope", 		defaultValue = "NA") String scope,
@@ -93,7 +93,7 @@ public class NotificationBoxRestController {
 	
 	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<NotificationCrudDTO> patchNotification(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestBody NotificationDTO requestDTO) {
 		
 		NotificationCrudDTO responseDTO = new NotificationCrudDTO();		
@@ -123,7 +123,7 @@ public class NotificationBoxRestController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<NotificationCrudDTO> deleteNotification(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 	defaultValue = "NA") String id) {
 		
 		NotificationCrudDTO responseDTO = new NotificationCrudDTO();

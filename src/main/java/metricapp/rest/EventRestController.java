@@ -27,7 +27,7 @@ public class EventRestController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<EventCrudDTO> getEvent(
-			@RequestHeader(value = "auth",		defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
 			@RequestParam(value = "scope", 		defaultValue = "NA") String scope,
@@ -77,7 +77,7 @@ public class EventRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<EventCrudDTO> createEvent(
-			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestBody EventDTO requestDTO) {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();

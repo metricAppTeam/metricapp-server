@@ -23,7 +23,7 @@ import metricapp.service.spec.repository.NotificationBoxRepository;
 public class NotificationBoxCRUDController implements NotificationBoxCRUDInterface {
 
 	@Autowired
-	private NotificationBoxRepository notificationBoxRepository;
+	private NotificationBoxRepository nboxRepo;
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
@@ -43,7 +43,7 @@ public class NotificationBoxCRUDController implements NotificationBoxCRUDInterfa
 		NotificationBoxCrudDTO crud = new NotificationBoxCrudDTO();
 		
 		crud.setRequest("CREATE NotificationBox WITH username=" + username);
-		crud.addNotificationBoxToList(modelMapperFactory.getStandardModelMapper().map(notificationBoxRepository.insert(notificationbox), NotificationBoxDTO.class));
+		crud.addNotificationBoxToList(modelMapperFactory.getStandardModelMapper().map(nboxRepo.insert(notificationbox), NotificationBoxDTO.class));
 		
 		return crud;
 	}
@@ -54,7 +54,7 @@ public class NotificationBoxCRUDController implements NotificationBoxCRUDInterfa
 			throw new BadInputException("Notification id cannot be null");
 		}
 		
-		NotificationBox notificationBox = notificationBoxRepository.findByOwnerId(username);
+		NotificationBox notificationBox = nboxRepo.findByOwnerId(username);
 		
 		if (notificationBox == null) {
 			throw new NotFoundException("Cannot find NotificationBox with username=" + username);
