@@ -15,7 +15,6 @@ import metricapp.entity.event.Event;
 import metricapp.entity.event.EventScope;
 import metricapp.entity.notification.Notification;
 import metricapp.entity.notification.box.NotificationBox;
-import metricapp.entity.stakeholders.User;
 import metricapp.entity.topic.Topic;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
@@ -131,16 +130,16 @@ public class EventCRUDController implements EventCRUDInterface {
 	public EventCrudDTO createEvent(@Nonnull EventDTO dto) throws BadInputException {
 		
 		if (dto.getId() != null) {
-			throw new BadInputException("Event id cannot be null");
+			throw new BadInputException("Event id cannot be set manually");
 		}
 		
 		if (dto.getCreationDate() != null) {
-			throw new BadInputException("New Event cannot have a creation date");
+			throw new BadInputException("Event creation date cannot be set manually");
 		}
 		
 		if (dto.getAuthorId() == null || dto.getScope() == null || 
 				dto.getArtifactId() == null || dto.getDescription() == null) {
-			throw new BadInputException("New Event must have an author id, a scope, an artifact id and a description");
+			throw new BadInputException("Event must have an author id, a scope, an artifact id and a description");
 		}
 		
 		dto.setCreationDate(LocalDate.now());
@@ -154,12 +153,12 @@ public class EventCRUDController implements EventCRUDInterface {
 			topic = new Topic();
 			topic.setName(topicName);
 			topic.setCreationDate(LocalDate.now());
-			topic.setSubscribers(new ArrayList<User>());
-			topicRepository.save(topic);
+			topic.setSubscribers(new ArrayList<String>());
+			topicRepository.insert(topic);
 		} else {
-			for (User subscriber : topic.getSubscribers()) {
+			for (String subscriber : topic.getSubscribers()) {
 				Notification notification = Notification.fromEvent(event);
-				NotificationBox notificationbox = notificationboxRepository.findByOwnerId(subscriber.getCredential().getUsername());
+				NotificationBox notificationbox = notificationboxRepository.findByOwnerId(subscriber);
 				if (notificationbox != null) {
 					notificationbox.getNotifications().add(notification);
 					notificationbox.setLastPushDate(LocalDate.now());
