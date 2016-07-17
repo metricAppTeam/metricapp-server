@@ -9,6 +9,7 @@ public class NotificationMap extends PropertyMap<Notification, NotificationDTO> 
 	@Override
 	protected void configure() {
 		map().setId(source.getId());
+		map().setEventId(source.getEventId());
 		map().setCreationDate(source.getCreationDate());
 		map().setAuthorId(source.getAuthorId());
 		map().setScope(source.getScope());
