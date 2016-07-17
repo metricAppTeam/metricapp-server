@@ -5,18 +5,17 @@ import java.util.ArrayList;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import metricapp.dto.MessageDTO;
+import metricapp.dto.SimpleDTO;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=true)
-public class TopicCrudDTO extends MessageDTO {
+public class TopicCrudDTO extends SimpleDTO {
 	
 	private static final long serialVersionUID = 1576795169213279094L;
 	
 	private long count;	
-	public ArrayList<TopicDTO> topicsDTO;
-	
+	public ArrayList<TopicDTO> topicsDTO;	
 	
 	public TopicCrudDTO() {
 		this.setTopicsDTO(new ArrayList<TopicDTO>());
@@ -25,9 +24,11 @@ public class TopicCrudDTO extends MessageDTO {
 	public void addTopicToList(TopicDTO topic) {
 		try {
 			this.topicsDTO.add(topic);
-		} catch(NullPointerException e){
+		} catch(NullPointerException e) {
 			this.topicsDTO = new ArrayList<TopicDTO>();
 			this.topicsDTO.add(topic);
-		}		
+		} finally {
+			this.count++;
+		}	
 	}
 }

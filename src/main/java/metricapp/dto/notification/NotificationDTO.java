@@ -3,18 +3,11 @@ package metricapp.dto.notification;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import metricapp.dto.DTO;
+import lombok.Data;
 import metricapp.entity.event.EventScope;
 
-@Getter
-@Setter()
-@ToString(callSuper=true)
-@EqualsAndHashCode(callSuper=true)
-public class NotificationDTO extends DTO implements Serializable {
+@Data
+public class NotificationDTO implements Serializable {
 	
 	private static final long serialVersionUID = -3515906896966614256L;
 	
@@ -25,9 +18,5 @@ public class NotificationDTO extends DTO implements Serializable {
 	public String artifactId;	
 	public String description;	
 	public boolean read;
-	
-	public NotificationDTO() {
-		super();
-	}
 	
 }

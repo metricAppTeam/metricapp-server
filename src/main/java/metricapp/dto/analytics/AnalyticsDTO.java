@@ -4,17 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import metricapp.dto.DTO;
+import lombok.Data;
 
-@Getter
-@Setter()
-@ToString(callSuper=true)
-@EqualsAndHashCode(callSuper=true)
-public class AnalyticsDTO extends DTO implements Serializable {
+@Data
+public class AnalyticsDTO implements Serializable {
 
 	private static final long serialVersionUID = -6131993103442424873L;
 	
@@ -27,9 +20,5 @@ public class AnalyticsDTO extends DTO implements Serializable {
 	public Map<LocalDate, Long> assigned;
 	public Map<LocalDate, Long> submitted;
 	public Map<LocalDate, Long> accepted;
-	
-	public AnalyticsDTO() {
-		super();
-	}
 	
 }

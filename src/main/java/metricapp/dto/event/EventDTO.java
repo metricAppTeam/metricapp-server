@@ -3,18 +3,11 @@ package metricapp.dto.event;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import metricapp.dto.DTO;
+import lombok.Data;
 import metricapp.entity.event.EventScope;
 
-@Getter
-@Setter()
-@ToString(callSuper=true)
-@EqualsAndHashCode(callSuper=true)
-public class EventDTO extends DTO implements Serializable {
+@Data
+public class EventDTO implements Serializable {
 	
 	private static final long serialVersionUID = 8724934021086428683L;
 
@@ -23,10 +16,6 @@ public class EventDTO extends DTO implements Serializable {
 	private String authorId;
 	private EventScope scope;
 	private String artifactId;	
-	private String description;	
-	
-	public EventDTO() {
-		super();
-	}
+	private String description;
 	
 }
