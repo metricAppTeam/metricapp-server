@@ -29,11 +29,6 @@ public class TeamRestController {
 	@Autowired 
 	TeamCRUDController teamCRUDController;
 	
-	/**
-	 * Get Method for search team by id
-	 * @param 
-	 * @return
-	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<TeamCrudDTO> getTeamDTO(
 			@RequestParam(value="id", defaultValue="NA") String id){
@@ -64,50 +59,7 @@ public class TeamRestController {
 			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	/**
-	 * Put Method for Update team data
-	 * @param teamDTO
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<TeamCrudDTO> updateTeamDTO(@RequestBody TeamDTO teamDTO){
-		
-		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
-		try {
-			teamCrudDTO = teamCRUDController.updateTeam(teamDTO);
-			
-			if(teamCrudDTO == null){
-				return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
-			}
-			else{
-				return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.OK);
-			}
-			
-		} catch (BadInputException e) {
-			teamCrudDTO.setError("Bad Input");
-			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
-		} catch (NotFoundException e) {
-			teamCrudDTO.setError("Not Found");
-			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.NOT_FOUND);
-		} catch (IllegalStateTransitionException e) {
-			teamCrudDTO.setError("Illegal state transition");
-			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.FORBIDDEN);
-		} catch (DBException e) {
-			teamCrudDTO.setError("DB_Exception");
-			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.CONFLICT);
-		} catch (Exception e){
-			teamCrudDTO.setError("Internal Server Error");
-			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-	}
-	
-	/**
-	 * Post Method for Create new team
-	 * @param teamDTO
-	 * @return
-	 */
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<TeamCrudDTO> createTeam(@RequestBody TeamDTO teamDTO){
 		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
@@ -126,8 +78,92 @@ public class TeamRestController {
 			teamCrudDTO.setError("Server Error");
 			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@RequestMapping(value="/deleteuser",method = RequestMethod.DELETE)
+	public ResponseEntity<TeamCrudDTO> deleteUserInTeamDTO(
+			@RequestParam(value="id", defaultValue = "NA") String id,
+			@RequestParam(value="username", defaultValue = "NA") String username){
 		
+		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
 		
+		try {
+			if(!id.equals("NA") && !username.equals("NA")){
+				teamCrudDTO = teamCRUDController.deleteUserByUsername(id,username);
+				return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.OK);
+			}
+			else{
+				teamCrudDTO.setError("No parameters given");
+				return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
+			}
+		} catch (NotFoundException e) {
+			teamCrudDTO.setError("Not Found");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.NOT_FOUND);
+		} catch (IllegalStateTransitionException e) {
+			teamCrudDTO.setError("Illegal state transition");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.FORBIDDEN);
+		} catch (DBException e) {
+			teamCrudDTO.setError("DB_Exception");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.CONFLICT);
+		} catch (Exception e){
+			teamCrudDTO.setError("Internal Server Error");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/adduser",method = RequestMethod.PUT)
+	public ResponseEntity<TeamCrudDTO> addUserToTeamDTO(@RequestBody TeamDTO teamDTO)
+	{
+			
+		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
+		try {
+				teamCrudDTO = teamCRUDController.addUserToTeam(teamDTO);
+				
+				if(teamCrudDTO == null){
+					return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
+				}
+				else{
+					return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.OK);
+				}
 		
+		} catch (NotFoundException e) {
+			teamCrudDTO.setError("Not Found");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.NOT_FOUND);
+		} catch (IllegalStateTransitionException e) {
+			teamCrudDTO.setError("Illegal state transition");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.FORBIDDEN);
+		} catch (DBException e) {
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.CONFLICT);
+		} catch (Exception e){
+			teamCrudDTO.setError("Internal Server Error");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/upgradeinfo",method = RequestMethod.PUT)
+	public ResponseEntity<TeamCrudDTO> upgradeTeamInfo(@RequestBody TeamDTO teamDTO)
+	{
+			
+		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
+		try {
+				teamCrudDTO = teamCRUDController.upgradeTeamInfo(teamDTO);
+				
+				if(teamCrudDTO == null){
+					return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.BAD_REQUEST);
+				}
+				else{
+					return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.OK);
+				}
+		
+		} catch (NotFoundException e) {
+			teamCrudDTO.setError("Not Found");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.NOT_FOUND);
+		} catch (DBException e) {
+			//teamCrudDTO.setError("DB_Exception");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.CONFLICT);
+		} catch (Exception e){
+			teamCrudDTO.setError("Internal Server Error");
+			return new ResponseEntity<TeamCrudDTO>(teamCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

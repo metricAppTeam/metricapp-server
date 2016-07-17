@@ -87,6 +87,9 @@ public class UserCRUDController implements UserCRUDInterface {
 		if (userDTO.getGender() == null) {
 			throw new BadInputException("Gender field is empty");
 		}
+		if (userDTO.getBio() == null) {
+			throw new BadInputException("Bio field is empty");
+		}
 		
 		User newUser;
 		
@@ -168,6 +171,9 @@ public class UserCRUDController implements UserCRUDInterface {
 			
 			if(userDTO.getWebsite() != null)
 				oldUser.setWebsite(userDTO.getWebsite());
+			
+			if(userDTO.getBio() != null)
+				oldUser.setBio(userDTO.getBio());
 		}
 		catch(Exception e){
 			throw new DBException("Error in saving data in repository");

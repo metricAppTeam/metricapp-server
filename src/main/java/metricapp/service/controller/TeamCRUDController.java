@@ -1,5 +1,6 @@
 package metricapp.service.controller;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import metricapp.dto.team.TeamCrudDTO;
 import metricapp.dto.team.TeamDTO;
+import metricapp.entity.stakeholders.Role;
 import metricapp.entity.stakeholders.Team;
+import metricapp.entity.stakeholders.User;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
 import metricapp.exception.IDException;
@@ -22,7 +25,6 @@ public class TeamCRUDController implements TeamCRUDInterface {
 
 	@Autowired
 	private TeamRepository teamRepository;
-	
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory; 
 		
@@ -53,6 +55,8 @@ public class TeamCRUDController implements TeamCRUDInterface {
 			throw new BadInputException("Id field is empty");
 		}
 		
+		//teamDTO.setTsCreate(LocalDateTime.now().toString());
+		//teamDTO.setTsUpdate(LocalDateTime.now().toString());
 		Team newTeam = modelMapperFactory.getStandardModelMapper().map(teamDTO, Team.class);
 		
 		if(teamRepository.exists(newTeam.getId())){
@@ -69,13 +73,6 @@ public class TeamCRUDController implements TeamCRUDInterface {
 	}
 
 	@Override
-	public TeamCrudDTO updateTeam(TeamDTO teamDTO)  
-			throws BadInputException, NotFoundException, IllegalStateTransitionException, DBException{
-			// DA FARE
-		return null;
-	}
-	
-	@Override
 	public TeamCrudDTO getAllTeams(){
 			
 		TeamCrudDTO teamCrudDTO = new TeamCrudDTO();
@@ -86,5 +83,154 @@ public class TeamCRUDController implements TeamCRUDInterface {
 			teamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamIter.next(), TeamDTO.class));
 		}
 		return teamCrudDTO;
+	}
+
+	@Override
+	public TeamCrudDTO deleteUserByUsername(String id, String username) throws IllegalStateTransitionException, NotFoundException, IDException, DBException
+	{
+		Team oldTeam;
+		
+		try{
+			oldTeam = teamRepository.findTeamById(id);
+		}
+		catch(Exception e){
+			throw new NotFoundException("Team not be found in repository");
+		}
+	
+		TeamCrudDTO updateTeamCrudDTO = new TeamCrudDTO();
+		updateTeamCrudDTO.setRequest("upgrade Team");
+		try
+		{
+			if(oldTeam.getMetricators().removeIf(p -> p.getUsername().equals(username)))
+			{
+				updateTeamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamRepository.save(oldTeam), TeamDTO.class));
+				return updateTeamCrudDTO;
+			}else if(oldTeam.getQuestioners().removeIf(p -> p.getUsername().equals(username)))
+			{
+				updateTeamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamRepository.save(oldTeam), TeamDTO.class));
+				return updateTeamCrudDTO;
+			}else
+			{
+				throw new DBException("User not be found in this team repository or it is an GQMExpert");
+			}
+			
+		}catch(Exception e){
+			throw new DBException("Error in saving new team in repository");
+		}
+	}
+	
+	
+	
+	@Override
+	public TeamCrudDTO addUserToTeam(TeamDTO teamDTO) throws IllegalStateTransitionException, NotFoundException, IDException, DBException
+	{
+		Team oldTeam;
+		
+		try{
+			oldTeam = teamRepository.findTeamById(teamDTO.getId());
+		}
+		catch(Exception e){
+			throw new NotFoundException("Team not be found in repository");
+		}
+		
+		User newMember;
+		if(teamDTO.getExtrauser() != null)
+			newMember = teamDTO.getExtrauser();
+		else
+			throw new NotFoundException("User not found in the request");
+		
+		try
+		{
+			if(newMember.getRole().equals(Role.GQMExpert))
+			{
+				ArrayList<User> expert;
+				
+				if(oldTeam.getExpert() == null)
+					expert = new ArrayList<User>();
+				else
+					expert = oldTeam.getExpert();
+				
+				expert.add(newMember);
+				oldTeam.setExpert(expert);
+			}
+			else if(newMember.getRole().equals(Role.Questioner))
+			{
+				ArrayList<User> questioners;
+				
+				if(oldTeam.getQuestioners() == null)
+					questioners = new ArrayList<User>();
+				else
+					questioners = oldTeam.getQuestioners();
+				
+				questioners.add(newMember);
+				oldTeam.setQuestioners(questioners);
+			}
+			
+			else if(newMember.getRole().equals(Role.Metricator))
+			{
+				ArrayList<User> metricators;
+				
+				if(oldTeam.getMetricators() == null)
+					metricators = new ArrayList<User>();
+				else
+					metricators = oldTeam.getMetricators();
+				
+				metricators.add(newMember);
+				oldTeam.setMetricators(metricators);
+			}
+			else 
+				throw new NotFoundException("User Role is empty");
+		
+		}catch(Exception e){
+			throw new DBException("Error in saving new team in repository");
+		}
+		
+		oldTeam.setExtrauser(null);
+		
+		
+		TeamCrudDTO updateTeamCrudDTO = new TeamCrudDTO();
+		updateTeamCrudDTO.setRequest("upgrade Team");
+		
+		try
+		{
+			updateTeamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamRepository.save(oldTeam), TeamDTO.class));
+			return updateTeamCrudDTO;
+			
+		}catch(Exception e){
+			throw new DBException("Error in saving new team in repository");
+		}
+	}
+
+	@Override
+	public TeamCrudDTO upgradeTeamInfo(TeamDTO teamDTO) throws NotFoundException, DBException 
+	{
+		Team oldTeam;
+		
+		try{
+			oldTeam = teamRepository.findTeamById(teamDTO.getId());
+		}
+		catch(Exception e){
+			throw new NotFoundException("Team not be found in repository");
+		}
+		
+		TeamCrudDTO updateTeamCrudDTO = new TeamCrudDTO();
+		updateTeamCrudDTO.setRequest("upgrade Team");
+		
+		try
+		{
+			if(teamDTO.getName()!= null)
+				if(!oldTeam.getName().equals(teamDTO.getName()))
+					oldTeam.setName(teamDTO.getName());
+		
+			if(teamDTO.getGridName()!= null)
+				if(!oldTeam.getGridName().equals(teamDTO.getGridName()))
+					oldTeam.setGridName(teamDTO.getGridName());
+			
+			updateTeamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamRepository.save(oldTeam), TeamDTO.class));
+			return updateTeamCrudDTO;
+			
+		}catch(Exception e){
+			throw new DBException("Error in saving new team in repository");
+		}
 	}
 }

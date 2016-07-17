@@ -24,6 +24,7 @@ public class UserMap extends PropertyMap<User, UserDTO>{
 		map().setRole(source.getRole());
 		map().setPic(source.getPic());
 		map().setWebsite(source.getWebsite());
+		map().setBio(source.getBio());
 	}
 
 }

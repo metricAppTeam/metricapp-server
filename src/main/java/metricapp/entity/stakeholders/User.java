@@ -34,6 +34,7 @@ public class User extends Person {
 	private String mobile;
 	private String online;
 	private String website;
+	private String bio;
 	private Role role; 
 	
 	public enum Gender{
@@ -55,10 +56,6 @@ public class User extends Person {
 				return;
 			}
 		}
-	}
-	
-	public void setBirthday(LocalDate date){
-		this.birthday=date;
 	}
 	
 }

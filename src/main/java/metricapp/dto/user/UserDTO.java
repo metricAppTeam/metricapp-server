@@ -36,6 +36,7 @@ public class UserDTO extends DTO implements Serializable{
 	public String email;
 	public String mobile;
 	public String online;
+	public String bio;
 	public Role role;
 	
 	@JsonProperty("birthday")
