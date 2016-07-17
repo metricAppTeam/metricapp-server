@@ -1,7 +1,7 @@
 package metricapp.service.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -43,7 +43,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		}		
 		
 		Topic topic = modelMapperFactory.getStandardModelMapper().map(dto, Topic.class);
-		topic.setCreationDate(LocalDate.now());
+		topic.setCreationDate(Calendar.getInstance().getTimeInMillis());
 		topic.setSubscribers(new ArrayList<String>());
 		
 		topic = topicRepo.insert(topic);
