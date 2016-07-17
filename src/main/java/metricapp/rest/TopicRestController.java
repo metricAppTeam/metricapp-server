@@ -24,29 +24,29 @@ import metricapp.service.spec.controller.TopicCRUDInterface;
 public class TopicRestController {
 	
 	@Autowired
-	private TopicCRUDInterface topicCRUDController;
+	private TopicCRUDInterface topicController;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<TopicCrudDTO> getTopic(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
-			@RequestParam(value = "id", 		defaultValue = "NA") String id,
-			@RequestParam(value = "name", 		defaultValue = "NA") String name) {
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestParam(value = "id", 	defaultValue = "NA") String id,
+			@RequestParam(value = "name", 	defaultValue = "NA") String name) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
 			
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}	
 			
 			if (!id.equals("NA")) {
-				responseDTO = topicCRUDController.getTopicById(id);
+				responseDTO = topicController.getTopicById(id);
 				return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!name.equals("NA")) {
-				responseDTO = topicCRUDController.getTopicByName(name);
+				responseDTO = topicController.getTopicByName(name);
 				return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			}	
 			
@@ -69,16 +69,16 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<TopicCrudDTO> createTopic(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
 			@RequestBody TopicDTO requestDTO) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {			
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}			
-			return new ResponseEntity<TopicCrudDTO>(topicCRUDController.createTopic(requestDTO), HttpStatus.CREATED);
+			return new ResponseEntity<TopicCrudDTO>(topicController.createTopic(requestDTO), HttpStatus.CREATED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -92,29 +92,29 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<TopicCrudDTO> patchTopic(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
-			@RequestParam(value = "action",		defaultValue = "NA") String action,
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestParam(value = "action",	defaultValue = "NA") String action,
 			@RequestBody TopicDTO requestDTO) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();			
 		
 		try {
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			if (requestDTO.getId() != null && !action.equals("NA")) {
 				if (action.equals("subscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByIdAddSubscribers(requestDTO), HttpStatus.OK);
+					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByIdAddSubscribers(requestDTO), HttpStatus.OK);
 				} else if (action.equals("unsubscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByIdRemoveSubscribers(requestDTO), HttpStatus.OK);
+					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByIdRemoveSubscribers(requestDTO), HttpStatus.OK);
 				} else {
 					return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
 				}
 			} else if (requestDTO.getName() != null && !action.equals("NA")) {
 				if (action.equals("subscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByNameAddSubscribers(requestDTO), HttpStatus.OK);
+					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByNameAddSubscribers(requestDTO), HttpStatus.OK);
 				} else if (action.equals("unsubscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByNameRemoveSubscribers(requestDTO), HttpStatus.OK);
+					return new ResponseEntity<TopicCrudDTO>(topicController.patchTopicByNameRemoveSubscribers(requestDTO), HttpStatus.OK);
 				} else {
 					return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
 				}
@@ -142,21 +142,21 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<TopicCrudDTO> deleteTopic(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
-			@RequestParam(value = "id", 		defaultValue = "NA") String id,
-			@RequestParam(value = "name", 		defaultValue = "NA") String name) {
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestParam(value = "id", 	defaultValue = "NA") String id,
+			@RequestParam(value = "name", 	defaultValue = "NA") String name) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			if (!id.equals("NA")) {
-				topicCRUDController.deleteTopicById(id);
+				topicController.deleteTopicById(id);
 			}
 			if (!name.equals("NA")) {
-				topicCRUDController.deleteTopicByName(name);
+				topicController.deleteTopicByName(name);
 			} else {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
 			}			

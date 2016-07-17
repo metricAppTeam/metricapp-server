@@ -20,10 +20,10 @@ import metricapp.service.spec.repository.UserSimpleRepository;
 public class UserSimpleRestController {
 	
 	@Autowired
-	private UserSimpleRepository userSimpleRepository;
+	private UserSimpleRepository userRepo;
 	
 	@Autowired
-	private NotificationBoxCRUDInterface notificationboxCRUDController;
+	private NotificationBoxCRUDInterface nboxController;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<NotificationBoxCrudDTO> createSimpleUser(
@@ -35,11 +35,9 @@ public class UserSimpleRestController {
 			if (username != null) {
 				UserSimple user = new UserSimple();
 				user.setUsername(username);
-				UserSimple newUser = userSimpleRepository.insert(user);				
-				if (newUser != null) {
-					return new ResponseEntity<NotificationBoxCrudDTO>(
-							notificationboxCRUDController.createNotificationBoxForUser(username), 
-							HttpStatus.CREATED);
+				if (userRepo.insert(user) != null) {
+					responseDTO = nboxController.createNotificationBoxForUser(username);
+					return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.CREATED);
 				} else {
 					return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
@@ -47,7 +45,6 @@ public class UserSimpleRestController {
 				return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 			}			
 		} catch (Exception e){
-			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -23,54 +23,54 @@ import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
 public class NotificationBoxRestController {
 	
 	@Autowired
-	private NotificationBoxCRUDInterface notificationBoxCRUDController;
+	private NotificationBoxCRUDInterface nboxController;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<NotificationCrudDTO> getNotification(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
+			@RequestHeader(value = "auth",		defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
 			@RequestParam(value = "scope", 		defaultValue = "NA") String scope,
 			@RequestParam(value = "artifactId", defaultValue = "NA") String artifactId,
-			@RequestParam(value = "read", defaultValue = "NA") String read,
-			@RequestParam(value = "from", defaultValue = "NA") String from,
-			@RequestParam(value = "to", defaultValue = "NA") String to) {
+			@RequestParam(value = "read", 		defaultValue = "NA") String read,
+			@RequestParam(value = "from", 		defaultValue = "NA") String from,
+			@RequestParam(value = "to", 		defaultValue = "NA") String to) {
 		
 		NotificationCrudDTO responseDTO = new NotificationCrudDTO();
 		
 		try {
 			
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
 			if (!id.equals("NA")) {
-				responseDTO = notificationBoxCRUDController.getNotificationForUserById(username, id);
+				responseDTO = nboxController.getNotificationForUserById(auth, id);
 				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!authorId.equals("NA")) {
-				responseDTO = notificationBoxCRUDController.getNotificationsForUserByAuthorId(username, authorId);
+				responseDTO = nboxController.getNotificationsForUserByAuthorId(auth, authorId);
 				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!scope.equals("NA")) {
-				responseDTO = notificationBoxCRUDController.getNotificationsForUserByScope(username, scope);
+				responseDTO = nboxController.getNotificationsForUserByScope(auth, scope);
 				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!artifactId.equals("NA")) {
-				responseDTO = notificationBoxCRUDController.getNotificationsForUserByArtifactId(username, artifactId);
+				responseDTO = nboxController.getNotificationsForUserByArtifactId(auth, artifactId);
 				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!read.equals("NA")) {
-				responseDTO = notificationBoxCRUDController.getNotificationsForUserByRead(username, read);
+				responseDTO = nboxController.getNotificationsForUserByRead(auth, read);
 				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!from.equals("NA") && !to.equals("NA")) {
-				responseDTO = notificationBoxCRUDController.getNotificationsForUserFromTo(username, from, to);
+				responseDTO = nboxController.getNotificationsForUserFromTo(auth, from, to);
 				return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
@@ -93,18 +93,18 @@ public class NotificationBoxRestController {
 	
 	@RequestMapping(method = RequestMethod.PATCH)
 	public ResponseEntity<NotificationCrudDTO> patchNotification(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
 			@RequestBody NotificationDTO requestDTO) {
 		
 		NotificationCrudDTO responseDTO = new NotificationCrudDTO();		
 		
 		try {
 			
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			return new ResponseEntity<NotificationCrudDTO>(notificationBoxCRUDController.patchNotificationBoxForUser(username, requestDTO), HttpStatus.OK);	
+			return new ResponseEntity<NotificationCrudDTO>(nboxController.patchNotificationBoxForUser(auth, requestDTO), HttpStatus.OK);	
 			
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
@@ -123,19 +123,19 @@ public class NotificationBoxRestController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<NotificationCrudDTO> deleteNotification(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
-			@RequestParam(value = "id", defaultValue = "NA") String id) {
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
+			@RequestParam(value = "id", 	defaultValue = "NA") String id) {
 		
 		NotificationCrudDTO responseDTO = new NotificationCrudDTO();
 		
 		try {
 			
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			
 			if (!id.equals("NA")) {
-				notificationBoxCRUDController.deleteNotificationForUserById(username, id);
+				nboxController.deleteNotificationForUserById(auth, id);
 			} else {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.BAD_REQUEST);
 			}	

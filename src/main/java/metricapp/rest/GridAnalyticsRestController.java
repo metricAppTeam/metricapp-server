@@ -21,23 +21,23 @@ import metricapp.service.spec.controller.GridAnalyticsCRUDInterface;
 public class GridAnalyticsRestController {
 	
 	@Autowired
-	private GridAnalyticsCRUDInterface gridAnalyticsCRUDController;
+	private GridAnalyticsCRUDInterface analyticsController;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<AnalyticsCrudDTO> getGridAnalytics(
-			@RequestHeader(value = "username", defaultValue = "NA") String username,
+			@RequestHeader(value = "auth", 	defaultValue = "NA") String auth,
 			@RequestParam(value = "gridid", defaultValue = "NA") String gridid) {
 		
 		AnalyticsCrudDTO responseDTO = new AnalyticsCrudDTO();
 		
 		try {
 			
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 	
 			if (!gridid.equals("NA")) {
-				responseDTO = gridAnalyticsCRUDController.getAnalyticsByGridId(gridid);
+				responseDTO = analyticsController.getAnalyticsByGridId(gridid);
 				return new ResponseEntity<AnalyticsCrudDTO>(responseDTO, HttpStatus.OK);
 			}		
 			return new ResponseEntity<AnalyticsCrudDTO>(HttpStatus.BAD_REQUEST);

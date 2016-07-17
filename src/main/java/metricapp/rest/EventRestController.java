@@ -23,11 +23,11 @@ import metricapp.service.spec.controller.EventCRUDInterface;
 public class EventRestController {
 	
 	@Autowired
-	private EventCRUDInterface eventCRUDController;
+	private EventCRUDInterface eventController;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<EventCrudDTO> getEvent(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
+			@RequestHeader(value = "auth",		defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
 			@RequestParam(value = "scope", 		defaultValue = "NA") String scope,
@@ -36,26 +36,26 @@ public class EventRestController {
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
 			if (!id.equals("NA")) {
-				responseDTO = eventCRUDController.getEventById(id);
+				responseDTO = eventController.getEventById(id);
 				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!authorId.equals("NA")) {
-				responseDTO = eventCRUDController.getEventByAuthorId(authorId);
+				responseDTO = eventController.getEventByAuthorId(authorId);
 				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!scope.equals("NA")) {
-				responseDTO = eventCRUDController.getEventByScope(scope);
+				responseDTO = eventController.getEventByScope(scope);
 				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
 			if (!artifactId.equals("NA")) {
-				responseDTO = eventCRUDController.getEventByArtifactId(artifactId);
+				responseDTO = eventController.getEventByArtifactId(artifactId);
 				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			}
 			
@@ -77,16 +77,16 @@ public class EventRestController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<EventCrudDTO> createEvent(
-			@RequestHeader(value = "username",	defaultValue = "NA") String username,
+			@RequestHeader(value = "auth",	defaultValue = "NA") String auth,
 			@RequestBody EventDTO requestDTO) {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
-			if (username.equals("NA")) {
+			if (auth.equals("NA")) {
 				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
-			return new ResponseEntity<EventCrudDTO>(eventCRUDController.createEvent(requestDTO), HttpStatus.CREATED);
+			return new ResponseEntity<EventCrudDTO>(eventController.createEvent(requestDTO), HttpStatus.CREATED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
