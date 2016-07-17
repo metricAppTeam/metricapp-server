@@ -1,7 +1,5 @@
 package metricapp.entity.event;
 
-import java.time.LocalDate;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
@@ -22,7 +20,7 @@ public class Event {
 	@Id
 	private String id;
 	@CreatedDate
-	private LocalDate creationDate;
+	private Long creationDate;
 	private String authorId;
 	private EventScope scope;
 	private String artifactId;	
@@ -35,7 +33,7 @@ public class Event {
 	public static Event randomEvent() {
 		Event event = new Event();
 		event.setId(RandomGenerator.randomString());
-		event.setCreationDate(RandomGenerator.randomLocalDate());
+		event.setCreationDate(RandomGenerator.randomLong());
 		event.setAuthorId(RandomGenerator.randomString());
 		event.setScope(RandomGenerator.randomEnum(EventScope.class));
 		event.setArtifactId(RandomGenerator.randomString());

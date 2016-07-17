@@ -1,6 +1,5 @@
 package metricapp.entity.topic;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Topic {
 	@Id
 	private String id;
 	@CreatedDate
-	private LocalDate creationDate;
+	private Long creationDate;
 	@Indexed(unique = true)
 	private String name;
 	private List<String> subscribers;
@@ -33,7 +32,7 @@ public class Topic {
 	public static Topic randomTopic() {
 		Topic topic = new Topic();
 		topic.setId(RandomGenerator.randomString());
-		topic.setCreationDate(RandomGenerator.randomLocalDate());
+		topic.setCreationDate(RandomGenerator.randomLong());
 		topic.setName(RandomGenerator.randomString());
 		topic.setSubscribers(new ArrayList<String>());
 		topic.setSubscribers(RandomGenerator.randomArrayList());

@@ -1,32 +1,41 @@
 package metricapp.entity.notification;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import metricapp.entity.event.Event;
 import metricapp.entity.event.EventScope;
 import metricapp.utility.RandomGenerator;
 
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @TypeAlias("metricapp.Notification")
 @Document(collection = "notifications")
-public class Notification extends Event {	
+public class Notification {	
 	
+	@Id
+	private String id;
+	private String eventId;
+	@CreatedDate
+	private Long creationDate;
+	private String authorId;
+	private EventScope scope;
+	private String artifactId;	
+	private String description;		
 	@Indexed
 	private String recipient;
 	private boolean read;
 	
 	public static Notification fromEvent(Event event, String recipient) {
 		Notification notification = new Notification();
-		notification.setId(event.getId());
+		notification.setEventId(event.getId());
 		notification.setCreationDate(event.getCreationDate());
 		notification.setAuthorId(event.getAuthorId());
 		notification.setScope(event.getScope());
@@ -41,7 +50,8 @@ public class Notification extends Event {
 		Notification notification = new Notification();
 		
 		notification.setId(RandomGenerator.randomString());		
-		notification.setCreationDate(RandomGenerator.randomLocalDate());
+		notification.setEventId(RandomGenerator.randomString());
+		notification.setCreationDate(RandomGenerator.randomLong());
 		notification.setAuthorId(RandomGenerator.randomString());
 		notification.setScope(RandomGenerator.randomEnum(EventScope.class));
 		notification.setArtifactId(RandomGenerator.randomString());

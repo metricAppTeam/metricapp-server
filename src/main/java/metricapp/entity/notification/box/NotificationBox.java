@@ -1,7 +1,7 @@
 package metricapp.entity.notification.box;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -26,24 +26,24 @@ public class NotificationBox {
 	@Indexed(unique = true)
 	private String ownerId;
 	@CreatedDate
-	private LocalDate creationDate;
+	private Long creationDate;
 	@LastModifiedDate
-	private LocalDate lastPushDate;
+	private Long lastPushDate;
 	@DBRef
 	private List<Notification> notifications;
 
 	public static NotificationBox randomNotificationBox(){
 		NotificationBox box = new NotificationBox();
 		
-		LocalDate now = LocalDate.now();
+		long now = Calendar.getInstance().getTimeInMillis();
 		
 		box.setId(RandomGenerator.randomString());		
-		box.setCreationDate(RandomGenerator.randomLocalDate());
-		box.setLastPushDate(RandomGenerator.randomLocalDate());
+		box.setCreationDate(RandomGenerator.randomLong());
+		box.setLastPushDate(RandomGenerator.randomLong());
 		box.setNotifications(new ArrayList<Notification>());
 		for (int i = 0; i < RandomGenerator.randomInt(); i++) {
 			Notification notification = Notification.randomNotification();
-			if (notification.getCreationDate().isAfter(now)) {
+			if (notification.getCreationDate() > now) {
 				notification.setRead(false);
 			}
 			box.getNotifications().add(notification);

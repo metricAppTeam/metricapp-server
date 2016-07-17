@@ -1,7 +1,6 @@
 package metricapp.dto.notification.box;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Data;
@@ -14,8 +13,8 @@ public class NotificationBoxDTO implements Serializable {
 	
 	public String id;
 	public String ownerId;
-	public LocalDate creationDate;
-	private LocalDate lastPushDate;
+	public Long creationDate;
+	private Long lastPushDate;
 	private List<Notification> notifications;
 	
 }
