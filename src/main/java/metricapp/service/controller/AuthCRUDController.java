@@ -19,7 +19,7 @@ public class AuthCRUDController implements AuthCRUDInterface {
 	private UserSimpleRepository userRepo;
 
 	@Override
-	public void authenticate(String auth) throws BadInputException, UnauthorizedException {
+	public String authenticate(String auth) throws BadInputException, UnauthorizedException {
 		if (auth == null) {
 			throw new BadInputException("Auth cannot be null");
 		}
@@ -37,7 +37,7 @@ public class AuthCRUDController implements AuthCRUDInterface {
 	    UserSimple user = userRepo.findByUsername(uname);
 	    
 	    if (user != null && user.getPassword().equals(psswd)) {
-	    	return;
+	    	return uname;
 	    } else {
 	    	throw new UnauthorizedException();
 	    }		

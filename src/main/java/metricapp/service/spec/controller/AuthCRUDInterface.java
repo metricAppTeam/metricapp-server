@@ -5,6 +5,6 @@ import metricapp.exception.UnauthorizedException;
 
 public interface AuthCRUDInterface {
 	
-	public void authenticate(String auth) throws BadInputException, UnauthorizedException;
+	public String authenticate(String auth) throws BadInputException, UnauthorizedException;
 	
 }
