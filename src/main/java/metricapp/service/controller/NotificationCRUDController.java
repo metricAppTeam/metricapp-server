@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import metricapp.dto.notification.NotificationCrudDTO;
 import metricapp.dto.notification.NotificationDTO;
@@ -36,8 +36,6 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
-	private ModelMapper mapper = modelMapperFactory.getStandardModelMapper();
-	
 	@Override
 	public NotificationBoxCrudDTO createNotificationBoxForUser(String username) throws BadInputException {
 		if (username == null) {
@@ -54,7 +52,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationBoxCrudDTO crud = new NotificationBoxCrudDTO();		
 		crud.setRequest("CREATE NotificationBox WITH username=" + username);
-		crud.addNotificationBox(nbox, mapper);
+		crud.addNotificationBox(nbox, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -90,7 +88,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("CREATE Notification WITH id=" + notification.getId());
-		crud.addNotification(notification, mapper);
+		crud.addNotification(notification, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -109,7 +107,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();		
 		crud.setRequest("GET Notification WITH recipient=" + username);
-		crud.addAllNotification(notifications, mapper);
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -132,7 +130,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();		
 		crud.setRequest("GET Notification WITH id=" + id);
-		crud.addNotification(notification, mapper);
+		crud.addNotification(notification, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -155,7 +153,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("GET Notification WITH authorId=" + authorId);
-		crud.addAllNotification(notifications, mapper);
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -178,7 +176,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("GET Notification WITH scope=" + scope);
-		crud.addAllNotification(notifications, mapper);	
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());	
 		
 		return crud;
 	}
@@ -201,7 +199,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("GET Notification WITH artifactId=" + artifactId);
-		crud.addAllNotification(notifications, mapper);
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -229,7 +227,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("GET Notification WITH read=" + read);
-		crud.addAllNotification(notifications, mapper);	
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());	
 		
 		return crud;
 	}
@@ -248,7 +246,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Size cannot be null");
 		}
 		
-		PageRequest page = new PageRequest(Integer.valueOf(from), Integer.valueOf(size));
+		PageRequest page = new PageRequest(Integer.valueOf(from), Integer.valueOf(size), Sort.Direction.DESC, "creationDate");
 		Page<Notification> slice = notificationRepo.findNotificationByRecipient(username, page);
 		List<Notification> notifications = slice.getContent();		
 		
@@ -258,7 +256,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("GET Notification WITH from=" + from + "&size=" + size);
-		crud.addAllNotification(notifications, mapper);	
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());	
 		
 		return crud;
 	}	
@@ -284,7 +282,7 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("PATCH (read=" + dto.isRead() + ") Notification WITH id=" + id);		
-		crud.addNotification(notification, mapper);
+		crud.addNotification(notification, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}

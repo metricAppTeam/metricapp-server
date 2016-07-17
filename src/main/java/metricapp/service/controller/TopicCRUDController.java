@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +27,6 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
-	private ModelMapper mapper = modelMapperFactory.getStandardModelMapper();
-	
 	@Override
 	public TopicCrudDTO createTopic(@Nonnull TopicDTO dto) throws BadInputException {
 		
@@ -45,7 +42,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 			throw new BadInputException("Topic name cannot be null");
 		}		
 		
-		Topic topic = mapper.map(dto, Topic.class);
+		Topic topic = modelMapperFactory.getStandardModelMapper().map(dto, Topic.class);
 		topic.setCreationDate(LocalDate.now());
 		topic.setSubscribers(new ArrayList<String>());
 		
@@ -53,7 +50,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("CREATE Topic WITH id=" + topic.getId());
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -68,7 +65,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();		
 		crud.setRequest("GET ALL Topics");
-		crud.addAllTopic(topics, mapper);
+		crud.addAllTopic(topics, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -87,7 +84,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("GET Topic WITH id=" + id);
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -106,7 +103,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("GET Topic WITH name=" + name);
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}	
@@ -132,7 +129,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));		
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -158,7 +155,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH " + ((dto.getId()!=null)?"id="+dto.getId():"name="+dto.getName()));	
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -177,7 +174,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("DELETE Topic WITH id=" + id);
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -196,7 +193,7 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		
 		TopicCrudDTO crud = new TopicCrudDTO();
 		crud.setRequest("DELETE Topic WITH name=" + name);
-		crud.addTopic(topic, mapper);
+		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;	
 	}	

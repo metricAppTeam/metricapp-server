@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +42,6 @@ public class EventCRUDController implements EventCRUDInterface {
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
-	private ModelMapper mapper = modelMapperFactory.getStandardModelMapper();
-	
 	@Override
 	public EventCrudDTO createEvent(@Nonnull EventDTO dto) throws BadInputException {
 		
@@ -62,7 +58,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event must have an author id, a scope, an artifact id and a description");
 		}		
 		
-		Event event = mapper.map(dto, Event.class);		
+		Event event = modelMapperFactory.getStandardModelMapper().map(dto, Event.class);		
 		event.setCreationDate(LocalDate.now());
 		
 		event = eventRepo.insert(event);
@@ -93,7 +89,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO crud = new EventCrudDTO();
 		crud.setRequest("CREATE Event WITH id=" + event.getId());
-		crud.addEvent(event, mapper);
+		crud.addEvent(event, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -108,7 +104,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO crud = new EventCrudDTO();		
 		crud.setRequest("GET ALL Events");
-		crud.addAllEvent(events, mapper);
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -127,7 +123,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO crud = new EventCrudDTO();
 		crud.setRequest("GET Event WITH id=" + id);
-		crud.addEvent(event, mapper);
+		crud.addEvent(event, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -147,7 +143,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO crud = new EventCrudDTO();
 		crud.setRequest("GET Event WITH authorId=" + authorId);
-		crud.addAllEvent(events, mapper);
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
@@ -166,7 +162,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO crud = new EventCrudDTO();
 		crud.setRequest("GET Event WITH scope=" + scope);
-		crud.addAllEvent(events, mapper);		
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());		
 		
 		return crud;
 	}
@@ -185,7 +181,7 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		EventCrudDTO crud = new EventCrudDTO();
 		crud.setRequest("GET Event WITH artifactId=" + artifactId);
-		crud.addAllEvent(events, mapper);		
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());		
 		
 		return crud;
 	}

@@ -28,7 +28,7 @@ public class NotificationRestController {
 	private AuthCRUDInterface authController;
 	
 	@Autowired
-	private NotificationCRUDInterface nboxController;	
+	private NotificationCRUDInterface notificationController;	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<NotificationCrudDTO> getNotification(
@@ -52,19 +52,19 @@ public class NotificationRestController {
 			String authUsername = authController.authenticate(auth);
 			
 			if (!id.equals("NA")) {
-				responseDTO = nboxController.getNotificationForUserById(authUsername, id);				
+				responseDTO = notificationController.getNotificationForUserById(authUsername, id);				
 			} else if (!authorId.equals("NA")) {
-				responseDTO = nboxController.getNotificationsForUserByAuthorId(authUsername, authorId);
+				responseDTO = notificationController.getNotificationsForUserByAuthorId(authUsername, authorId);
 			} else if (!scope.equals("NA")) {
-				responseDTO = nboxController.getNotificationsForUserByScope(authUsername, scope);
+				responseDTO = notificationController.getNotificationsForUserByScope(authUsername, scope);
 			} else if (!artifactId.equals("NA")) {
-				responseDTO = nboxController.getNotificationsForUserByArtifactId(authUsername, artifactId);
+				responseDTO = notificationController.getNotificationsForUserByArtifactId(authUsername, artifactId);
 			} else if (!read.equals("NA")) {
-				responseDTO = nboxController.getNotificationsForUserByRead(authUsername, read);
+				responseDTO = notificationController.getNotificationsForUserByRead(authUsername, read);
 			} else if (!from.equals("NA") && !size.equals("NA")) {
-				responseDTO = nboxController.getNotificationsForUserPage(authUsername, from, size);
+				responseDTO = notificationController.getNotificationsForUserPage(authUsername, from, size);
 			} else {
-				responseDTO = nboxController.getAllNotificationsForUser(authUsername);
+				responseDTO = notificationController.getAllNotificationsForUser(authUsername);
 			}
 			
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);			
@@ -103,7 +103,7 @@ public class NotificationRestController {
 			
 			String authUsername = authController.authenticate(auth);
 			
-			responseDTO = nboxController.patchNotificationForUser(authUsername, requestDTO);
+			responseDTO = notificationController.patchNotificationForUser(authUsername, requestDTO);
 			
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);	
 			
@@ -142,7 +142,7 @@ public class NotificationRestController {
 			String authUsername = authController.authenticate(auth);
 			
 			if (!id.equals("NA")) {
-				nboxController.deleteNotificationForUserById(authUsername, id);
+				notificationController.deleteNotificationForUserById(authUsername, id);
 			} else {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.BAD_REQUEST);
 			}	
