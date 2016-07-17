@@ -6,6 +6,7 @@ import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import metricapp.entity.user.UserSimple;
 import metricapp.exception.BadInputException;
 import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
@@ -18,7 +19,7 @@ public class AuthCRUDController implements AuthCRUDInterface {
 	private UserSimpleRepository userRepo;
 
 	@Override
-	public boolean checkAuthorization(String auth) throws BadInputException, UnauthorizedException {
+	public void authenticate(String auth) throws BadInputException, UnauthorizedException {
 		if (auth == null) {
 			throw new BadInputException("Auth cannot be null");
 		}
@@ -33,12 +34,13 @@ public class AuthCRUDController implements AuthCRUDInterface {
 	    final String uname = credentials[0];
 	    final String psswd = credentials[1];
 	    
-	    if (userRepo.findByUsernameAndPassword(uname, psswd) != null) {
-	    	return true;
+	    UserSimple user = userRepo.findByUsername(uname);
+	    
+	    if (user != null && user.getPassword().equals(psswd)) {
+	    	return;
 	    } else {
-	    	return false;
-	    }
-		
+	    	throw new UnauthorizedException();
+	    }		
 	}	
 
 }

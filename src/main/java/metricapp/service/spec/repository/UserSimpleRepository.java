@@ -9,5 +9,4 @@ public interface UserSimpleRepository extends MongoRepository<UserSimple, String
 	
 	public UserSimple findByUsername(String username);
 	
-	public UserSimple findByUsernameAndPassword(String username, String password);
 }

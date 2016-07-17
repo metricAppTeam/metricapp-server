@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.user.simple.UserSimpleCrudDTO;
 import metricapp.dto.user.simple.UserSimpleDTO;
 import metricapp.entity.user.UserSimple;
+import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
 import metricapp.service.spec.repository.UserSimpleRepository;
@@ -35,18 +36,25 @@ public class UserSimpleRestController {
 	public ResponseEntity<String> testAuthentication(
 			@RequestHeader(name = "Authorization", defaultValue="NA") String auth) {
 		
+		String responseDTO = new String();
+		
 		try {
 			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
 			}
 			
-			authController.checkAuthorization(auth);
+			authController.authenticate(auth);
 			
 			return new ResponseEntity<String>(HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (UnauthorizedException e) {
+			responseDTO = e.getMessage();
 			e.printStackTrace();
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			responseDTO = e.getMessage();
+			e.printStackTrace();
+			return new ResponseEntity<String>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
