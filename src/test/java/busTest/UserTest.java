@@ -42,7 +42,7 @@ public class UserTest {
 		user.setGender(Gender.Male);
 		user.setFirstname("Marco");
 		user.setLastname("Piu");
-		user.setUsername("questioner-mp2");
+		user.setUsername("questioner-mp");
 		user.setPic("/pic");
 		
 		User user2 = busUser.registerUser(user);
