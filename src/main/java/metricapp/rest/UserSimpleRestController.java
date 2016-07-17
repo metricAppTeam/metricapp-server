@@ -5,12 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import metricapp.dto.notification.box.NotificationBoxCrudDTO;
+import metricapp.dto.user.simple.UserSimpleCrudDTO;
+import metricapp.dto.user.simple.UserSimpleDTO;
 import metricapp.entity.user.UserSimple;
+import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
 import metricapp.service.spec.repository.UserSimpleRepository;
 
@@ -20,33 +22,57 @@ import metricapp.service.spec.repository.UserSimpleRepository;
 public class UserSimpleRestController {
 	
 	@Autowired
+	private AuthCRUDInterface authController;
+	
+	@Autowired
 	private UserSimpleRepository userRepo;
 	
 	@Autowired
 	private NotificationBoxCRUDInterface nboxController;
 	
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<NotificationBoxCrudDTO> createSimpleUser(
-			@RequestBody String username) {
-		
-		NotificationBoxCrudDTO responseDTO = new NotificationBoxCrudDTO();
+	@RequestMapping(value = "/secure", method = RequestMethod.GET)
+	public ResponseEntity<String> testAuthentication(
+			@RequestHeader(name = "Authorization", defaultValue="NA") String auth) {
 		
 		try {
-			if (username != null) {
+			if (!auth.equals("NA")) {
+				if (!authController.checkAuthorization(auth)) {
+					return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+				}
+		        return new ResponseEntity<String>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+			}		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<UserSimpleCrudDTO> createSimpleUser(
+			@RequestBody UserSimpleDTO requestDTO) {
+		
+		UserSimpleCrudDTO responseDTO = new UserSimpleCrudDTO();
+		
+		try {
+			if (requestDTO != null && requestDTO.getUsername() != null && requestDTO.getPassword() != null) {
 				UserSimple user = new UserSimple();
-				user.setUsername(username);
+				user.setUsername(requestDTO.getUsername());
+				user.setPassword(requestDTO.getPassword());
 				if (userRepo.insert(user) != null) {
-					responseDTO = nboxController.createNotificationBoxForUser(username);
-					return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.CREATED);
+					nboxController.createNotificationBoxForUser(user.getUsername());
+					return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.CREATED);
 				} else {
-					return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+					return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
 			} else {
-				return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 			}			
-		} catch (Exception e){
+		} catch (Exception e) {
+			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<NotificationBoxCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<UserSimpleCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
