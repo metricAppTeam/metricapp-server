@@ -15,6 +15,7 @@ import metricapp.dto.notification.NotificationCrudDTO;
 import metricapp.dto.notification.NotificationDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
 
 @CrossOrigin
@@ -23,7 +24,10 @@ import metricapp.service.spec.controller.NotificationBoxCRUDInterface;
 public class NotificationBoxRestController {
 	
 	@Autowired
-	private NotificationBoxCRUDInterface nboxController;
+	private AuthCRUDInterface authController;
+	
+	@Autowired
+	private NotificationBoxCRUDInterface nboxController;	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<NotificationCrudDTO> getNotification(
@@ -43,6 +47,8 @@ public class NotificationBoxRestController {
 			if (auth.equals("NA")) {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
+			
+			authController.checkAuthorization(auth);
 			
 			if (!id.equals("NA")) {
 				responseDTO = nboxController.getNotificationForUserById(auth, id);
