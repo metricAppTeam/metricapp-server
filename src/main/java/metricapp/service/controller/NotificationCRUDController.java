@@ -272,19 +272,27 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification id cannot be null");
 		}
 		
-		Notification notification = notificationRepo.findNotificationByRecipientAndId(username, id);
+		List<Notification> notifications = new ArrayList<Notification>();
 		
-		if (notification == null) {
+		if (id.equals("*")) {
+			notifications = notificationRepo.findNotificationByRecipient(username);
+		} else {
+			Notification notification = notificationRepo.findNotificationByRecipientAndId(username, id);
+			notifications.add(notification);
+		}		
+		
+		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with id=" + id);
 		}
 		
-		notification.setRead(dto.isRead());
-		
-		notification = notificationRepo.save(notification);
+		for (Notification notification : notifications) {
+			notification.setRead(dto.isRead());
+			notificationRepo.save(notification);
+		}		
 		
 		NotificationCrudDTO crud = new NotificationCrudDTO();
 		crud.setRequest("PATCH (read=" + dto.isRead() + ") Notification WITH id=" + id);		
-		crud.addNotification(notification, modelMapperFactory.getStandardModelMapper());
+		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;
 	}
