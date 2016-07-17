@@ -15,6 +15,7 @@ import metricapp.dto.event.EventCrudDTO;
 import metricapp.dto.event.EventDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
+import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.EventCRUDInterface;
 
 @CrossOrigin
@@ -23,7 +24,10 @@ import metricapp.service.spec.controller.EventCRUDInterface;
 public class EventRestController {
 	
 	@Autowired
-	private EventCRUDInterface eventController;
+	private AuthCRUDInterface authController;
+	
+	@Autowired
+	private EventCRUDInterface eventController;	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<EventCrudDTO> getEvent(
@@ -36,9 +40,13 @@ public class EventRestController {
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
+			
 			if (auth.equals("NA")) {
 				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
+			
+			authController.checkAuthorization(auth);
+			
 			if (!id.equals("NA")) {
 				responseDTO = eventController.getEventById(id);
 				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
