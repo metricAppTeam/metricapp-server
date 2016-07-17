@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import metricapp.dto.topic.TopicCrudDTO;
 import metricapp.dto.topic.TopicDTO;
-import metricapp.entity.stakeholders.User;
 import metricapp.entity.topic.Topic;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
@@ -69,19 +68,19 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	public TopicCrudDTO createTopic(@Nonnull TopicDTO dto) throws BadInputException {
 		
 		if (dto.getId() != null) {
-			throw new BadInputException("Topic id cannot be nulla");
+			throw new BadInputException("Topic id cannot be set manually");
 		}
 		
 		if (dto.getCreationDate() != null) {
-			throw new BadInputException("New Topic cannot have a creation date");
+			throw new BadInputException("Topic creation date canot be set manually");
 		}
 		
 		if (dto.getName() == null) {
-			throw new BadInputException("New Topic must have a name");
+			throw new BadInputException("Topic name cannot be null");
 		}
 		
 		dto.setCreationDate(LocalDate.now());
-		dto.setSubscribers(new ArrayList<User>());
+		dto.setSubscribers(new ArrayList<String>());
 		Topic newTopic = modelMapperFactory.getStandardModelMapper().map(dto, Topic.class);
 		
 		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
@@ -92,11 +91,11 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	}
 
 	@Override
-	public TopicCrudDTO patchTopicAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
+	public TopicCrudDTO patchTopicByIdAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
 		String id = dto.getId();
 		if (id == null) {
 			throw new BadInputException("Topic id cannot be null");
-		}
+		}		
 		
 		Topic topic = topicRepository.findTopicById(id);
 		if (topic == null) {
@@ -113,7 +112,49 @@ public class TopicCRUDController implements TopicCRUDInterface {
 	}
 	
 	@Override
-	public TopicCrudDTO patchTopicRemoveSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
+	public TopicCrudDTO patchTopicByIdRemoveSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
+		String id = dto.getId();
+		if (id == null) {
+			throw new BadInputException("Topic id cannot be null");
+		}
+		
+		Topic topic = topicRepository.findTopicById(id);
+		if (topic == null) {
+			throw new NotFoundException("Cannot find Topic with id=" + id);
+		}
+		
+		topic.getSubscribers().removeAll(dto.getSubscribers());
+		
+		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
+		dtoCRUD.setRequest("PATCH (subscribers-=" + dto.getSubscribers() + ") Topic WITH id=" + id);		
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.save(topic), TopicDTO.class));
+		
+		return dtoCRUD;
+	}
+	
+	@Override
+	public TopicCrudDTO patchTopicByNameAddSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
+		String name = dto.getName();
+		if (name == null) {
+			throw new BadInputException("Topic name cannot be null");
+		}		
+		
+		Topic topic = topicRepository.findTopicByName(name);
+		if (topic == null) {
+			throw new NotFoundException("Cannot find Topic with name=" + name);
+		}
+		
+		topic.getSubscribers().addAll(dto.getSubscribers());
+		
+		TopicCrudDTO dtoCRUD = new TopicCrudDTO();
+		dtoCRUD.setRequest("PATCH (subscribers+=" + dto.getSubscribers() + ") Topic WITH name=" + name);		
+		dtoCRUD.addTopicToList(modelMapperFactory.getStandardModelMapper().map(topicRepository.save(topic), TopicDTO.class));
+		
+		return dtoCRUD;
+	}
+	
+	@Override
+	public TopicCrudDTO patchTopicByNameRemoveSubscribers(@Nonnull TopicDTO dto) throws BadInputException, NotFoundException {
 		String id = dto.getId();
 		if (id == null) {
 			throw new BadInputException("Topic id cannot be null");

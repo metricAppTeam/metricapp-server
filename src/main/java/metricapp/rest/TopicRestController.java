@@ -35,18 +35,23 @@ public class TopicRestController {
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
+			
 			if (username.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}		
+			}	
+			
 			if (!id.equals("NA")) {
 				responseDTO = topicCRUDController.getTopicById(id);
 				return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			}
+			
 			if (!name.equals("NA")) {
 				responseDTO = topicCRUDController.getTopicByName(name);
 				return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
-			}			
+			}	
+			
 			return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
+			
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
@@ -69,16 +74,16 @@ public class TopicRestController {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
-		try {
+		try {			
 			if (username.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
+			}			
 			return new ResponseEntity<TopicCrudDTO>(topicCRUDController.createTopic(requestDTO), HttpStatus.CREATED);
 		} catch (BadInputException e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
-		} catch (Exception e){
+		} catch (Exception e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -97,12 +102,19 @@ public class TopicRestController {
 			if (username.equals("NA")) {
 				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
 			}
-			String id = requestDTO.getId();
-			if (!id.equals("NA") && !action.equals("NA")) {
+			if (requestDTO.getId() != null && !action.equals("NA")) {
 				if (action.equals("subscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicAddSubscribers(requestDTO), HttpStatus.OK);
+					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByIdAddSubscribers(requestDTO), HttpStatus.OK);
 				} else if (action.equals("unsubscribe")) {
-					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicRemoveSubscribers(requestDTO), HttpStatus.OK);
+					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByIdRemoveSubscribers(requestDTO), HttpStatus.OK);
+				} else {
+					return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
+				}
+			} else if (requestDTO.getName() != null && !action.equals("NA")) {
+				if (action.equals("subscribe")) {
+					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByNameAddSubscribers(requestDTO), HttpStatus.OK);
+				} else if (action.equals("unsubscribe")) {
+					return new ResponseEntity<TopicCrudDTO>(topicCRUDController.patchTopicByNameRemoveSubscribers(requestDTO), HttpStatus.OK);
 				} else {
 					return new ResponseEntity<TopicCrudDTO>(HttpStatus.BAD_REQUEST);
 				}
@@ -121,7 +133,7 @@ public class TopicRestController {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.CONFLICT);
-		} catch (Exception e){
+		} catch (Exception e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -152,7 +164,7 @@ public class TopicRestController {
 			e.printStackTrace();
 			responseDTO.setError(e.getMessage());
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
-		} catch (Exception e){
+		} catch (Exception e) {
 			responseDTO.setError(e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
