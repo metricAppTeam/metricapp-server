@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
+import metricapp.utility.RandomGenerator;
 
 @Data
 @TypeAlias("metricapp.UserSimple")
@@ -16,5 +17,12 @@ public class UserSimple {
 	private String id;
 	@Indexed(unique = true)
 	private String username;	
+	
+	public UserSimple randomSimpleUser() {
+		UserSimple user = new UserSimple();
+		user.setId(RandomGenerator.randomString());
+		user.setUsername(RandomGenerator.randomString());
+		return user;
+	}
 
 }
