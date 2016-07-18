@@ -6,11 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import metricapp.dto.question.QuestionDTOMap;
 import metricapp.dto.question.QuestionMap;
+import metricapp.dto.topic.TopicDTOMap;
+import metricapp.dto.topic.TopicMap;
 import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.dto.event.EventDTOMap;
+import metricapp.dto.event.EventMap;
 import metricapp.dto.measurementGoal.MeasurementGoalDTOMap;
 import metricapp.dto.measurementGoal.MeasurementGoalMap;
 import metricapp.dto.metric.MetricDTOMap;
 import metricapp.dto.metric.MetricMap;
+import metricapp.dto.notification.NotificationDTOMap;
+import metricapp.dto.notification.NotificationMap;
+import metricapp.dto.notification.box.NotificationBoxDTOMap;
+import metricapp.dto.notification.box.NotificationBoxMap;
 
 /**
  * This class is a Utility with the scope of managing ModelMapper instances.
@@ -88,6 +96,14 @@ public class ModelMapperFactory implements ModelMapperFactoryInterface{
 		modelMapper.addMappings(new QuestionDTOMap());
 		modelMapper.addMappings(new MeasurementGoalDTOMap());
 		modelMapper.addMappings(new MeasurementGoalMap());
+		modelMapper.addMappings(new NotificationMap());
+		modelMapper.addMappings(new NotificationDTOMap());
+		modelMapper.addMappings(new NotificationBoxMap());
+		modelMapper.addMappings(new NotificationBoxDTOMap());
+		modelMapper.addMappings(new EventMap());
+		modelMapper.addMappings(new EventDTOMap());
+		modelMapper.addMappings(new TopicMap());
+		modelMapper.addMappings(new TopicDTOMap());
         return modelMapper;
 		
 	}

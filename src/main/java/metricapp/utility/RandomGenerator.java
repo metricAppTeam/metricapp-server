@@ -143,6 +143,30 @@ public class RandomGenerator {
 	static public long randomInt() {
 		return rnd.nextInt(1024 * 128);
 	}
+	
+	/**
+	 * returns a random int between min and max
+	 * @return
+	 */
+	static public long randomLongBetween(int min, int max) {
+		return rnd.nextInt(max - min) + min;
+	}
+	
+	/**
+	 * returns a random int between min and max
+	 * @return
+	 */
+	static public int randomIntBetween(int min, int max) {
+		return rnd.nextInt(max - min) + min;
+	}
+	
+	/**
+	 * returns a random percentage
+	 * @return
+	 */
+	static public double randomPercentage() {
+		return rnd.nextDouble() * 100.0;
+	}
 
 	/**
 	 * this function returns a new randomized PointerBus element

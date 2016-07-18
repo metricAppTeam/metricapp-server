@@ -1,0 +1,182 @@
+package metricapp.service.controller;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import metricapp.dto.event.EventCrudDTO;
+import metricapp.dto.event.EventDTO;
+import metricapp.entity.event.Event;
+import metricapp.entity.event.EventScope;
+import metricapp.entity.notification.Notification;
+import metricapp.entity.topic.Topic;
+import metricapp.exception.BadInputException;
+import metricapp.exception.NotFoundException;
+import metricapp.service.spec.ModelMapperFactoryInterface;
+import metricapp.service.spec.controller.EventCRUDInterface;
+import metricapp.service.spec.repository.EventRepository;
+import metricapp.service.spec.repository.NotificationRepository;
+import metricapp.service.spec.repository.TopicRepository;
+
+@Service
+public class EventCRUDController implements EventCRUDInterface {
+
+	@Autowired
+	private EventRepository eventRepo;
+	
+	@Autowired
+	private TopicRepository topicRepo;
+
+	@Autowired 
+	private NotificationRepository notificationRepo;
+	
+	@Autowired
+	private ModelMapperFactoryInterface modelMapperFactory;
+	
+	@Override
+	public EventCrudDTO createEvent(String username, @Nonnull EventDTO dto) throws BadInputException {
+		if (username == null) {
+			throw new BadInputException("Username cannot be set manually");
+		}
+		
+		if (dto.getId() != null) {
+			throw new BadInputException("Event id cannot be set manually");
+		}
+		
+		if (dto.getCreationDate() != null) {
+			throw new BadInputException("Event creation date cannot be set manually");
+		}
+		
+		if (dto.getAuthorId() == null || dto.getScope() == null || 
+				dto.getArtifactId() == null || dto.getDescription() == null) {
+			throw new BadInputException("Event must have an author id, a scope, an artifact id and a description");
+		}		
+		
+		Event event = modelMapperFactory.getStandardModelMapper().map(dto, Event.class);		
+		event.setCreationDate(Calendar.getInstance().getTimeInMillis());
+		
+		event = eventRepo.insert(event);
+		
+		String topicName = event.getTopicName();
+		
+		Topic topic = topicRepo.findTopicByName(topicName);
+		
+		if (topic == null) {
+			topic = new Topic();
+			topic.setName(topicName);
+			topic.setCreationDate(Calendar.getInstance().getTimeInMillis());
+			topic.setSubscribers(new ArrayList<String>());
+			topicRepo.insert(topic);
+			//implement topic queue
+		} else {
+			for (String subscriber : topic.getSubscribers()) {
+				if (subscriber.equals(username)) continue;
+				Notification notification = Notification.fromEvent(event, subscriber);
+				notificationRepo.save(notification);
+			}
+		}		
+		
+		EventCrudDTO crud = new EventCrudDTO();
+		crud.setRequest("CREATE Event WITH id=" + event.getId());
+		crud.addEvent(event, modelMapperFactory.getStandardModelMapper());
+		
+		return crud;
+	}
+	
+	@Override
+	public EventCrudDTO getAllEvents() throws NotFoundException {
+		List<Event> events = eventRepo.findAll();
+		
+		if (events.isEmpty()) {
+			throw new NotFoundException("Cannot find Event");
+		}
+		
+		EventCrudDTO crud = new EventCrudDTO();		
+		crud.setRequest("GET ALL Events");
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());
+		
+		return crud;
+	}
+	
+	@Override
+	public EventCrudDTO getEventById(String id) throws BadInputException, NotFoundException {
+		if (id == null) {
+			throw new BadInputException("Event id cannot be null");
+		}
+		
+		Event event = eventRepo.findEventById(id);
+		
+		if (event == null) {
+			throw new NotFoundException("Cannot find Event with id=" + id);
+		}
+		
+		EventCrudDTO crud = new EventCrudDTO();
+		crud.setRequest("GET Event WITH id=" + id);
+		crud.addEvent(event, modelMapperFactory.getStandardModelMapper());
+		
+		return crud;
+	}
+
+	
+	@Override
+	public EventCrudDTO getEventByAuthorId(String authorId) throws BadInputException, NotFoundException {
+		if (authorId == null) {
+			throw new BadInputException("Event authorId cannot be null");
+		}
+		
+		List<Event> events = eventRepo.findEventByAuthorId(authorId);
+		
+		if (events.isEmpty()) {
+			throw new NotFoundException("Cannot find Event with authorId=" + authorId);
+		}
+		
+		EventCrudDTO crud = new EventCrudDTO();
+		crud.setRequest("GET Event WITH authorId=" + authorId);
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());
+		
+		return crud;
+	}
+
+	@Override
+	public EventCrudDTO getEventByScope(String scope) throws BadInputException, NotFoundException {
+		if (scope == null) {
+			throw new BadInputException("Event scope cannot be null");
+		}
+		
+		List<Event> events = eventRepo.findEventByScope(EventScope.valueOf(scope));
+		
+		if (events.isEmpty()) {
+			throw new NotFoundException("Cannot find Event with scope=" + scope);
+		}
+		
+		EventCrudDTO crud = new EventCrudDTO();
+		crud.setRequest("GET Event WITH scope=" + scope);
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());		
+		
+		return crud;
+	}
+
+	@Override
+	public EventCrudDTO getEventByArtifactId(String artifactId) throws BadInputException, NotFoundException {
+		if (artifactId == null) {
+			throw new BadInputException("Event artifactId cannot be null");
+		}
+		
+		List<Event> events = eventRepo.findEventByArtifactId(artifactId);
+		
+		if (events.isEmpty()) {
+			throw new NotFoundException("Cannot find Event with artifactId=" + artifactId);
+		}
+		
+		EventCrudDTO crud = new EventCrudDTO();
+		crud.setRequest("GET Event WITH artifactId=" + artifactId);
+		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());		
+		
+		return crud;
+	}
+
+}
