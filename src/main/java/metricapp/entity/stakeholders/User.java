@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -59,9 +62,15 @@ public class User extends Person {
 	}
 	
 	public String getBirthdayAsString(){
-		if(this.getBirthday() == null){
+		System.out.println(this.birthday);
+		System.out.println(this.birthday.toString());
+		if(this.birthday == null){
 			return this.getBirthday().toString();
 		}
 		return null;
+	}
+	
+	public LocalDate getBirthday(){
+		return this.birthday;
 	}
 }
