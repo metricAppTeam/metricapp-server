@@ -6,17 +6,13 @@
 	<groupId>isssr2016.phase2.2</groupId>
     <artifactId>metricapp-server</artifactId>
     <version>0.1.0</version>
+    <packaging>war</packaging>
 
-	<name>Metricapp</name>
+	<name>Metricator Server</name>
 	<description>
-		GQM+S Phase 2.2 app.
+		GQM+S Phase 2.2 app (Server-Side)
 	</description>
 	<url>http://metricappteam.github.io/metricapp-server/</url>
-
-	<organization>
-		<name>Metricators</name>
-		<url>https://github.com/metricAppTeam</url>
-	</organization>
 
 	<developers>
 		<developer>
@@ -137,8 +133,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-	<name>Metricator Server</name>
-	<packaging>war</packaging>
+	
 </project>
