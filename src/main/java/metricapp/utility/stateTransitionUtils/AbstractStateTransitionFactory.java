@@ -79,7 +79,6 @@ public abstract class AbstractStateTransitionFactory {
 				throw new IllegalStateTransitionException(e);
 			}
 		}
-	}
-		
+	}	
 	
 }

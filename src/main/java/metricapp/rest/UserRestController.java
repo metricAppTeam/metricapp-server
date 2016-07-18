@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.exception.BadInputException;
+import metricapp.exception.BusException;
 import metricapp.exception.DBException;
+import metricapp.exception.IDException;
 import metricapp.exception.IllegalStateTransitionException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.controller.UserCRUDController;
@@ -66,11 +68,6 @@ public class UserRestController {
 		}
 	}
 	
-	/**
-	 * Put Method for Update profile
-	 * @param userDTO
-	 * @return
-	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<UserCrudDTO> updateUserDTO(@RequestBody UserDTO userDTO){
 		
@@ -88,6 +85,9 @@ public class UserRestController {
 		} catch (BadInputException e) {
 			userCrudDTO.setError("Bad Input");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+		}catch (IDException e) {
+			userCrudDTO.setError("Username error");
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
 			userCrudDTO.setError("Not Found");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.NOT_FOUND);
@@ -104,21 +104,58 @@ public class UserRestController {
 		
 	}
 	
-	/**
-	 * Post Method for Create new User
-	 * @param userDTO
-	 * @return
-	 */
+	@RequestMapping(value="/bus",method = RequestMethod.GET)
+	public ResponseEntity<UserCrudDTO> getUserOnBus(
+			@RequestParam(value="username") String username){
+		
+		UserCrudDTO userCrudDTO = new UserCrudDTO();
+		
+		try{
+			if(!username.equals("NA") && !username.equals("all")){
+				userCrudDTO = userCRUDController.getBusUserByUsername(username);
+			}
+			else if(username.equals("all")){
+				userCrudDTO = userCRUDController.getAllUsers();
+			}
+			else{
+				userCrudDTO.setError("No parameters given");
+				return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.OK);
+		
+		} catch (BadInputException e){
+			userCrudDTO.setError("No user have been found");
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e){
+			userCrudDTO.setError("No user have been found");
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.NOT_FOUND);
+		} catch (Exception e){
+			userCrudDTO.setError("Server Error");
+			e.printStackTrace();
+		}	
+		
+		return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<UserCrudDTO> createQuestionDTO(@RequestBody UserDTO userDTO){
+	public ResponseEntity<UserCrudDTO> createUserDTO(@RequestBody UserDTO userDTO){
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
 		try{
 			userCrudDTO = userCRUDController.createUser(userDTO);
 			System.out.println("Sending result OK");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.CREATED);			
 		} catch (BadInputException e){
-			userCrudDTO.setError("Bad Request");
+			//userCrudDTO.setError("Bad Request: fields are empty?");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+		} catch (IDException e) {
+				userCrudDTO.setError("Username already in use");
+				return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
+		} catch (BusException e) {
+			userCrudDTO.setError("Bus Exception");
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.CONFLICT);		
+		} catch (DBException e) {
+			userCrudDTO.setError("DB_Exception");
+			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.CONFLICT);
 		} catch (Exception e) {
 			userCrudDTO.setError("Server Error");
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);

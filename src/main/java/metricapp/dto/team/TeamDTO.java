@@ -1,7 +1,6 @@
 package metricapp.dto.team;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import lombok.EqualsAndHashCode;
@@ -25,10 +24,14 @@ public class TeamDTO extends DTO implements Serializable{
 	public String id;
 	public String name;
 	public String gridName;
-	public LocalDate tsCreate;
-	public LocalDate tsUpdate;
+	//public String tsCreate;
+	//public String tsUpdate;
 	public ArrayList<User> expert;
 	public ArrayList<User> questioners;
 	public ArrayList<User> metricators;
+	
+	public User extrauser;
+	
+	
 	
 }

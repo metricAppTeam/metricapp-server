@@ -15,8 +15,9 @@ public class TeamMap extends PropertyMap<Team, TeamDTO>{
 		map().setGridName(source.getGridName());
 		map().setName(source.getName());
 		map().setQuestioners(source.getQuestioners());
-		map().setTsCreate(source.getTsCreate());
-		map().setTsUpdate(source.getTsUpdate());
+		//map().setTsCreate(source.getTsCreate());
+		//map().setTsUpdate(source.getTsUpdate());
+		map().setExtrauser(source.getExtrauser());
 	}
 
 }

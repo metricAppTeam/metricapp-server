@@ -15,15 +15,16 @@ public class UserMap extends PropertyMap<User, UserDTO>{
 		map().setFirstname(source.getFirstname());
 		map().setLastname(source.getLastname());
 		map().setGender(source.getGender());
-		map().setBirthday(source.getBirthday());
+		map().setBirthday(source.getBirthdayAsString());
 		
 		map().setEmail(source.getEmail());
 		map().setMobile(source.getMobile());
 		map().setOnline(source.getOnline());
 		
 		map().setRole(source.getRole());
-		map().setPicture(source.getPic());
+		map().setPic(source.getPic());
 		map().setWebsite(source.getWebsite());
+		map().setBio(source.getBio());
 	}
 
 }

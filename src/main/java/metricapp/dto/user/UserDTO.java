@@ -3,6 +3,9 @@ package metricapp.dto.user;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,12 +30,25 @@ public class UserDTO extends DTO implements Serializable{
 	public String firstname;
 	public String lastname;
 	public Gender gender;
-	public LocalDate birthday;
-	public String picture;
+	public String birthday;
+	public String pic;
 	public String website;
 	public String email;
 	public String mobile;
 	public String online;
+	public String bio;
 	public Role role;
+	
+	@JsonProperty("birthday")
+	public void setBirthday(String date){
+		this.birthday = date;
+	}
+	
+	@JsonIgnore
+	public void setBirthday(LocalDate date){
+		if(date!=null){
+			this.birthday = date.toString();
+			}
+	}
 	
 }
