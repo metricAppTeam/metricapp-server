@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
+import metricapp.entity.external.NotificationPointerBus;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
@@ -61,6 +62,8 @@ public interface MeasurementGoalCRUDInterface {
 	MeasurementGoalCrudDTO getAllApproved() throws BadInputException, BusException, IOException;
 
 	long countByQuestionerIdAndState(String questionerId, String state) throws BadInputException, NotFoundException;
+
+	void createMeasurementGoalFromNotification(NotificationPointerBus organizationalGoalPointer);
 
 		
 }

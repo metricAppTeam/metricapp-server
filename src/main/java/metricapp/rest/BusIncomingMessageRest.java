@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.bus.BusIncomingMessage;
 import metricapp.dto.bus.BusMessageOtherPhases;
-import metricapp.entity.Entity;
-import metricapp.entity.State;
 import metricapp.entity.external.NotificationPointerBus;
-import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
 
@@ -50,12 +47,7 @@ public class BusIncomingMessageRest {
 			NotificationPointerBus organizationalGoalPointer = externalElementsRepository.pointerOfIncomingNotificationObject(message.getData());
 			
 			if(organizationalGoalPointer.getOperation().equals("create")){
-				MeasurementGoal goal = new MeasurementGoal();
-				goal.setState(State.Created);
-				goal.setEntityType(Entity.MeasurementGoal);
-				goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
-				goal.setOrganizationalGoalId(externalElementsRepository.fromNotificationToPointerBus(organizationalGoalPointer));
-				measurementGoalCrudController.createMeasurementGoal(goal);
+				measurementGoalCrudController.createMeasurementGoalFromNotification(organizationalGoalPointer);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

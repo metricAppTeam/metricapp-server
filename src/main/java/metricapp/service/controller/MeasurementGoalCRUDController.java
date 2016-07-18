@@ -13,6 +13,7 @@ import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
 import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
+import metricapp.entity.external.NotificationPointerBus;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
@@ -22,6 +23,7 @@ import metricapp.exception.NotFoundException;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.repository.BusApprovedElementInterface;
+import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
 import metricapp.service.spec.repository.MeasurementGoalRepository;
 import metricapp.service.spec.repository.MetricRepository;
 import metricapp.utility.stateTransitionUtils.AbstractStateTransitionFactory;
@@ -38,6 +40,9 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	
 	@Autowired
 	private BusApprovedElementInterface busApprovedElementRepository;
+	
+	@Autowired
+	private ExternalElementsRepositoryInterface externalElementsRepository;
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
@@ -512,4 +517,15 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		return dto;
 	}
 
+	@Override
+	public void createMeasurementGoalFromNotification(NotificationPointerBus organizationalGoalPointer){
+		MeasurementGoal goal = new MeasurementGoal();
+		goal.setState(State.Created);
+		goal.setEntityType(Entity.MeasurementGoal);
+		goal.setCreationDate(LocalDate.now());
+		goal.setLastVersionDate(LocalDate.now());
+		goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
+		goal.setOrganizationalGoalId(externalElementsRepository.fromNotificationToPointerBus(organizationalGoalPointer));
+		this.createMeasurementGoal(goal);
+	}
 }
