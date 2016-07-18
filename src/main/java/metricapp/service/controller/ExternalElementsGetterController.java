@@ -62,9 +62,16 @@ public class ExternalElementsGetterController implements ExternalElementsGetterI
         //get assumptions, contextfactors and organizational goal
         ArrayList<Assumption> assumptions = repository.getAssumptionsByPointerBusList(measurementGoal.getAssumptions());
         ArrayList<ContextFactor> contextFactors = repository.getContextFactorsByPointerBusList(measurementGoal.getContextFactors());;
-        OrganizationalGoal organizationalGoal = repository.getOrganizationalGoalByIdAndVersion(measurementGoal.getOrganizationalGoalId().getInstance(), measurementGoal.getOrganizationalGoalId().getBusVersion());;
-        InstanceProject instanceProject = repository.getInstanceProjectByIdAndVersion(organizationalGoal.getInstanceProjectId(), null);
-        
+        OrganizationalGoal organizationalGoal;
+        InstanceProject instanceProject;
+        try{
+        	organizationalGoal = repository.getOrganizationalGoalByIdAndVersion(measurementGoal.getOrganizationalGoalId().getInstance(), measurementGoal.getOrganizationalGoalId().getBusVersion());
+        	instanceProject= repository.getInstanceProjectByIdAndVersion(organizationalGoal.getInstanceProjectId(), null);
+        }catch(NullPointerException | BusException e){
+        	e.printStackTrace();
+        	instanceProject = new InstanceProject();
+        	organizationalGoal = new OrganizationalGoal();
+        }
         //get metrics and questions
         ArrayList<MetricDTO> metricsDTO =metricController.getMetricsByPointerBusList(measurementGoal.getMetrics());
         ArrayList<QuestionDTO> questionsDTO = questionController.getQuestionsByPointerBusList(measurementGoal.getQuestions());
