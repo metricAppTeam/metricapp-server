@@ -75,6 +75,12 @@ public class UserBus {
 	@JsonIgnore
 	public void setRole(Role role){
 		this.setRole(role.name());
+		//due to bus specific
+		if(role == Role.GQMExpert){
+			this.setRole("GQM Expert");
+			System.out.println(this.role);
+		}
+		
 	}
 	@JsonProperty(value="role")
 	public String getRoleString(){

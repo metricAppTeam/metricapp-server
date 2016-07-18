@@ -14,6 +14,7 @@ public class MeasurementGoalDTOMap extends PropertyMap<MeasurementGoalDTO, Measu
 		map().setLastVersionDate(source.getMetadata().getLastVersionDate());
 		map().setState(source.getMetadata().getState());
 		map().setVersion(source.getMetadata().getVersion());
+		map().setTags(source.getMetadata().getTags());
 		map().setVersionBus(source.getMetadata().getVersionBus());
 		map().setEntityType(source.getMetadata().getEntityType());
 	}

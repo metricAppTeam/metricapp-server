@@ -1,5 +1,6 @@
 package metricapp.service.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -55,10 +56,10 @@ public class TeamCRUDController implements TeamCRUDInterface {
 			throw new BadInputException("Id field is empty");
 		}
 		
-		//teamDTO.setTsCreate(LocalDateTime.now().toString());
-		//teamDTO.setTsUpdate(LocalDateTime.now().toString());
+
 		Team newTeam = modelMapperFactory.getStandardModelMapper().map(teamDTO, Team.class);
-		
+		newTeam.setTsCreate(LocalDate.now());
+		newTeam.setTsUpdate(LocalDate.now());
 		if(teamRepository.exists(newTeam.getId())){
 			throw new IDException("ID it is already in use");
 		}
@@ -191,8 +192,10 @@ public class TeamCRUDController implements TeamCRUDInterface {
 		TeamCrudDTO updateTeamCrudDTO = new TeamCrudDTO();
 		updateTeamCrudDTO.setRequest("upgrade Team");
 		
+		
 		try
 		{
+			oldTeam.setTsUpdate(LocalDate.now());
 			updateTeamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamRepository.save(oldTeam), TeamDTO.class));
 			return updateTeamCrudDTO;
 			
@@ -225,7 +228,7 @@ public class TeamCRUDController implements TeamCRUDInterface {
 			if(teamDTO.getGridName()!= null)
 				if(!oldTeam.getGridName().equals(teamDTO.getGridName()))
 					oldTeam.setGridName(teamDTO.getGridName());
-			
+			oldTeam.setTsUpdate(LocalDate.now());
 			updateTeamCrudDTO.addTeamToList(modelMapperFactory.getStandardModelMapper().map(teamRepository.save(oldTeam), TeamDTO.class));
 			return updateTeamCrudDTO;
 			

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import metricapp.dto.DTO;
+import metricapp.dto.user.UserDTO;
 import metricapp.entity.stakeholders.User;
 
 @Getter
@@ -24,11 +25,11 @@ public class TeamDTO extends DTO implements Serializable{
 	public String id;
 	public String name;
 	public String gridName;
-	//public String tsCreate;
-	//public String tsUpdate;
-	public ArrayList<User> expert;
-	public ArrayList<User> questioners;
-	public ArrayList<User> metricators;
+	public String tsCreate;
+	public String tsUpdate;
+	public ArrayList<UserDTO> expert;
+	public ArrayList<UserDTO> questioners;
+	public ArrayList<UserDTO> metricators;
 	
 	public User extrauser;
 	

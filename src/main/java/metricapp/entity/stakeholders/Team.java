@@ -1,9 +1,14 @@
 package metricapp.entity.stakeholders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -25,16 +30,14 @@ public class Team extends Person {
 	private String id;
 	private String name;
 	private String gridName;
-	/*@CreatedDate
 	private LocalDate tsCreate;
-	@LastModifiedDate
-	private LocalDate tsUpdate;*/
+	private LocalDate tsUpdate;
 	private ArrayList<User> expert;
 	private ArrayList<User> questioners;
 	private ArrayList<User> metricators;
 	private User extrauser;
 	
-	/*@JsonProperty("tsCreate")
+	@JsonProperty("tsCreate")
 	public void setTsCreate(String date) {
 		if (date != null) {
 			this.tsCreate = LocalDate.parse(date);
@@ -75,5 +78,5 @@ public class Team extends Person {
 		}else{
 			return tsUpdate.toString();
 		}
-	}*/
+	}
 }

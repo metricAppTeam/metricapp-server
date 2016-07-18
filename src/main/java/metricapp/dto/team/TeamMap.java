@@ -10,11 +10,11 @@ public class TeamMap extends PropertyMap<Team, TeamDTO>{
 	protected void configure() {
 		
 		map().setId(source.getId());
-		map().setExpert(source.getExpert());
-		map().setMetricators(source.getMetricators());
+		//map().setExpert(source.getExpert());
+		//map().setMetricators(source.getMetricators());
 		map().setGridName(source.getGridName());
 		map().setName(source.getName());
-		map().setQuestioners(source.getQuestioners());
+		//map().setQuestioners(source.getQuestioners());
 		//map().setTsCreate(source.getTsCreate());
 		//map().setTsUpdate(source.getTsUpdate());
 		map().setExtrauser(source.getExtrauser());
