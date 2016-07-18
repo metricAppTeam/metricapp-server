@@ -3,10 +3,10 @@ package metricapp.utility.stateTransitionUtils.measurementgoalTransition;
 import metricapp.entity.Element;
 
 
-public class CreatedToOnUpdateQuestionsEndpoint extends MeasurementGoalStateTransitionCommand {
+public class CreatedToOnUpdateWaitingQuestions extends MeasurementGoalStateTransitionCommand {
 
 	
-	public CreatedToOnUpdateQuestionsEndpoint(Element before, Element after) {
+	public CreatedToOnUpdateWaitingQuestions(Element before, Element after) {
 		super(before, after);
 	}
 
