@@ -151,7 +151,8 @@ public class UserRestController {
 				userCrudDTO.setError("Username already in use");
 				return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.BAD_REQUEST);
 		} catch (BusException e) {
-			userCrudDTO.setError("Bus Exception");
+			e.printStackTrace();
+			userCrudDTO.setError("Bus Exception "+ e.toString());
 			return new ResponseEntity<UserCrudDTO>(userCrudDTO, HttpStatus.CONFLICT);		
 		} catch (DBException e) {
 			userCrudDTO.setError("DB_Exception");

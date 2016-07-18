@@ -104,7 +104,7 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new IDException("Username it is already in use");
 		}
 		
-		/*
+		
 		User busUser;
 		try{
 			busUser = busUserRepository.registerUser(newUser);
@@ -113,9 +113,10 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new BusException("Error in saving data in bus repository");
 		}
 		System.out.println("2");
-		if(!(busUser.getUsername() == newUser.getUsername() && busUser.getPassword() == newUser.getPassword()))
+		if(!(busUser.getUsername().equals(newUser.getUsername()) && busUser.getPassword().equals(newUser.getPassword()))){
+			System.out.println(busUser.getUsername() + newUser.getUsername() + "," + busUser.getPassword() + newUser.getPassword());
 			throw new BusException("Error in saving data in bus repository");
-		*/
+		}
 		UserCrudDTO userCrudDTO = new UserCrudDTO();
 		userCrudDTO.setRequest("create User");
 		

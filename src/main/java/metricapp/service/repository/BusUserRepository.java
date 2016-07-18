@@ -48,6 +48,7 @@ public class BusUserRepository implements BusUserRepositoryInterface {
 			userBus = mapper.fromJson(result, UserBus.class);
 			return modelMapperFactory.getStandardModelMapper().map(userBus, User.class);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new BusException(e);
 		}
 	}
