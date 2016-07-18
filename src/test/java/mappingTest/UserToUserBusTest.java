@@ -34,7 +34,7 @@ public class UserToUserBusTest {
 		user.setRole(Role.Questioner);
 		user.setGender(Gender.Male);
 		user.setLastname("surname");
-		user.setBirthday("2007-12-03");
+		//user.setBirthday(LocalDate.parse("2007-12-03"));
 		user.setFirstname("name");
 		user.setPic("pic");
 		user.setUsername("username");

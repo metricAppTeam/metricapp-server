@@ -104,7 +104,7 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new IDException("Username it is already in use");
 		}
 		
-		
+
 		User busUser;
 		try{
 			busUser = busUserRepository.registerUser(newUser);

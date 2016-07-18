@@ -63,9 +63,5 @@ public class MetadataDTO implements Serializable{
 			this.lastVersionDate = date.toString();
 			}
 	}
-	
-	
-	
-
-	
+		
 }

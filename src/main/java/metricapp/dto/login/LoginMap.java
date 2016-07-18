@@ -12,7 +12,6 @@ public class LoginMap extends PropertyMap<Login, LoginDTO>{
 		map().setResponse(source.getResponse());
 		map().setPassword(source.getPassword());
 		map().setUsername(source.getUsername());
-		map().setTimestamp(source.getTimestamp());
 	}
 
 }

@@ -20,7 +20,6 @@ public class LoginDTO extends DTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 6615246884703099064L;
 	
-	public LocalDate timestamp;
 	public String response;
 	public String username;
 	public String password;
