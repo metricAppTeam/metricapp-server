@@ -32,4 +32,6 @@ public class TeamDTO extends DTO implements Serializable{
 	
 	public User extrauser;
 	
+	
+	
 }

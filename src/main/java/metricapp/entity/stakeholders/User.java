@@ -57,4 +57,11 @@ public class User extends Person {
 			}
 		}
 	}
+	
+	public String getBirthdayAsString(){
+		if(this.getBirthday() == null){
+			return this.getBirthday().toString();
+		}
+		return null;
+	}
 }
