@@ -21,7 +21,6 @@ import metricapp.service.controller.LoginCRUDController;
 @CrossOrigin 
 @RestController
 @RequestMapping(("/login"))
-
 public class LoginRestController {
 	
 	@Autowired 
@@ -46,7 +45,6 @@ public class LoginRestController {
 		}catch (Exception e) {
 			loginCrudDTO.setError("Server Error");
 			return new ResponseEntity<LoginCrudDTO>(loginCrudDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
+		}		
 	}
 }

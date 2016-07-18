@@ -1,7 +1,6 @@
 package metricapp.dto.login;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,9 +14,6 @@ import metricapp.dto.DTO;
 @ToString(callSuper=true)
 public class LoginDTO extends DTO implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6615246884703099064L;
 	
 	public String response;

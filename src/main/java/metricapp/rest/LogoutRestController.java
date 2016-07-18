@@ -19,7 +19,6 @@ import metricapp.service.controller.LogoutCRUDController;
 @CrossOrigin 
 @RestController
 @RequestMapping(("/logout"))
-
 public class LogoutRestController {
 	
 	@Autowired 

@@ -1,4 +1,4 @@
-package metricapp.dto.user.simple;
+package metricapp.dto.OLD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import metricapp.dto.SimpleDTO;
-import metricapp.entity.user.UserSimple;
+import metricapp.entity.OLD.user.simple.UserSimple;
 
 @Getter
 @Setter

@@ -1,8 +1,8 @@
-package metricapp.dto.user.simple;
+package metricapp.dto.OLD;
 
 import org.modelmapper.PropertyMap;
 
-import metricapp.entity.user.UserSimple;
+import metricapp.entity.OLD.user.simple.UserSimple;
 
 public class UserSimpleDTOMap extends PropertyMap<UserSimpleDTO, UserSimple> {
 

@@ -1,4 +1,4 @@
-package metricapp.dto.user.simple;
+package metricapp.dto.OLD;
 
 import java.io.Serializable;
 

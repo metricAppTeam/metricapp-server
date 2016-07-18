@@ -1,4 +1,4 @@
-package metricapp.entity.user;
+package metricapp.entity.OLD.user.simple;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;

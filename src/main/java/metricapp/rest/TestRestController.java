@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.user.simple.UserSimpleCrudDTO;
-import metricapp.dto.user.simple.UserSimpleDTO;
+import metricapp.dto.OLD.UserSimpleCrudDTO;
+import metricapp.dto.OLD.UserSimpleDTO;
 
 @CrossOrigin
 @RestController

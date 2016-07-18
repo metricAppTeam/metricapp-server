@@ -208,7 +208,6 @@ public class UserCRUDController implements UserCRUDInterface {
 		return userCrudDTO;
 	}
 
-
 	@Override
 	public UserCrudDTO getBusUserByUsername(String username) throws NotFoundException, BadInputException, BusException {
 		
@@ -233,4 +232,5 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new NotFoundException("No User found");
 		}
 	}
+
 }
