@@ -1,6 +1,5 @@
 package metricapp.utility.stateTransitionUtils.questionTransition;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import metricapp.entity.Element;
 
