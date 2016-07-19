@@ -11,14 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import metricapp.dto.metric.MetricCrudDTO;
-import metricapp.dto.metric.MetricDTO;
 import metricapp.dto.question.QuestionCrudDTO;
 import metricapp.dto.question.QuestionDTO;
 import metricapp.entity.Entity;
 import metricapp.entity.State;
 import metricapp.entity.external.PointerBus;
-import metricapp.entity.metric.Metric;
 import metricapp.entity.question.Question;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
@@ -273,7 +270,7 @@ public class QuestionCRUDController implements QuestionCRUDInterface {
 	public QuestionCrudDTO getAllApproved() throws BadInputException, BusException, IOException{
 		QuestionCrudDTO dto= new QuestionCrudDTO();
 		ArrayList<Question> questions = busApprovedElementRepository.getAllApprovedQuestions();
-		dto.setRequest("All approved metrics");
+		dto.setRequest("All approved questions");
 		Iterator<Question> questionIter = questions.iterator();
 		while (questionIter.hasNext()) {
 			dto.addQuestionToList(modelMapperFactory.getLooseModelMapper().map(questionIter.next(), QuestionDTO.class));
