@@ -34,15 +34,15 @@ public class QuestionRestController {
 			@RequestParam(value="focus", defaultValue="NA") String focus,
 			@RequestParam(value="subject", defaultValue="NA") String subject,
 			@RequestParam(value="tag", defaultValue="NA") String tag,
-			@RequestParam(value="recent", defaultValue="false") String recent,
 			@RequestParam(value="approved", defaultValue="false") String approved,
+			@RequestParam(value="bus", defaultValue="false") String bus,
 			@RequestParam(value="state", defaultValue="NA") String state){
 		
 		QuestionCrudDTO questionCrudDTO = new QuestionCrudDTO();
 		
 		try{
-			if(!questionerId.equals("NA") && !recent.equals("false")){
-				questionCrudDTO = questionCRUDController.getRecentQuestions(questionerId);
+			if(!bus.equals("false")){
+				questionCrudDTO = questionCRUDController.getAllApproved();
 			}
 			else if(!id.equals("NA") && !id.equals("all") && approved.equals("false")){
 				questionCrudDTO = questionCRUDController.getQuestionById(id);

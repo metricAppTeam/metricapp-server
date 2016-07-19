@@ -33,5 +33,6 @@ public interface QuestionCRUDInterface {
 	QuestionCrudDTO getQuestionByStateAndQuestionerId(String state, String userId)
 			throws NotFoundException, BadInputException;
 	ArrayList<QuestionDTO> getQuestionsByPointerBusList(List<PointerBus> list);
+	QuestionCrudDTO getAllApproved() throws BadInputException, BusException, IOException;
 	
 }
