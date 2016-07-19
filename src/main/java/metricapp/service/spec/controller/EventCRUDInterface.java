@@ -11,8 +11,12 @@ public interface EventCRUDInterface {
 	
 	public EventCrudDTO getAllEvents() throws NotFoundException;
 	public EventCrudDTO getEventById(String id) throws BadInputException, NotFoundException;
-	public EventCrudDTO getEventByAuthorId(String authorId) throws BadInputException, NotFoundException;
-	public EventCrudDTO getEventByScope(String scope) throws BadInputException, NotFoundException;
-	public EventCrudDTO getEventByArtifactId(String artifactId) throws BadInputException, NotFoundException;
+	public EventCrudDTO getEventsByAuthorId(String authorId) throws BadInputException, NotFoundException;
+	public EventCrudDTO getEventsByEventScope(String eventScope) throws BadInputException, NotFoundException;
+	public EventCrudDTO getEventsByEventScopeId(String eventScopeId) throws BadInputException, NotFoundException;
+	public EventCrudDTO getEventsByArtifactScope(String artifactScope) throws BadInputException, NotFoundException;
+	public EventCrudDTO getEventsByArtifactId(String artifactId) throws BadInputException, NotFoundException;
+	
+	public EventCrudDTO deleteAllEvents();
 	
 }

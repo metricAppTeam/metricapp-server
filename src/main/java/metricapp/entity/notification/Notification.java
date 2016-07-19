@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.Event;
 import metricapp.entity.event.EventScope;
 import metricapp.utility.RandomGenerator;
@@ -26,7 +27,9 @@ public class Notification {
 	@CreatedDate
 	private Long creationDate;
 	private String authorId;
-	private EventScope scope;
+	private EventScope eventScope;
+	private String eventScopeId;
+	private ArtifactScope artifactScope;
 	private String artifactId;	
 	private String description;		
 	@Indexed
@@ -38,7 +41,9 @@ public class Notification {
 		notification.setEventId(event.getId());
 		notification.setCreationDate(event.getCreationDate());
 		notification.setAuthorId(event.getAuthorId());
-		notification.setScope(event.getScope());
+		notification.setEventScope(event.getEventScope());
+		notification.setEventScopeId(event.getEventScopeId());
+		notification.setArtifactScope(event.getArtifactScope());
 		notification.setArtifactId(event.getArtifactId());
 		notification.setDescription(event.getDescription());
 		notification.setRecipient(recipient);
@@ -53,7 +58,9 @@ public class Notification {
 		notification.setEventId(RandomGenerator.randomString());
 		notification.setCreationDate(RandomGenerator.randomLong());
 		notification.setAuthorId(RandomGenerator.randomString());
-		notification.setScope(RandomGenerator.randomEnum(EventScope.class));
+		notification.setEventScope(RandomGenerator.randomEnum(EventScope.class));
+		notification.setEventScopeId(RandomGenerator.randomString());
+		notification.setArtifactScope(RandomGenerator.randomEnum(ArtifactScope.class));
 		notification.setArtifactId(RandomGenerator.randomString());
 		notification.setDescription(RandomGenerator.randomString());
 		notification.setRecipient(RandomGenerator.randomString());

@@ -196,6 +196,16 @@ public class TopicCRUDController implements TopicCRUDInterface {
 		crud.addTopic(topic, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;	
+	}
+
+	@Override
+	public TopicCrudDTO deleteAllTopics() {
+		TopicCrudDTO crud = new TopicCrudDTO();
+		crud.setRequest("DELETE ALL Topics");
+		
+		topicRepo.deleteAll();
+		
+		return crud;
 	}	
 
 }

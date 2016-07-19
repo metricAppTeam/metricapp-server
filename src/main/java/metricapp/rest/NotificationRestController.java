@@ -30,16 +30,88 @@ public class NotificationRestController {
 	@Autowired
 	private NotificationCRUDInterface notificationController;	
 	
+	@RequestMapping(value = "/inbox", method = RequestMethod.GET)
+	public ResponseEntity<NotificationCrudDTO> getNewNotifications(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		NotificationCrudDTO responseDTO = new NotificationCrudDTO();
+		
+		try {
+		
+		if (auth.equals("NA")) {
+			return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
+		}
+		
+		String authUsername = authController.authenticate(auth);
+		
+		responseDTO = notificationController.getNewNotificationsForUser(authUsername);
+		
+		return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);			
+		
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public ResponseEntity<NotificationCrudDTO> getAllNotifications(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		NotificationCrudDTO responseDTO = new NotificationCrudDTO();
+		
+		try {
+			
+			if (auth.equals("NA")) {
+				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
+			}
+			
+			authController.authenticate(auth);
+			
+			responseDTO = notificationController.getAllNotifications();
+			
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);			
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<NotificationCrudDTO> getNotification(
 			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
-			@RequestParam(value = "id", 		defaultValue = "NA") String id,
-			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
-			@RequestParam(value = "scope", 		defaultValue = "NA") String scope,
-			@RequestParam(value = "artifactId", defaultValue = "NA") String artifactId,
-			@RequestParam(value = "read", 		defaultValue = "NA") String read,
-			@RequestParam(value = "from", 		defaultValue = "NA") String from,
-			@RequestParam(value = "size", 		defaultValue = "NA") String size) {
+			@RequestParam(value = "id", 			defaultValue = "NA") String id,
+			@RequestParam(value = "authorId", 		defaultValue = "NA") String authorId,
+			@RequestParam(value = "eventScope", 	defaultValue = "NA") String eventScope,
+			@RequestParam(value = "eventScopeId", 	defaultValue = "NA") String eventScopeId,
+			@RequestParam(value = "artifactScope", 	defaultValue = "NA") String artifactScope,
+			@RequestParam(value = "artifactId", 	defaultValue = "NA") String artifactId,
+			@RequestParam(value = "read", 			defaultValue = "NA") String read,
+			@RequestParam(value = "from", 			defaultValue = "NA") String from,
+			@RequestParam(value = "size", 			defaultValue = "NA") String size) {
 		
 		NotificationCrudDTO responseDTO = new NotificationCrudDTO();
 		
@@ -55,8 +127,12 @@ public class NotificationRestController {
 				responseDTO = notificationController.getNotificationForUserById(authUsername, id);				
 			} else if (!authorId.equals("NA")) {
 				responseDTO = notificationController.getNotificationsForUserByAuthorId(authUsername, authorId);
-			} else if (!scope.equals("NA")) {
-				responseDTO = notificationController.getNotificationsForUserByScope(authUsername, scope);
+			} else if (!eventScope.equals("NA")) {
+				responseDTO = notificationController.getNotificationsForUserByEventScope(authUsername, eventScope);
+			} else if (!eventScopeId.equals("NA")) {
+				responseDTO = notificationController.getNotificationsForUserByEventScopeId(authUsername, eventScopeId);
+			} else if (!artifactScope.equals("NA")) {
+				responseDTO = notificationController.getNotificationsForUserByArtifactScope(authUsername, artifactScope);
 			} else if (!artifactId.equals("NA")) {
 				responseDTO = notificationController.getNotificationsForUserByArtifactId(authUsername, artifactId);
 			} else if (!read.equals("NA")) {
@@ -141,11 +217,11 @@ public class NotificationRestController {
 			
 			String authUsername = authController.authenticate(auth);
 			
-			if (!id.equals("NA")) {
-				notificationController.deleteNotificationForUserById(authUsername, id);
-			} else {
+			if (id.equals("NA")) {
 				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.BAD_REQUEST);
-			}	
+			}
+			
+			responseDTO = notificationController.deleteNotificationForUserById(authUsername, id);
 			
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
 			
@@ -163,5 +239,38 @@ public class NotificationRestController {
 			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}	
+	
+	@RequestMapping(value = "/all", method = RequestMethod.DELETE)
+	public ResponseEntity<NotificationCrudDTO> deleteAllNotifications(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		NotificationCrudDTO responseDTO = new NotificationCrudDTO();
+		
+		try {
+			
+			if (auth.equals("NA")) {
+				return new ResponseEntity<NotificationCrudDTO>(HttpStatus.UNAUTHORIZED);
+			}
+			
+			authController.authenticate(auth);
+			
+			responseDTO =  notificationController.deleteAllNotifications();
+			
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			e.printStackTrace();
+			responseDTO.setMessage(e.getMessage());
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<NotificationCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 }

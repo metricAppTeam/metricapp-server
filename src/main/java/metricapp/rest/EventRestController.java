@@ -30,13 +30,52 @@ public class EventRestController {
 	@Autowired
 	private EventCRUDInterface eventController;	
 	
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public ResponseEntity<EventCrudDTO> getAllEvents(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		EventCrudDTO responseDTO = new EventCrudDTO();
+		
+		try {
+			
+			if (auth.equals("NA")) {
+				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
+			}
+			
+			authController.authenticate(auth);
+			
+			responseDTO = eventController.getAllEvents();
+			
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<EventCrudDTO> getEvent(
 			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
-			@RequestParam(value = "scope", 		defaultValue = "NA") String scope,
-			@RequestParam(value = "artifactId", defaultValue = "NA") String artifactId) {
+			@RequestParam(value = "eventScope", 	defaultValue = "NA") String eventScope,
+			@RequestParam(value = "eventScopeId", 	defaultValue = "NA") String eventScopeId,
+			@RequestParam(value = "artifactScope", 	defaultValue = "NA") String artifactScope,
+			@RequestParam(value = "artifactId", 	defaultValue = "NA") String artifactId) {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
@@ -51,11 +90,15 @@ public class EventRestController {
 			if (!id.equals("NA")) {
 				responseDTO = eventController.getEventById(id);
 			} else if (!authorId.equals("NA")) {
-				responseDTO = eventController.getEventByAuthorId(authorId);
-			} else if (!scope.equals("NA")) {
-				responseDTO = eventController.getEventByScope(scope);
+				responseDTO = eventController.getEventsByAuthorId(authorId);
+			} else if (!eventScope.equals("NA")) {
+				responseDTO = eventController.getEventsByEventScope(eventScope);
+			} else if (!eventScopeId.equals("NA")) {
+				responseDTO = eventController.getEventsByEventScopeId(eventScopeId);
+			} else if (!artifactScope.equals("NA")) {
+				responseDTO = eventController.getEventsByArtifactScope(artifactScope);
 			} else if (!artifactId.equals("NA")) {
-				responseDTO = eventController.getEventByArtifactId(artifactId);				
+				responseDTO = eventController.getEventsByArtifactId(artifactId);
 			} else {
 				responseDTO = eventController.getAllEvents();
 			}
@@ -99,6 +142,39 @@ public class EventRestController {
 			responseDTO = eventController.createEvent(username, requestDTO);
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.CREATED);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}	
+	
+	@RequestMapping(value = "/all", method = RequestMethod.DELETE)
+	public ResponseEntity<EventCrudDTO> deleteAllEvent(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		EventCrudDTO responseDTO = new EventCrudDTO();
+		
+		try {
+			
+			if (auth.equals("NA")) {
+				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
+			}
+			
+			authController.authenticate(auth);
+			
+			responseDTO = eventController.deleteAllEvents();
+			
+			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			
 		} catch (UnauthorizedException e) {
 			responseDTO.setMessage(e.getMessage());

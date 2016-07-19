@@ -1,17 +1,17 @@
 package metricapp.entity.event;
 
-public enum EventScope {
-	GRID ("GRID"),
+public enum ArtifactScope {
 	OGOAL ("OGOAL"),
 	MGOAL ("MGOAL"),
 	QUESTION ("QUESTION"),
 	METRIC ("METRIC"),
+	GRID ("GRID"),
 	TEAM ("TEAM"),
 	USER ("USER");
 	
 	private final String name;       
 
-    private EventScope(String s) {
+    private ArtifactScope(String s) {
         name = s;
     }
 

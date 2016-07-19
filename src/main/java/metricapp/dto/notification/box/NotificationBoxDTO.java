@@ -13,8 +13,6 @@ public class NotificationBoxDTO implements Serializable {
 	
 	public String id;
 	public String ownerId;
-	public Long creationDate;
-	private Long lastPushDate;
 	private List<Notification> notifications;
 	
 }

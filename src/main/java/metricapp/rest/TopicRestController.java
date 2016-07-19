@@ -31,6 +31,43 @@ public class TopicRestController {
 	@Autowired
 	private TopicCRUDInterface topicController;	
 	
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public ResponseEntity<TopicCrudDTO> getAllTopics(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		TopicCrudDTO responseDTO = new TopicCrudDTO();
+		
+		try {
+			
+			if (auth.equals("NA")) {
+				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
+			}
+			
+			authController.authenticate(auth);
+			
+			responseDTO = topicController.getAllTopics();		
+
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (NotFoundException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<TopicCrudDTO> getTopic(
 			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
@@ -203,6 +240,40 @@ public class TopicRestController {
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
 		
-	}	
+	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.DELETE)
+	public ResponseEntity<TopicCrudDTO> deleteAllTopics(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+		
+		TopicCrudDTO responseDTO = new TopicCrudDTO();
+		
+		try {
+			
+			if (auth.equals("NA")) {
+				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
+			}
+			
+			authController.authenticate(auth);
+			
+			responseDTO = topicController.deleteAllTopics();
+			
+			return new ResponseEntity<TopicCrudDTO>(HttpStatus.OK);			
+			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+		} catch (BadInputException e) {
+			e.printStackTrace();
+			responseDTO.setMessage(e.getMessage());
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+		
+	}
 
 }

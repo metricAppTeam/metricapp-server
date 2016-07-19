@@ -13,16 +13,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import metricapp.dto.notification.NotificationCrudDTO;
 import metricapp.dto.notification.NotificationDTO;
-import metricapp.dto.notification.box.NotificationBoxCrudDTO;
+import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.EventScope;
 import metricapp.entity.notification.Notification;
 import metricapp.entity.notification.box.NotificationBox;
+import metricapp.entity.stakeholders.User;
 import metricapp.exception.BadInputException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
 import metricapp.service.spec.controller.NotificationCRUDInterface;
 import metricapp.service.spec.repository.NotificationBoxRepository;
 import metricapp.service.spec.repository.NotificationRepository;
+import metricapp.service.spec.repository.UserRepository;
 
 @Service
 public class NotificationCRUDController implements NotificationCRUDInterface {
@@ -31,31 +33,13 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 	private NotificationRepository notificationRepo;
 	
 	@Autowired
+	private UserRepository userRepo;
+	
+	@Autowired
 	private NotificationBoxRepository nboxRepo;
 
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
-	
-	@Override
-	public NotificationBoxCrudDTO createNotificationBoxForUser(String username) throws BadInputException {
-		if (username == null) {
-			throw new BadInputException("NotificationBox username cannot be null");
-		}
-		
-		NotificationBox nbox = new NotificationBox();
-		nbox.setCreationDate(Calendar.getInstance().getTimeInMillis());
-		nbox.setLastPushDate(Calendar.getInstance().getTimeInMillis());
-		nbox.setOwnerId(username);
-		nbox.setNotifications(new ArrayList<Notification>());
-		
-		nbox = nboxRepo.insert(nbox);
-		
-		NotificationBoxCrudDTO crud = new NotificationBoxCrudDTO();		
-		crud.setRequest("CREATE NotificationBox WITH username=" + username);
-		crud.addNotificationBox(nbox, modelMapperFactory.getStandardModelMapper());
-		
-		return crud;
-	}
 	
 	@Override
 	public NotificationCrudDTO createNotificationForUser(String username, @Nonnull NotificationDTO dto) throws BadInputException {
@@ -64,20 +48,39 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		}
 		
 		if (dto.getId() != null) {
-			throw new BadInputException("Notification id cannot be null");
+			throw new BadInputException("Notification id cannot be set manually");
 		}
 		
 		if (dto.getCreationDate() != null) {
-			throw new BadInputException("New Notification cannot have a creation date");
+			throw new BadInputException("Notification creation date cannot be set manually");
 		}
 		
-		if (dto.getAuthorId() == null || dto.getScope() == null || 
-				dto.getArtifactId() == null || dto.getDescription() == null) {
-			throw new BadInputException("New Notification must have an author id, a scope, an artifact id and a description");
+		if (dto.getAuthorId() == null) {
+			throw new BadInputException("Notification must have an author id");
+		}
+		
+		if (dto.getEventScope() == null) {
+			throw new BadInputException("Notification must have an event scope");
+		}
+		
+		if (dto.getEventScopeId() == null) {
+			throw new BadInputException("Notification must have an event scope id");
+		}
+		
+		if (dto.getArtifactScope() == null) {
+			throw new BadInputException("Notification must have an artifact scope");
+		}
+		
+		if (dto.getArtifactId() == null) {
+			throw new BadInputException("Notification must have an artifact id");
+		}
+		
+		if (dto.getDescription() == null) {
+			throw new BadInputException("Notification must have a description");
 		}
 		
 		if (dto.isRead()) {
-			throw new BadInputException("New Notification cannot be in read state");
+			throw new BadInputException("Notification cannot be created in read state");
 		}
 		
 		Notification notification = modelMapperFactory.getStandardModelMapper().map(dto, Notification.class);
@@ -94,6 +97,22 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 	}
 	
 	@Override
+	public NotificationCrudDTO getAllNotifications() throws NotFoundException {
+		List<Notification> notifications = notificationRepo.findAll();
+		
+		/* SILENT ERROR
+		if (notifications.isEmpty()) {
+			throw new NotFoundException("Cannot find Notification");
+		}
+		*/
+		
+		String request = "GET ALL Notifications";
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
+		
+		return crud;
+	}
+	
+	@Override
 	public NotificationCrudDTO getAllNotificationsForUser(String username) throws BadInputException, NotFoundException {
 		if (username == null) {
 			throw new BadInputException("Username cannot be null");
@@ -101,13 +120,14 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		List<Notification> notifications = notificationRepo.findNotificationByRecipient(username);
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification WITH recipient=" + username);
 		}
+		*/
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();		
-		crud.setRequest("GET Notification WITH recipient=" + username);
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
+		String request = "GET ALL Notification FOR user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
 		
 		return crud;
 	}
@@ -128,9 +148,10 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new NotFoundException("Cannot find Notification with id=" + id);
 		}
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();		
-		crud.setRequest("GET Notification WITH id=" + id);
-		crud.addNotification(notification, modelMapperFactory.getStandardModelMapper());
+		String request = "GET Notification WITH id=" + id + " for user WITH username=" + username;
+		NotificationCrudDTO crud = new NotificationCrudDTO();
+		crud.setRequest(request);
+		crud.addNotificationDTO(this.generateCompositeDTO(notification));
 		
 		return crud;
 	}
@@ -147,36 +168,86 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndAuthorId(username, authorId);
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with authorId=" + authorId);
 		}
+		*/
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();
-		crud.setRequest("GET Notification WITH authorId=" + authorId);
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
+		String request = "GET Notification WITH authorId=" + authorId + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
 		
 		return crud;
 	}
 
 	@Override
-	public NotificationCrudDTO getNotificationsForUserByScope(String username, String scope) throws BadInputException, NotFoundException {
+	public NotificationCrudDTO getNotificationsForUserByEventScope(String username, String eventScope) throws BadInputException, NotFoundException {
 		if (username == null) {
 			throw new BadInputException("Username cannot be null");
 		}
 		
-		if (scope == null) {
-			throw new BadInputException("Notification scope cannot be null");
+		if (eventScope == null) {
+			throw new BadInputException("Notification eventScope cannot be null");
 		}
 		
-		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndScope(username, EventScope.valueOf(scope));
+		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndEventScope(username, EventScope.valueOf(eventScope));
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
-			throw new NotFoundException("Cannot find Notification with scope=" + scope);
+			throw new NotFoundException("Cannot find Notification with eventScope=" + eventScope);
+		}
+		*/
+		
+		String request = "GET Notification WITH eventScope=" + eventScope + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
+		
+		return crud;
+	}
+	
+	@Override
+	public NotificationCrudDTO getNotificationsForUserByEventScopeId(String username, String eventScopeId) throws BadInputException, NotFoundException {
+		if (username == null) {
+			throw new BadInputException("Username cannot be null");
 		}
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();
-		crud.setRequest("GET Notification WITH scope=" + scope);
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());	
+		if (eventScopeId == null) {
+			throw new BadInputException("Notification eventScopeId cannot be null");
+		}
+		
+		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndEventScopeId(username, eventScopeId);
+		
+		/* SILENT ERROR
+		if (notifications.isEmpty()) {
+			throw new NotFoundException("Cannot find Notification with eventScopeId=" + eventScopeId);
+		}
+		*/
+		
+		String request = "GET Notification WITH eventScopeId=" + eventScopeId + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);	
+		
+		return crud;
+	}
+
+	@Override
+	public NotificationCrudDTO getNotificationsForUserByArtifactScope(String username, String artifactScope) throws BadInputException, NotFoundException {
+		if (username == null) {
+			throw new BadInputException("Username cannot be null");
+		}
+		
+		if (artifactScope == null) {
+			throw new BadInputException("Notification artifactScope cannot be null");
+		}
+		
+		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndArtifactScope(username, ArtifactScope.valueOf(artifactScope));
+		
+		/* SILENT ERROR
+		if (notifications.isEmpty()) {
+			throw new NotFoundException("Cannot find Notification with artifactScope=" + artifactScope);
+		}
+		*/
+		
+		String request = "GET Notification WITH artifactScope=" + artifactScope + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);		
 		
 		return crud;
 	}
@@ -193,13 +264,14 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndArtifactId(username, artifactId);
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with artifactId=" + artifactId);
 		}
+		*/
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();
-		crud.setRequest("GET Notification WITH artifactId=" + artifactId);
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
+		String request = "GET Notification WITH artifactId=" + artifactId + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);	
 		
 		return crud;
 	}
@@ -221,13 +293,14 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			notifications = notificationRepo.findNotificationByRecipientAndReadIsFalse(username);
 		}		
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with read=" + read);
 		}
+		*/
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();
-		crud.setRequest("GET Notification WITH read=" + read);
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());	
+		String request = "GET Notification WITH read=" + read + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);		
 		
 		return crud;
 	}
@@ -250,16 +323,61 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		Page<Notification> slice = notificationRepo.findNotificationByRecipient(username, page);
 		List<Notification> notifications = slice.getContent();		
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with from=" + from + "&size=" + size);
 		}
+		*/
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();
-		crud.setRequest("GET Notification WITH from=" + from + "&size=" + size);
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());	
+		String request = "GET Notification WITH from=" + from + "&size=" + size + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
 		
 		return crud;
 	}	
+	
+	@Override
+	public NotificationCrudDTO getNewNotificationsForUser(String username) throws BadInputException, NotFoundException {
+		if (username == null) {
+			throw new BadInputException("Username cannot be null");
+		}
+		
+		NotificationBox nbox = nboxRepo.findByOwnerId(username);
+		
+		// MODIFIED FOR BACKWARD COMPATIBILITY (TEMPORARY)
+		if (nbox == null) {			
+			//throw new NotFoundException("The user with username " + username + " does not have any nbox");
+			NotificationBox newNBox = new NotificationBox();
+			newNBox.setOwnerId(username);
+			newNBox.setNotifications(new ArrayList<Notification>());
+			nboxRepo.save(newNBox);
+			String request = "GET Notification IN nbox FOR user WITH username=" + username;
+			NotificationCrudDTO crud = new NotificationCrudDTO();
+			crud.setRequest(request);
+			crud.setMessage("New nbox created for user WITH username=" + username);
+			return crud;
+		}
+		
+		/* SILENT ERROR
+		if (nbox.getNotifications().isEmpty()) {
+			throw new NotFoundException("Cannot find Notification for user WITH userame=" + username);
+		}
+		*/
+		
+		List<Notification> newNotifications = new ArrayList<Notification>();		
+		
+		for (Notification newNotification : nbox.getNotifications()) {
+			newNotifications.add(notificationRepo.save(newNotification));
+		}
+		
+		nbox.getNotifications().clear();
+		
+		nboxRepo.save(nbox);		
+		
+		String request = "GET Notification IN nbox FOR user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, newNotifications);	
+		
+		return crud;
+	}
 	
 	@Override
 	public NotificationCrudDTO patchNotificationForUser(String username, NotificationDTO dto) throws BadInputException, NotFoundException {
@@ -281,24 +399,25 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			notifications.add(notification);
 		}		
 		
+		/* SILENT ERROR
 		if (notifications.isEmpty()) {
 			throw new NotFoundException("Cannot find Notification with id=" + id);
 		}
+		*/
 		
 		for (Notification notification : notifications) {
 			notification.setRead(dto.isRead());
 			notificationRepo.save(notification);
 		}		
 		
-		NotificationCrudDTO crud = new NotificationCrudDTO();
-		crud.setRequest("PATCH (read=" + dto.isRead() + ") Notification WITH id=" + id);		
-		crud.addAllNotification(notifications, modelMapperFactory.getStandardModelMapper());
+		String request = "PATCH (read=" + dto.isRead() + ") Notification WITH id=" + id + " for user WITH username=" + username;
+		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
 		
 		return crud;
 	}
 
 	@Override
-	public void deleteNotificationForUserById(String username, String id) throws BadInputException {
+	public NotificationCrudDTO deleteNotificationForUserById(String username, String id) throws BadInputException {
 		if (username == null) {
 			throw new BadInputException("Username cannot be null");
 		}
@@ -308,6 +427,45 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		}
 		
 		notificationRepo.deleteNotificationByRecipientAndId(username, id);
+		
+		NotificationCrudDTO crud = new NotificationCrudDTO();
+		crud.setRequest("DELETE Notification WITH id=" + id);
+		
+		return crud;
+	}
+
+	@Override
+	public NotificationCrudDTO deleteAllNotifications() {
+		notificationRepo.deleteAll();
+		
+		NotificationCrudDTO crud = new NotificationCrudDTO();
+		crud.setRequest("DELETE ALL Notifications");
+		
+		return crud;
+	}	
+	
+	private NotificationCrudDTO generateCompositeCrudDTO(String request, List<Notification> notifications) {
+		NotificationCrudDTO crud = new NotificationCrudDTO();		
+		crud.setRequest(request);
+		
+		for (Notification notification : notifications) {
+			NotificationDTO notificationDTO = this.generateCompositeDTO(notification);
+			crud.addNotificationDTO(notificationDTO);
+		}
+		
+		return crud;
+	}
+	
+	private NotificationDTO generateCompositeDTO(Notification notification) {
+		NotificationDTO dto = modelMapperFactory.getStandardModelMapper().map(notification, NotificationDTO.class);
+		String username = notification.getAuthorId();
+		User user = userRepo.findUserByUsername(username);
+		if (user != null) {
+			dto.getMetadata().put("userFirstname", user.getFirstname());
+			dto.getMetadata().put("userLastname", user.getLastname());
+			dto.getMetadata().put("userPicture", user.getPic());
+		}
+		return dto;
 	}	
 
 }

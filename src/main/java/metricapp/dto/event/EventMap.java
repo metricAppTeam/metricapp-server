@@ -11,7 +11,9 @@ public class EventMap extends PropertyMap<Event, EventDTO> {
 		map().setId(source.getId());
 		map().setCreationDate(source.getCreationDate());
 		map().setAuthorId(source.getAuthorId());
-		map().setScope(source.getScope());
+		map().setEventScope(source.getEventScope());
+		map().setEventScopeId(source.getEventScopeId());
+		map().setArtifactScope(source.getArtifactScope());
 		map().setArtifactId(source.getArtifactId());
 		map().setDescription(source.getDescription());
 	}

@@ -10,8 +10,6 @@ public class NotificationBoxDTOMap extends PropertyMap<NotificationBoxDTO, Notif
 	@Override
 	protected void configure() {
 		map().setId(source.getId());
-		map().setCreationDate(source.getCreationDate());
-		map().setLastPushDate(source.getLastPushDate());
 		map().setOwnerId(source.getOwnerId());
 		map().setNotifications(source.getNotifications());
 	}

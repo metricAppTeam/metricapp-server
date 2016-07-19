@@ -22,12 +22,14 @@ public class Event {
 	@CreatedDate
 	private Long creationDate;
 	private String authorId;
-	private EventScope scope;
-	private String artifactId;	
+	private EventScope eventScope;
+	private String eventScopeId;	
+	private ArtifactScope artifactScope;
+	private String artifactId;
 	private String description;	
 	
 	public String getTopicName() {
-		return this.getScope() + "-" + this.getArtifactId();
+		return this.getEventScope() + "-" + this.getEventScopeId();
 	}
 	
 	public static Event randomEvent() {
@@ -35,7 +37,9 @@ public class Event {
 		event.setId(RandomGenerator.randomString());
 		event.setCreationDate(RandomGenerator.randomLong());
 		event.setAuthorId(RandomGenerator.randomString());
-		event.setScope(RandomGenerator.randomEnum(EventScope.class));
+		event.setEventScope(RandomGenerator.randomEnum(EventScope.class));
+		event.setEventScopeId(RandomGenerator.randomString());
+		event.setArtifactScope(RandomGenerator.randomEnum(ArtifactScope.class));
 		event.setArtifactId(RandomGenerator.randomString());
 		event.setDescription(RandomGenerator.randomString());
 		return event;

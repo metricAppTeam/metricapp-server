@@ -9,6 +9,7 @@ import metricapp.dto.event.EventCrudDTO;
 import metricapp.dto.event.EventDTO;
 import metricapp.dto.topic.TopicCrudDTO;
 import metricapp.dto.topic.TopicDTO;
+import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.EventScope;
 import metricapp.exception.BadInputException;
 import metricapp.exception.DBException;
@@ -87,10 +88,12 @@ public class NotificationService implements NotificationServiceInterface {
 	}
 
 	@Override
-	public boolean publish(String authorId, EventScope scope, String artifactId, String description) {
+	public boolean publish(String authorId, EventScope eventScope, String eventScopeId, ArtifactScope artifactScope, String artifactId, String description) {
 		EventDTO eventDTO = new EventDTO();
 		eventDTO.setAuthorId(authorId);
-		eventDTO.setScope(scope);
+		eventDTO.setEventScope(eventScope);
+		eventDTO.setEventScopeId(eventScopeId);
+		eventDTO.setArtifactScope(artifactScope);
 		eventDTO.setArtifactId(artifactId);
 		eventDTO.setDescription(description);
 		

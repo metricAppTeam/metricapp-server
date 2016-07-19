@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.EventScope;
 import metricapp.entity.notification.Notification;
 
@@ -21,7 +22,11 @@ public interface NotificationRepository extends MongoRepository<Notification, St
 	
 	public List<Notification> findNotificationByRecipientAndAuthorId(String username, String authorId);
 	
-	public List<Notification> findNotificationByRecipientAndScope(String username, EventScope scope);
+	public List<Notification> findNotificationByRecipientAndEventScope(String username, EventScope eventScope);
+	
+	public List<Notification> findNotificationByRecipientAndEventScopeId(String username, String eventScopeId);	
+	
+	public List<Notification> findNotificationByRecipientAndArtifactScope(String username, ArtifactScope artifactScope);	
 	
 	public List<Notification> findNotificationByRecipientAndArtifactId(String username, String artifactId);	
 	

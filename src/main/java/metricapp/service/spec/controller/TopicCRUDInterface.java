@@ -11,6 +11,7 @@ public interface TopicCRUDInterface {
 	public TopicCrudDTO createTopic(TopicDTO dto) throws BadInputException;
 	
 	public TopicCrudDTO getAllTopics() throws NotFoundException;
+	
 	public TopicCrudDTO getTopicById(String id) throws BadInputException, NotFoundException;
 	public TopicCrudDTO getTopicByName(String name) throws BadInputException, NotFoundException;
 	
@@ -19,5 +20,7 @@ public interface TopicCRUDInterface {
 	
 	public TopicCrudDTO deleteTopicById(String id) throws BadInputException, NotFoundException;
 	public TopicCrudDTO deleteTopicByName(String name) throws BadInputException, NotFoundException;
+	
+	public TopicCrudDTO deleteAllTopics();
 		
 }
