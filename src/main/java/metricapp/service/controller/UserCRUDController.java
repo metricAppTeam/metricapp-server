@@ -79,16 +79,19 @@ public class UserCRUDController implements UserCRUDInterface {
 			throw new BadInputException("Mobile field is empty");
 		}
 		if (userDTO.getOnline() == null) {
-			throw new BadInputException("Online field is empty");
+			userDTO.setOnline("false");
 		}
 		if (userDTO.getPic() == null) {
-			throw new BadInputException("Picture field is empty");
+			userDTO.setPic("/uploads/user-picture.svg");
 		}
 		if (userDTO.getGender() == null) {
 			throw new BadInputException("Gender field is empty");
 		}
 		if (userDTO.getBio() == null) {
-			throw new BadInputException("Bio field is empty");
+			userDTO.setBio("Insert here your bio");
+		}
+		if (userDTO.getWebsite() == null) {
+			userDTO.setWebsite("mywebsite.com");
 		}
 		
 		User newUser;
