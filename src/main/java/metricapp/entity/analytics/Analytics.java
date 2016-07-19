@@ -31,11 +31,11 @@ public class Analytics {
 	public static Analytics randomUserAnalytics() {
 		Analytics analytics = new Analytics();
 		
-		analytics.setAcceptanceRatio(RandomGenerator.randomPercentage());
-		analytics.setArtifactsTot(RandomGenerator.randomLong());		
-		analytics.setGridsTot(RandomGenerator.randomLong());
-		analytics.setTasksProgress(RandomGenerator.randomPercentage());
-		analytics.setWorktimeRatio(RandomGenerator.randomPercentage());
+		analytics.setAcceptanceRatio(RandomGenerator.randomIntBetween(0, 100));
+		analytics.setArtifactsTot(RandomGenerator.randomIntBetween(10, 100));		
+		analytics.setGridsTot(RandomGenerator.randomIntBetween(10, 100));
+		analytics.setTasksProgress(RandomGenerator.randomIntBetween(10, 100));
+		analytics.setWorktimeRatio(RandomGenerator.randomIntBetween(10, 100));
 		
 		analytics.setAssigned(new HashMap<LocalDate, Long>());
 		analytics.setSubmitted(new HashMap<LocalDate, Long>());
@@ -43,9 +43,9 @@ public class Analytics {
 		
 		for (int i = 0; i < RandomGenerator.randomIntBetween(10, 100); i++) {
 			LocalDate time = RandomGenerator.randomLocalDate();
-			long assigned = RandomGenerator.randomLongBetween(0, 10);
-			long submitted = RandomGenerator.randomLongBetween(0, 10);
-			long accepted = RandomGenerator.randomLongBetween(0, 10);
+			long assigned = RandomGenerator.randomIntBetween(1, 10);
+			long submitted = RandomGenerator.randomIntBetween(1, 10);
+			long accepted = RandomGenerator.randomIntBetween(1, 10);
 			analytics.getAssigned().put(time, assigned);
 			analytics.getSubmitted().put(time, submitted);
 			analytics.getAccepted().put(time, accepted);
