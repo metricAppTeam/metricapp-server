@@ -32,6 +32,7 @@ public class MeasurementGoalRestController {
 			@RequestParam(value = "approved", defaultValue = "false") String approved,
 			@RequestParam(value = "questionerId", defaultValue = "NA") String questionerId,
 			@RequestParam(value = "state", defaultValue = "NA") String state,
+			@RequestParam(value = "bus", defaultValue = "false") String bus,
 			@RequestParam(value="qualityFocus", defaultValue="NA") String qualityFocus,
 			@RequestParam(value="object", defaultValue="NA") String object,
 			@RequestParam(value="viewPoint", defaultValue="NA") String viewPoint,
@@ -40,7 +41,11 @@ public class MeasurementGoalRestController {
 		
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		try {
-			if (!userId.equals("NA") && id.equals("NA") && state.equals("NA")) {
+			if(!bus.equals("false")){
+				dto = controller.getAllApproved();
+				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
+			}
+			else if (!userId.equals("NA") && id.equals("NA") && state.equals("NA")) {
 				dto = controller.getMeasurementGoalByUser(userId);
 				return new ResponseEntity<MeasurementGoalCrudDTO>(dto, HttpStatus.OK);
 			}

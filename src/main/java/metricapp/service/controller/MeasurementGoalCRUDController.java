@@ -207,7 +207,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	public MeasurementGoalCrudDTO getAllApproved() throws BadInputException, BusException, IOException{
 		MeasurementGoalCrudDTO dto = new MeasurementGoalCrudDTO();
 		ArrayList<MeasurementGoal> measurementGoals = busApprovedElementRepository.getAllApprovedMeasurementGoals();
-		dto.setRequest("All approved metrics");
+		dto.setRequest("All Approved Measurements Goal");
 		Iterator<MeasurementGoal> goalP = measurementGoals.iterator();
 		while (goalP.hasNext()) {
 			dto.addMeasurementGoalToList(modelMapperFactory.getStandardModelMapper().map(goalP.next(), MeasurementGoalDTO.class));
