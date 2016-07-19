@@ -124,7 +124,7 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 		try{
 			el = mapper.fromJson(mapper.getMapper().readTree(content).get(0).get("payload").toString(), clazz);
 		}catch(NullPointerException e){
-			throw new BusException(e);
+			throw new BusException(mapper.getMapper().readTree(content).get(0).toString());
 		}
 		JsonNode node = mapper.getMapper().readTree(content).get(0);
 		//set the correct version
@@ -193,6 +193,7 @@ public class BusApprovedElementRepository implements BusApprovedElementInterface
 				
 				list.add(el);
 			}catch(NullPointerException e){
+				e.printStackTrace();
 			}
 		}
 		return list;
