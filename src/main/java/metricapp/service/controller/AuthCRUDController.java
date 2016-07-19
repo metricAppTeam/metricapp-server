@@ -46,7 +46,7 @@ public class AuthCRUDController implements AuthCRUDInterface {
 		User user = userRepo.findUserByUsername(username);
 		
 		if (user == null) {
-			throw new UnauthorizedException("USer cannot be found in local repository");
+			throw new UnauthorizedException("User cannot be found in local repository");
 		}
 		
 		User busUser;
@@ -78,7 +78,7 @@ public class AuthCRUDController implements AuthCRUDInterface {
 		User user = userRepo.findUserByUsername(authUsername);
 		
 		if (user == null) {
-			throw new UnauthorizedException("User cannot be found in local repository");
+			throw new UnauthorizedException("User cannot be found in local repository with username=" + authUsername);
 		}
 		
 		user.setOnline("false");

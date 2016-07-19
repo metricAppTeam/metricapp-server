@@ -1,10 +1,10 @@
-package metricapp.service.controller;
+package metricapp.service.controller.OLD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import metricapp.dto.login.LoginCrudDTO;
-import metricapp.dto.login.LoginDTO;
+import metricapp.dto.OLD.login.LoginCrudDTO;
+import metricapp.dto.OLD.login.LoginDTO;
 import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.entity.stakeholders.User;
@@ -15,7 +15,7 @@ import metricapp.exception.LoginException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.repository.BusUserRepository;
 import metricapp.service.spec.ModelMapperFactoryInterface;
-import metricapp.service.spec.controller.LoginCRUDInterface;
+import metricapp.service.spec.controller.OLD.LoginCRUDInterface;
 import metricapp.service.spec.repository.UserRepository;
 
 @Service

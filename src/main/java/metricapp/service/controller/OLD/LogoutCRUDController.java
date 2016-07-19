@@ -1,10 +1,10 @@
-package metricapp.service.controller;
+package metricapp.service.controller.OLD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import metricapp.dto.logout.LogoutCrudDTO;
-import metricapp.dto.logout.LogoutDTO;
+import metricapp.dto.OLD.logout.LogoutCrudDTO;
+import metricapp.dto.OLD.logout.LogoutDTO;
 import metricapp.dto.user.UserCrudDTO;
 import metricapp.dto.user.UserDTO;
 import metricapp.entity.stakeholders.User;
@@ -12,7 +12,7 @@ import metricapp.exception.BadInputException;
 import metricapp.exception.IDException;
 import metricapp.exception.NotFoundException;
 import metricapp.service.spec.ModelMapperFactoryInterface;
-import metricapp.service.spec.controller.LogoutCRUDInterface;
+import metricapp.service.spec.controller.OLD.LogoutCRUDInterface;
 import metricapp.service.spec.repository.UserRepository;
 
 @Service

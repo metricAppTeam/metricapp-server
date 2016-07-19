@@ -1,4 +1,4 @@
-package metricapp.OLD.auth;
+package metricapp.entity.OLD.auth;
 
 import java.time.LocalDate;
 

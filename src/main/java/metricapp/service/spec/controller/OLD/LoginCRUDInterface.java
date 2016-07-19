@@ -1,7 +1,7 @@
-package metricapp.service.spec.controller;
+package metricapp.service.spec.controller.OLD;
 
-import metricapp.dto.login.LoginCrudDTO;
-import metricapp.dto.login.LoginDTO;
+import metricapp.dto.OLD.login.LoginCrudDTO;
+import metricapp.dto.OLD.login.LoginDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.IDException;

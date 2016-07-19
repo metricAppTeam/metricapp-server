@@ -1,4 +1,4 @@
-package metricapp.rest;
+package metricapp.rest.OLD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.login.LoginCrudDTO;
-import metricapp.dto.login.LoginDTO;
+import metricapp.dto.OLD.login.LoginCrudDTO;
+import metricapp.dto.OLD.login.LoginDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.BusException;
 import metricapp.exception.IDException;
 import metricapp.exception.LoginException;
-import metricapp.service.controller.LoginCRUDController;
+import metricapp.service.controller.OLD.LoginCRUDController;
 
 @CrossOrigin 
 @RestController
-@RequestMapping(("/login"))
+@RequestMapping(("/login-old"))
 public class LoginRestController {
 	
 	@Autowired 

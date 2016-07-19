@@ -22,8 +22,9 @@ public class AuthenticationRestController {
 	@Autowired
 	private AuthCRUDInterface authController;
 	
-	@RequestMapping(value = "/login-gmarciani", method = RequestMethod.POST)
-	public ResponseEntity<UserCrudDTO> login(@RequestBody CredentialsDTO credentialsDTO) {
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseEntity<UserCrudDTO> login(
+			@RequestBody CredentialsDTO credentialsDTO) {
 		
 		UserCrudDTO responseDTO = new UserCrudDTO();
 		
@@ -43,8 +44,9 @@ public class AuthenticationRestController {
 		}
 	}
 	
-	@RequestMapping(value = "/logout-gmarciani", method = RequestMethod.POST)
-	public ResponseEntity<UserCrudDTO> logout(@RequestHeader(name = "Authorization", defaultValue="NA") String auth) {
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public ResponseEntity<UserCrudDTO> logout(
+			@RequestHeader(name = "Authorization", defaultValue="NA") String auth) {
 		
 		UserCrudDTO responseDTO = new UserCrudDTO();
 		
@@ -58,8 +60,12 @@ public class AuthenticationRestController {
 			
 			responseDTO = authController.logout(authUsername);
 			
-			return new ResponseEntity<UserCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<UserCrudDTO>(responseDTO, HttpStatus.OK);
 			
+		} catch (UnauthorizedException e) {
+			responseDTO.setMessage(e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<UserCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();

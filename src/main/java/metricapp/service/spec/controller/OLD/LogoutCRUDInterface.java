@@ -1,6 +1,7 @@
-package metricapp.service.spec.controller;
+package metricapp.service.spec.controller.OLD;
 
-import metricapp.dto.logout.*;
+import metricapp.dto.OLD.logout.LogoutCrudDTO;
+import metricapp.dto.OLD.logout.LogoutDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.IDException;
 import metricapp.exception.NotFoundException;

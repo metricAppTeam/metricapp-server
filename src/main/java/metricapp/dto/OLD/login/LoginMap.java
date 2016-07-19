@@ -1,8 +1,8 @@
-package metricapp.dto.login;
+package metricapp.dto.OLD.login;
 
 import org.modelmapper.PropertyMap;
 
-import metricapp.OLD.auth.Login;
+import metricapp.entity.OLD.auth.Login;
 
 public class LoginMap extends PropertyMap<Login, LoginDTO>{
 

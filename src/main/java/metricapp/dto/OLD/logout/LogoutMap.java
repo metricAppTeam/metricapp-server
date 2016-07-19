@@ -1,8 +1,8 @@
-package metricapp.dto.logout;
+package metricapp.dto.OLD.logout;
 
 import org.modelmapper.PropertyMap;
 
-import metricapp.OLD.auth.Login;
+import metricapp.entity.OLD.auth.Login;
 
 public class LogoutMap extends PropertyMap<Login, LogoutDTO>{
 

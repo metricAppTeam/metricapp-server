@@ -1,4 +1,4 @@
-package metricapp.rest;
+package metricapp.rest.OLD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.logout.LogoutCrudDTO;
-import metricapp.dto.logout.LogoutDTO;
+import metricapp.dto.OLD.logout.LogoutCrudDTO;
+import metricapp.dto.OLD.logout.LogoutDTO;
 import metricapp.exception.BadInputException;
 import metricapp.exception.IDException;
-import metricapp.service.controller.LogoutCRUDController;
+import metricapp.service.controller.OLD.LogoutCRUDController;
 
 @CrossOrigin 
 @RestController
-@RequestMapping(("/logout"))
+@RequestMapping(("/logout-old"))
 public class LogoutRestController {
 	
 	@Autowired 

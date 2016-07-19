@@ -1,4 +1,4 @@
-package metricapp.dto.logout;
+package metricapp.dto.OLD.logout;
 
 import java.io.Serializable;
 

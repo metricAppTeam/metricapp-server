@@ -1,4 +1,4 @@
-package metricapp.OLD.auth;
+package metricapp.entity.OLD.auth;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
