@@ -1,4 +1,4 @@
-package metricapp.rest.old;
+package metricapp.rest.OLD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import metricapp.dto.OLD.UserSimpleCrudDTO;
-import metricapp.dto.OLD.UserSimpleDTO;
+import metricapp.dto.OLD.usersimple.UserSimpleCrudDTO;
+import metricapp.dto.OLD.usersimple.UserSimpleDTO;
 import metricapp.entity.OLD.user.simple.UserSimple;
 import metricapp.exception.UnauthorizedException;
 import metricapp.service.spec.controller.AuthCRUDInterface;
 import metricapp.service.spec.controller.NotificationCRUDInterface;
-import metricapp.service.spec.repository.old.UserSimpleRepository;
+import metricapp.service.spec.repository.OLD.UserSimpleRepository;
 
 @CrossOrigin
 @RestController

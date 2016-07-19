@@ -1,4 +1,4 @@
-package metricapp.service.spec.repository.old;
+package metricapp.service.spec.repository.OLD;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

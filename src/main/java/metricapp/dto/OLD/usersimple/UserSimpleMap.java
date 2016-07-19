@@ -1,4 +1,4 @@
-package metricapp.dto.OLD;
+package metricapp.dto.OLD.usersimple;
 
 import org.modelmapper.PropertyMap;
 

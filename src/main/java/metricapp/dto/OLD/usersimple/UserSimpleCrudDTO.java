@@ -1,4 +1,4 @@
-package metricapp.dto.OLD;
+package metricapp.dto.OLD.usersimple;
 
 import java.util.ArrayList;
 import java.util.List;
