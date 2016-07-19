@@ -11,16 +11,10 @@ import metricapp.dto.MessageDTO;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=true)
-public class UserCrudDTO extends MessageDTO{
+public class UserCrudDTO extends MessageDTO {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7861018504763722282L;
 
-	/**
-	 * 
-	 */
 	private long count;
 	
 	

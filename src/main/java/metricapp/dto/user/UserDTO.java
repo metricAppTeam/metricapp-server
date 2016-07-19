@@ -20,9 +20,6 @@ import metricapp.entity.stakeholders.User.Gender;
 @ToString(callSuper=true)
 public class UserDTO extends DTO implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6615246884703099064L;
 	
 	public String username;

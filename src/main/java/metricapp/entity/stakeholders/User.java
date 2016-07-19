@@ -22,7 +22,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper=false)
 @ToString
 public class User extends Person {
-	
+
 	@Id
 	private String username;
 	private String password;
@@ -36,15 +36,15 @@ public class User extends Person {
 	private String online;
 	private String website;
 	private String bio;
-	private Role role; 
-	
+	private Role role;
+
 	public enum Gender{
 		Male,
 		Female
 	}
-	
+
 	/**
-	 * This method is needed to convert parameter dob of Bus to birthday. 
+	 * This method is needed to convert parameter dob of Bus to birthday.
 	 * According to Bus documentation, date are stored in string of type dd-MM-yyyy
 	 * @param date
 	 */
@@ -58,7 +58,7 @@ public class User extends Person {
 			}
 		}
 	}
-	
+
 	public String getBirthdayAsString(){
 		System.out.println(this.birthday);
 		System.out.println(this.birthday.toString());
@@ -67,7 +67,7 @@ public class User extends Person {
 		}
 		return null;
 	}
-	
+
 	public LocalDate getBirthday(){
 		return this.birthday;
 	}

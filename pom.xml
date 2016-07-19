@@ -6,6 +6,70 @@
 	<groupId>isssr2016.phase2.2</groupId>
     <artifactId>metricapp-server</artifactId>
     <version>0.1.0</version>
+    <packaging>war</packaging>
+
+	<name>Metricator Server</name>
+	<description>
+		GQM+S Phase 2.2 app (Server-Side)
+	</description>
+	<url>http://metricappteam.github.io/metricapp-server/</url>
+
+	<developers>
+		<developer>
+			<name>Alessandro Fazio</name>
+			<id>afazio</id>
+			<email>alessandro.fazio@gmail.com</email>
+			<roles>
+				<role>Java Developer</role>
+				<role>Angular Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Andrea Gennusa</name>
+			<id>agennusa</id>
+			<email>andrea.gennusa@gmail.com</email>
+			<roles>
+				<role>Java Developer</role>
+				<role>Angular Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Giacomo Marciani</name>
+			<id>gmarciani</id>
+			<email>giacomo.marciani@gmail.com</email>
+			<roles>
+				<role>Java Developer</role>
+				<role>Angular Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Davide Nanni</name>
+			<id>dnanni</id>
+			<email>davide.nanni@gmail.com</email>
+			<roles>
+				<role>Java Developer</role>
+				<role>Angular Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Marco Piu</name>
+			<id>mpiu</id>
+			<email>pyumarco@gmail.com</email>
+			<roles>
+				<role>Java Developer</role>
+				<role>Angular Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Michele Porretta</name>
+			<id>mporretta</id>
+			<email>micheleporretta@gmail.com</email>
+			<roles>
+				<role>Java Developer</role>
+				<role>Angular Developer</role>
+			</roles>
+		</developer>
+	</developers>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -31,7 +95,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -53,13 +117,8 @@
   			<artifactId>modelmapper</artifactId>
   			<version>0.7.5</version>
 		</dependency>
-		<dependency>
- 		  <groupId>org.modelmapper</groupId>
-		  <artifactId>modelmapper</artifactId>
-		  <version>0.7.5</version>
-		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -75,7 +134,4 @@
 		</plugins>
 	</build>
 	
-
-	<name>Metricator Server</name>
-	<packaging>war</packaging>
 </project>

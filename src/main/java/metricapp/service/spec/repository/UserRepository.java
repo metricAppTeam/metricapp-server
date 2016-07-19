@@ -8,4 +8,5 @@ import metricapp.entity.stakeholders.User;
 public interface UserRepository extends MongoRepository<User, String> {
 
 	public User findUserByUsername(String username);
+	
 }

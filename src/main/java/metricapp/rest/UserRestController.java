@@ -23,8 +23,7 @@ import metricapp.service.controller.UserCRUDController;
 
 @CrossOrigin 
 @RestController
-@RequestMapping(("/user"))
-
+@RequestMapping(("/users"))
 public class UserRestController {
 	
 	@Autowired 

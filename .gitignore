@@ -9,6 +9,8 @@
 # Ignore anyway
 #==============================================================================#
 _ignore
+src/main/resources/application.properties
+src/test/resources/test.properties
 
 #==============================================================================#
 # JAVA
