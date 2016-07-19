@@ -110,7 +110,7 @@ public class UserCRUDController implements UserCRUDInterface {
 			busUser = busUserRepository.registerUser(newUser);
 		}
 		catch(Exception e){
-			throw new BusException("Error in saving data in bus repository");
+			throw new BusException(e);
 		}
 		System.out.println("2");
 		if(!(busUser.getUsername().equals(newUser.getUsername()) && busUser.getPassword().equals(newUser.getPassword()))){
