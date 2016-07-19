@@ -1,7 +1,6 @@
 package metricapp.dto.login;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
