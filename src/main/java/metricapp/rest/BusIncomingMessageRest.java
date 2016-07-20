@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.bus.BusIncomingMessage;
 import metricapp.dto.bus.BusMessageOtherPhases;
+import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
+import metricapp.entity.event.ArtifactScope;
+import metricapp.entity.event.Event;
 import metricapp.entity.external.NotificationPointerBus;
+import metricapp.service.spec.NotificationServiceInterface;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
 import metricapp.service.spec.repository.ExternalElementsRepositoryInterface;
 
@@ -32,6 +36,9 @@ public class BusIncomingMessageRest {
 	@Autowired
 	MeasurementGoalCRUDInterface measurementGoalCrudController;
 	
+	@Autowired 
+	NotificationServiceInterface notificationServiceController;
+	
 	/**
 	 * this method manages the incoming notifications. When an OrganizationalGoal is created, message contains the instance of it.
 	 * According to Confluence Sequence Diagram about MeasurementGoal Creation, the new notification triggers the creation of a empty MeasurementGoal in state of "Created"
@@ -46,9 +53,14 @@ public class BusIncomingMessageRest {
 		try {
 			NotificationPointerBus organizationalGoalPointer = externalElementsRepository.pointerOfIncomingNotificationObject(message.getData());
 			
+			
 			if(organizationalGoalPointer.getOperation().equals("create")){
 				measurementGoalCrudController.createMeasurementGoalFromNotification(organizationalGoalPointer);
 			}
+			String measurementGoalId = null;
+			Event event = new Event(ArtifactScope.MGOAL, measurementGoalId, "New measurement goal created");
+			notificationServiceController.publish("EXPERT", event);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,8 +84,7 @@ public class BusIncomingMessageRest {
 			System.out.println(m.getBody());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		//TODO send notification with message to expert
+		}		
 		return new ResponseEntity<BusIncomingMessage>(message,HttpStatus.OK);
 	}
 

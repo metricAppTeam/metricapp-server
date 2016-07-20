@@ -32,35 +32,16 @@ public class TopicRestController {
 	private TopicCRUDInterface topicController;	
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public ResponseEntity<TopicCrudDTO> getAllTopics(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+	public ResponseEntity<TopicCrudDTO> getAllTopics() {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
 			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
-			
 			responseDTO = topicController.getAllTopics();		
 
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
-			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
-		} catch (BadInputException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
-		} catch (NotFoundException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.NOT_FOUND);
+
 		} catch (Exception e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
@@ -114,28 +95,16 @@ public class TopicRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<TopicCrudDTO> createTopic(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
-			@RequestBody TopicDTO requestDTO) {
+	public ResponseEntity<TopicCrudDTO> createTopic(@RequestBody TopicDTO requestDTO) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {			
 			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}			
-			
-			authController.authenticate(auth);
-			
 			responseDTO = topicController.createTopic(requestDTO);
 			
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.CREATED);
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
@@ -148,20 +117,12 @@ public class TopicRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PATCH)
-	public ResponseEntity<TopicCrudDTO> patchTopic(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
-			@RequestParam(value = "action",	defaultValue = "NA") String action,
+	public ResponseEntity<TopicCrudDTO> patchTopic(@RequestParam(value = "action",	defaultValue = "NA") String action,
 			@RequestBody TopicDTO requestDTO) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();			
 		
 		try {
-			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
 			
 			if (!action.equals("NA")) {
 				if (action.equals("subscribe")) {
@@ -177,10 +138,6 @@ public class TopicRestController {
 			
 			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.OK);
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
@@ -202,19 +159,12 @@ public class TopicRestController {
 	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<TopicCrudDTO> deleteTopic(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 	defaultValue = "NA") String id,
 			@RequestParam(value = "name", 	defaultValue = "NA") String name) {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
-			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
 			
 			if (!id.equals("NA")) {
 				topicController.deleteTopicById(id);
@@ -226,10 +176,6 @@ public class TopicRestController {
 			
 			return new ResponseEntity<TopicCrudDTO>(HttpStatus.OK);			
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			e.printStackTrace();
 			responseDTO.setMessage(e.getMessage());
@@ -243,31 +189,16 @@ public class TopicRestController {
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.DELETE)
-	public ResponseEntity<TopicCrudDTO> deleteAllTopics(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+	public ResponseEntity<TopicCrudDTO> deleteAllTopics() {
 		
 		TopicCrudDTO responseDTO = new TopicCrudDTO();
 		
 		try {
 			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<TopicCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
-			
 			responseDTO = topicController.deleteAllTopics();
 			
 			return new ResponseEntity<TopicCrudDTO>(HttpStatus.OK);			
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
-		} catch (BadInputException e) {
-			e.printStackTrace();
-			responseDTO.setMessage(e.getMessage());
-			return new ResponseEntity<TopicCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();

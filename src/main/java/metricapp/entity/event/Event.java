@@ -26,7 +26,26 @@ public class Event {
 	private String eventScopeId;	
 	private ArtifactScope artifactScope;
 	private String artifactId;
-	private String description;	
+	private String description;
+	
+	public Event(String authorId, EventScope eventScope, ArtifactScope artifactScope, String artifactId, String description) {
+		this.authorId = authorId;
+		this.eventScope = eventScope;
+		this.artifactScope = artifactScope;
+		this.artifactId = artifactId;		
+		this.description = description;
+	}
+	
+	public Event(ArtifactScope artifactScope, String artifactId, String description) {
+		this.artifactScope = artifactScope;
+		this.artifactId = artifactId;		
+		this.description = description;
+	}
+	
+	public Event(EventScope eventScope, String description) {
+		this.eventScope = eventScope;	
+		this.description = description;
+	}
 	
 	public String getTopicName() {
 		return this.getEventScope() + "-" + this.getEventScopeId();

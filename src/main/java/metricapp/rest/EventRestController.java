@@ -31,31 +31,16 @@ public class EventRestController {
 	private EventCRUDInterface eventController;	
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public ResponseEntity<EventCrudDTO> getAllEvents(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+	public ResponseEntity<EventCrudDTO> getAllEvents() {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
 			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
-			
 			responseDTO = eventController.getAllEvents();
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
-		} catch (BadInputException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (NotFoundException e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
@@ -69,7 +54,6 @@ public class EventRestController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<EventCrudDTO> getEvent(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
 			@RequestParam(value = "eventScope", 	defaultValue = "NA") String eventScope,
@@ -80,13 +64,7 @@ public class EventRestController {
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
-			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
-			
+						
 			if (!id.equals("NA")) {
 				responseDTO = eventController.getEventById(id);
 			} else if (!authorId.equals("NA")) {
@@ -105,10 +83,6 @@ public class EventRestController {
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
 		} catch (BadInputException e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
@@ -125,8 +99,7 @@ public class EventRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<EventCrudDTO> createEvent(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
+	public ResponseEntity<EventCrudDTO> createEvent(@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestBody EventDTO requestDTO) {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();
@@ -159,31 +132,16 @@ public class EventRestController {
 	}	
 	
 	@RequestMapping(value = "/all", method = RequestMethod.DELETE)
-	public ResponseEntity<EventCrudDTO> deleteAllEvent(
-			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth) {
+	public ResponseEntity<EventCrudDTO> deleteAllEvent() {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();
 		
 		try {
 			
-			if (auth.equals("NA")) {
-				return new ResponseEntity<EventCrudDTO>(HttpStatus.UNAUTHORIZED);
-			}
-			
-			authController.authenticate(auth);
-			
 			responseDTO = eventController.deleteAllEvents();
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.OK);
 			
-		} catch (UnauthorizedException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.UNAUTHORIZED);
-		} catch (BadInputException e) {
-			responseDTO.setMessage(e.getMessage());
-			e.printStackTrace();
-			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			responseDTO.setMessage(e.getMessage());
 			e.printStackTrace();
