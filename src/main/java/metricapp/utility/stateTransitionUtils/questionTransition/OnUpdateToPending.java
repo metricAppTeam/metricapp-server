@@ -2,6 +2,10 @@ package metricapp.utility.stateTransitionUtils.questionTransition;
 
 
 import metricapp.entity.Element;
+import metricapp.entity.event.ArtifactScope;
+import metricapp.entity.event.Event;
+import metricapp.entity.event.EventPhase;
+import metricapp.utility.NotificationService;
 
 public class OnUpdateToPending extends QuestionStateTransitionCommand{
 
@@ -18,6 +22,8 @@ public class OnUpdateToPending extends QuestionStateTransitionCommand{
 	public void execute() throws Exception{
 		super.execute();
 		System.out.println("Question state switched from 'OnUpdate' to 'Pending'");
+		Event event = new Event(EventPhase.PHASE2_2, after.getCreatorId(), ArtifactScope.QUESTION, after.getId(), "A Question is pending for approval");
+		NotificationService.getInstance().publish("EXPERT", event);
 	}
 
 }
