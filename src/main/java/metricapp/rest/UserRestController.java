@@ -29,6 +29,7 @@ public class UserRestController {
 	@Autowired 
 	UserCRUDController userCRUDController;
 	
+		
 	/**
 	 * Get Method for search user by username
 	 * @param username
