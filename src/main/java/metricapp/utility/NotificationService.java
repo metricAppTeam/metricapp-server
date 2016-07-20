@@ -27,6 +27,17 @@ public class NotificationService implements NotificationServiceInterface {
 	
 	@Autowired 
 	private NotificationBoxRepository nboxRepo;
+	
+	@Autowired
+	private void setInstance(){
+		instance = this;
+	}
+	
+	public static NotificationServiceInterface getInstance(){
+		return instance;
+	}
+	
+	public static NotificationServiceInterface instance;
 
 	@Override
 	public void addTopic(String topicName) {

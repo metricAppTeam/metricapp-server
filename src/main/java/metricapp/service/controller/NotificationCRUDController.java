@@ -41,6 +41,18 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 	@Autowired
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
+	@Autowired
+	private void setIstance(){
+		instance = this;
+	}
+	
+	public static NotificationCRUDInterface instance;
+	
+	public static NotificationCRUDInterface getInstance(){
+		return instance;
+	}
+	
+	
 	@Override
 	public NotificationCrudDTO createNotificationForUser(String username, @Nonnull NotificationDTO dto) throws BadInputException {
 		if (username == null) {
