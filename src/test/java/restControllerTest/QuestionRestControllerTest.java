@@ -157,7 +157,7 @@ public class QuestionRestControllerTest {
 			
 			QuestionCrudDTO questionCrudDTO = new ObjectMapper().readValue(result.getResponse().getContentAsString(), QuestionCrudDTO.class);
 			
-			assertTrue(questionCrudDTO.getQuestionList().size() == 10);
+			assertTrue(questionCrudDTO.getQuestionList().size() == 20);
 			assertTrue(HttpStatus.valueOf(result.getResponse().getStatus()) == HttpStatus.OK);
 			
 		} catch (BadInputException e) {
