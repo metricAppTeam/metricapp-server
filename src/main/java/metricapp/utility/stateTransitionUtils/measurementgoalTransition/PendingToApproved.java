@@ -1,8 +1,12 @@
 package metricapp.utility.stateTransitionUtils.measurementgoalTransition;
 
 import metricapp.entity.Element;
+import metricapp.entity.event.ArtifactScope;
+import metricapp.entity.event.Event;
+import metricapp.entity.event.EventPhase;
 import metricapp.entity.measurementGoal.MeasurementGoal;
 import metricapp.service.repository.BusApprovedElementRepository;
+import metricapp.utility.NotificationService;
 
 public class PendingToApproved extends MeasurementGoalStateTransitionCommand{
 
@@ -17,7 +21,9 @@ public class PendingToApproved extends MeasurementGoalStateTransitionCommand{
 		
 		String busVersion=BusApprovedElementRepository.getInstance().sendApprovedElement(after, MeasurementGoal.class).getVersionBus();
 		after.setVersionBus(busVersion);
-		// TODO alert newMeasurementGoal.getMetricatorId() with newMeasurementGoal.getReleaseNote() \n TODO send to bus the new measurement goal ->need to convert: wipe securekey, change id, ermesLastVersion
+		Event event = new Event(EventPhase.PHASE2_2, after.getMetricatorId(), ArtifactScope.MGOAL, after.getId(), "Measurement Goal Approved");
+		NotificationService.getInstance().publish("METRICATOR", event);	
+		
 	}
 
 }
