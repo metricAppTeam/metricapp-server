@@ -28,6 +28,7 @@ public class UserAnalyticsCRUDController implements UserAnalyticsCRUDInterface {
 		
 		AnalyticsCrudDTO crud = new AnalyticsCrudDTO();
 		crud.setRequest("GET UserAnalytics WITH username=" + username);
+		crud.setMessage("SUCCESS in LOADING analytics FOR user WITH username=" + username);
 		crud.addAnalytics(analytics, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;

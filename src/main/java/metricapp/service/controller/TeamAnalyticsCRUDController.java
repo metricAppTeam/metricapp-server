@@ -39,15 +39,17 @@ public class TeamAnalyticsCRUDController implements TeamAnalyticsCRUDInterface {
 		// END USERS ANALYTICS COMPUTATION
 		
 		Analytics teamAnalytics = new Analytics();
-		double gqmScore = 0;
-		long gridsTot = 0;
-		long artifactsTot = 0;
-		double acceptanceRatio = 0;
-		double worktimeRatio = 0;
-		double tasksProgress = 0;
-		Map<LocalDate, Long> assigned = new HashMap<LocalDate, Long>();
-		Map<LocalDate, Long> submitted = new HashMap<LocalDate, Long>();
-		Map<LocalDate, Long> accepted = new HashMap<LocalDate, Long>();
+		int gqmScore = 0;
+		int gridsTot = 0;
+		int artifactsTot = 0;
+		int acceptanceRatio = 0;
+		int worktimeRatio = 0;
+		int tasksProgress = 0;
+		int artifactsMGoal = 0;
+		int artifactsRate = 0;
+		Map<LocalDate, Integer> assigned = new HashMap<LocalDate, Integer>();
+		Map<LocalDate, Integer> submitted = new HashMap<LocalDate, Integer>();
+		Map<LocalDate, Integer> accepted = new HashMap<LocalDate, Integer>();
 		for (Analytics a : usersAnalytics) {
 			gqmScore += a.getGqmScore();
 			gridsTot += a.getGridsTot();
@@ -55,21 +57,23 @@ public class TeamAnalyticsCRUDController implements TeamAnalyticsCRUDInterface {
 			acceptanceRatio += a.getAcceptanceRatio();
 			worktimeRatio += a.getWorktimeRatio();
 			tasksProgress += a.getTasksProgress();
-			for (Map.Entry<LocalDate, Long> record : a.getAssigned().entrySet()) {
+			artifactsMGoal += a.getArtifactsMGoal();
+			artifactsRate += a.getArtifactsRate();
+			for (Map.Entry<LocalDate, Integer> record : a.getAssigned().entrySet()) {
 				LocalDate recordTime = record.getKey();
-				long v = assigned.getOrDefault(recordTime, Long.valueOf(0));
+				int v = assigned.getOrDefault(recordTime, Integer.valueOf(0));
 				v += record.getValue();
 				assigned.put(recordTime, v);
 			}
-			for (Map.Entry<LocalDate, Long> record : a.getSubmitted().entrySet()) {
+			for (Map.Entry<LocalDate, Integer> record : a.getSubmitted().entrySet()) {
 				LocalDate recordTime = record.getKey();
-				long v = submitted.getOrDefault(recordTime, Long.valueOf(0));
+				int v = submitted.getOrDefault(recordTime, Integer.valueOf(0));
 				v += record.getValue();
 				submitted.put(recordTime, v);
 			}
-			for (Map.Entry<LocalDate, Long> record : a.getAccepted().entrySet()) {
+			for (Map.Entry<LocalDate, Integer> record : a.getAccepted().entrySet()) {
 				LocalDate recordTime = record.getKey();
-				long v = accepted.getOrDefault(recordTime, Long.valueOf(0));
+				int v = accepted.getOrDefault(recordTime, Integer.valueOf(0));
 				v += record.getValue();
 				accepted.put(recordTime, v);
 			}
@@ -78,6 +82,8 @@ public class TeamAnalyticsCRUDController implements TeamAnalyticsCRUDInterface {
 		acceptanceRatio /= n;
 		worktimeRatio /= n;
 		tasksProgress /= n;
+		artifactsMGoal /= n;
+		artifactsRate /= n;
 		
 		teamAnalytics.setGqmScore(gqmScore);
 		teamAnalytics.setGridsTot(gridsTot);
@@ -85,6 +91,8 @@ public class TeamAnalyticsCRUDController implements TeamAnalyticsCRUDInterface {
 		teamAnalytics.setAcceptanceRatio(acceptanceRatio);
 		teamAnalytics.setWorktimeRatio(worktimeRatio);
 		teamAnalytics.setTasksProgress(tasksProgress);
+		teamAnalytics.setArtifactsMGoal(artifactsMGoal);
+		teamAnalytics.setArtifactsRate(artifactsRate);
 		
 		teamAnalytics.setAssigned(assigned);
 		teamAnalytics.setSubmitted(submitted);
@@ -92,6 +100,7 @@ public class TeamAnalyticsCRUDController implements TeamAnalyticsCRUDInterface {
 		
 		AnalyticsCrudDTO crud = new AnalyticsCrudDTO();
 		crud.setRequest("GET TeamAnalytics WITH teamid=" + teamid);
+		crud.setMessage("SUCCESS in LOADING analytics FOR team WITH teamid=" + teamid);
 		crud.addAnalytics(teamAnalytics, modelMapperFactory.getStandardModelMapper());
 		
 		return crud;

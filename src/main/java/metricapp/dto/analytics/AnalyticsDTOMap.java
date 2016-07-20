@@ -13,6 +13,8 @@ public class AnalyticsDTOMap extends PropertyMap<AnalyticsDTO, Analytics> {
 		map().setGridsTot(source.getGridsTot());
 		map().setTasksProgress(source.getTasksProgress());
 		map().setWorktimeRatio(source.getWorktimeRatio());
+		map().setArtifactsMGoal(source.getArtifactsMGoal());
+		map().setArtifactsRate(source.getArtifactsRate());
 		map().setAssigned(source.getAssigned());
 		map().setSubmitted(source.getSubmitted());
 		map().setAccepted(source.getAccepted());

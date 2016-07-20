@@ -72,9 +72,11 @@ public class UserCRUDController implements UserCRUDInterface {
 		if (userDTO.getEmail() == null) {
 			throw new BadInputException("Email field is empty");
 		}
+		/*
 		if (userDTO.getBirthday() == null) {
 			throw new BadInputException("Birthday field is empty");
 		}
+		*/
 		if (userDTO.getMobile() == null) {
 			throw new BadInputException("Mobile field is empty");
 		}

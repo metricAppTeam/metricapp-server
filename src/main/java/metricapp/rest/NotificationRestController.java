@@ -104,9 +104,8 @@ public class NotificationRestController {
 	public ResponseEntity<NotificationCrudDTO> getNotification(
 			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
 			@RequestParam(value = "id", 			defaultValue = "NA") String id,
-			@RequestParam(value = "authorId", 		defaultValue = "NA") String authorId,
-			@RequestParam(value = "eventScope", 	defaultValue = "NA") String eventScope,
-			@RequestParam(value = "eventScopeId", 	defaultValue = "NA") String eventScopeId,
+			@RequestParam(value = "eventPhase", 	defaultValue = "NA") String eventPhase,
+			@RequestParam(value = "authorId", 		defaultValue = "NA") String authorId,			
 			@RequestParam(value = "artifactScope", 	defaultValue = "NA") String artifactScope,
 			@RequestParam(value = "artifactId", 	defaultValue = "NA") String artifactId,
 			@RequestParam(value = "read", 			defaultValue = "NA") String read,

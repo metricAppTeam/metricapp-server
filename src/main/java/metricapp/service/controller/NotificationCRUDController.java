@@ -402,13 +402,22 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 	
 	private NotificationDTO generateCompositeDTO(Notification notification) {
 		NotificationDTO dto = modelMapperFactory.getStandardModelMapper().map(notification, NotificationDTO.class);
-		String username = notification.getAuthorId();
-		User user = userRepo.findUserByUsername(username);
-		if (user != null) {
-			dto.getMetadata().put("userFirstname", user.getFirstname());
-			dto.getMetadata().put("userLastname", user.getLastname());
-			dto.getMetadata().put("userPicture", user.getPic());
+		
+		
+		if (notification.getEventPhase() == EventPhase.PHASE2_1) {
+			dto.getMetadata().put("userFirstname", "GQM+s Phase");
+			dto.getMetadata().put("userLastname", "2.1");
+			dto.getMetadata().put("userPicture", "uploads/users/bus.svg");
+		} else if (notification.getEventPhase() == EventPhase.PHASE2_2) {
+			String username = notification.getAuthorId();
+			User user = userRepo.findUserByUsername(username);
+			if (user != null) {
+				dto.getMetadata().put("userFirstname", user.getFirstname());
+				dto.getMetadata().put("userLastname", user.getLastname());
+				dto.getMetadata().put("userPicture", user.getPic());
+			}
 		}
+		
 		return dto;
 	}	
 

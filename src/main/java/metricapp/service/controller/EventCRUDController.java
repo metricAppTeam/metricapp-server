@@ -57,7 +57,7 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event creation date cannot be set manually");
 		}
 		
-		if (dto.getEventPhase().equals(EventPhase.PHASE2_2) && dto.getAuthorId() == null) {
+		if (dto.getEventPhase() == EventPhase.PHASE2_2 && dto.getAuthorId() == null) {
 			throw new BadInputException("Event from Phase2.2 must have an author id");
 		}
 		
@@ -90,7 +90,9 @@ public class EventCRUDController implements EventCRUDInterface {
 		} else {
 			for (String subscriber : topic.getSubscribers()) {
 				if (event.getAuthorId() != null) {
-					if (subscriber.equals(event.getAuthorId())) continue;
+					if (subscriber.equals(event.getAuthorId())) {
+						continue;
+					}
 				}				
 				Notification notification = Notification.fromEvent(event, subscriber);
 				NotificationBox nbox = nboxRepo.findByOwnerId(subscriber);
