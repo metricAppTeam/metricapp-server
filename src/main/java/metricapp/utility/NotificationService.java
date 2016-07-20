@@ -85,7 +85,9 @@ public class NotificationService implements NotificationServiceInterface {
 		
 		for (String subscriber : topic.getSubscribers()) {
 			if (event.getAuthorId() != null) {
-				if (subscriber.equals(event.getAuthorId())) continue;
+				if (subscriber.equals(event.getAuthorId())) {
+					continue;
+				}
 			}			
 			Notification notification = Notification.fromEvent(event, subscriber);
 			NotificationBox nbox = nboxRepo.findByOwnerId(subscriber);
