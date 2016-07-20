@@ -6,7 +6,7 @@ public enum ArtifactScope {
 	QUESTION ("QUESTION"),
 	METRIC ("METRIC"),
 	GRID ("GRID"),
-	TEAM ("TEAM"),
+	TEAM ("TEAMS"),
 	USER ("USER");
 	
 	private final String name;       
