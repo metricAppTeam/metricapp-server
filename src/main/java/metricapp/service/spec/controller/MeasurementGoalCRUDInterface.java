@@ -63,7 +63,7 @@ public interface MeasurementGoalCRUDInterface {
 
 	long countByQuestionerIdAndState(String questionerId, String state) throws BadInputException, NotFoundException;
 
-	void createMeasurementGoalFromNotification(NotificationPointerBus organizationalGoalPointer);
+	MeasurementGoalDTO createMeasurementGoalFromNotification(NotificationPointerBus organizationalGoalPointer);
 
 		
 }

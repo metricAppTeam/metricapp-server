@@ -518,7 +518,7 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 	}
 
 	@Override
-	public void createMeasurementGoalFromNotification(NotificationPointerBus organizationalGoalPointer){
+	public MeasurementGoalDTO createMeasurementGoalFromNotification(NotificationPointerBus organizationalGoalPointer){
 		MeasurementGoal goal = new MeasurementGoal();
 		goal.setState(State.Created);
 		goal.setEntityType(Entity.MeasurementGoal);
@@ -526,6 +526,6 @@ public class MeasurementGoalCRUDController implements MeasurementGoalCRUDInterfa
 		goal.setLastVersionDate(LocalDate.now());
 		goal.setReleaseNote("Measurement Goal generated from Organizational goal " + organizationalGoalPointer.getInstance() + " creation");
 		goal.setOrganizationalGoalId(externalElementsRepository.fromNotificationToPointerBus(organizationalGoalPointer));
-		this.createMeasurementGoal(goal);
+		return modelMapperFactory.getStandardModelMapper().map(this.createMeasurementGoal(goal),MeasurementGoalDTO.class);
 	}
 }

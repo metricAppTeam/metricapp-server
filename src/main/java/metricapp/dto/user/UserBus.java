@@ -74,14 +74,9 @@ public class UserBus {
 	
 	@JsonIgnore
 	public void setRole(Role role){
-		this.setRole(role.name());
-		//due to bus specific
-		if(role == Role.GQMExpert){
-			this.setRole("GQM Expert");
-			System.out.println(this.role);
-		}
-		
+		this.setRole(role.getBusString());
 	}
+	
 	@JsonProperty(value="role")
 	public String getRoleString(){
 		return this.role;
@@ -98,13 +93,13 @@ public class UserBus {
 		String[] list = cleanArray.split(", ");
 		
 		ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(list));
-		if (arrayList.contains(Role.GQMExpert.name())){
+		if (arrayList.contains(Role.GQMExpert.getBusString())){
 			return Role.GQMExpert;
 		}
-		if(arrayList.contains(Role.Metricator.name())){
+		if(arrayList.contains(Role.Metricator.getBusString())){
 			return Role.Metricator;
 		}
-		if(arrayList.contains(Role.Questioner.name())){
+		if(arrayList.contains(Role.Questioner.getBusString())){
 			return Role.Questioner;
 		}
 		else return null;
