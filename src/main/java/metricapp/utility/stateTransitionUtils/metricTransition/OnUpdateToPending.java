@@ -1,6 +1,10 @@
 package metricapp.utility.stateTransitionUtils.metricTransition;
 
 import metricapp.entity.Element;
+import metricapp.entity.event.ArtifactScope;
+import metricapp.entity.event.Event;
+import metricapp.entity.event.EventPhase;
+import metricapp.utility.NotificationService;
 
 
 
@@ -17,7 +21,8 @@ public class OnUpdateToPending extends MetricStateTransitionCommand {
 		super.execute();
 		
 		System.out.println("onupdate a pending");	
-		// TODO alert newMetric.getCreatorId()
+		Event event = new Event(EventPhase.PHASE2_2, after.getMetricatorId(), ArtifactScope.METRIC, after.getId(), "A Metric is pending for approval");
+		NotificationService.getInstance().publish("EXPERT", event);
 		
 	}
 
