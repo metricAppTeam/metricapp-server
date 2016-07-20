@@ -5,7 +5,7 @@ import java.util.Map;
 
 import lombok.Data;
 import metricapp.entity.event.ArtifactScope;
-import metricapp.entity.event.EventScope;
+import metricapp.entity.event.EventPhase;
 
 @Data
 public class NotificationDTO implements Serializable {
@@ -15,9 +15,8 @@ public class NotificationDTO implements Serializable {
 	public String id;
 	public String eventId;
 	public Long creationDate;
+	public EventPhase eventPhase;
 	public String authorId;
-	public EventScope eventScope;
-	public String eventScopeId;	
 	public ArtifactScope artifactScope;
 	public String artifactId;
 	public String description;	

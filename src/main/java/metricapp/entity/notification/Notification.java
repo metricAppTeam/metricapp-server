@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.Event;
-import metricapp.entity.event.EventScope;
+import metricapp.entity.event.EventPhase;
 import metricapp.utility.RandomGenerator;
 
 @Data
@@ -26,9 +26,8 @@ public class Notification {
 	private String eventId;
 	@CreatedDate
 	private Long creationDate;
+	private EventPhase eventPhase;
 	private String authorId;
-	private EventScope eventScope;
-	private String eventScopeId;
 	private ArtifactScope artifactScope;
 	private String artifactId;	
 	private String description;		
@@ -40,9 +39,8 @@ public class Notification {
 		Notification notification = new Notification();
 		notification.setEventId(event.getId());
 		notification.setCreationDate(event.getCreationDate());
+		notification.setEventPhase(event.getEventPhase());
 		notification.setAuthorId(event.getAuthorId());
-		notification.setEventScope(event.getEventScope());
-		notification.setEventScopeId(event.getEventScopeId());
 		notification.setArtifactScope(event.getArtifactScope());
 		notification.setArtifactId(event.getArtifactId());
 		notification.setDescription(event.getDescription());
@@ -57,9 +55,8 @@ public class Notification {
 		notification.setId(RandomGenerator.randomString());		
 		notification.setEventId(RandomGenerator.randomString());
 		notification.setCreationDate(RandomGenerator.randomLong());
+		notification.setEventPhase(RandomGenerator.randomEnum(EventPhase.class));
 		notification.setAuthorId(RandomGenerator.randomString());
-		notification.setEventScope(RandomGenerator.randomEnum(EventScope.class));
-		notification.setEventScopeId(RandomGenerator.randomString());
 		notification.setArtifactScope(RandomGenerator.randomEnum(ArtifactScope.class));
 		notification.setArtifactId(RandomGenerator.randomString());
 		notification.setDescription(RandomGenerator.randomString());

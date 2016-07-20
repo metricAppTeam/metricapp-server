@@ -1,17 +1,12 @@
 package metricapp.entity.event;
 
-public enum EventScope {
-	GRID ("GRID"),
-	OGOAL ("OGOAL"),
-	MGOAL ("MGOAL"),
-	QUESTION ("QUESTION"),
-	METRIC ("METRIC"),
-	TEAM ("TEAM"),
-	USER ("USER");
+public enum EventPhase {
+	PHASE2_1 ("PHASE2_1"),
+	PHASE2_2 ("PHASE2_2");
 	
 	private final String name;       
 
-    private EventScope(String s) {
+    private EventPhase(String s) {
         name = s;
     }
 

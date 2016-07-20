@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import metricapp.dto.bus.BusIncomingMessage;
 import metricapp.dto.bus.BusMessageOtherPhases;
-import metricapp.dto.measurementGoal.MeasurementGoalCrudDTO;
+import metricapp.dto.measurementGoal.MeasurementGoalDTO;
 import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.Event;
+import metricapp.entity.event.EventPhase;
 import metricapp.entity.external.NotificationPointerBus;
 import metricapp.service.spec.NotificationServiceInterface;
 import metricapp.service.spec.controller.MeasurementGoalCRUDInterface;
@@ -53,13 +54,12 @@ public class BusIncomingMessageRest {
 		try {
 			NotificationPointerBus organizationalGoalPointer = externalElementsRepository.pointerOfIncomingNotificationObject(message.getData());
 			
-			
 			if(organizationalGoalPointer.getOperation().equals("create")){
-				measurementGoalCrudController.createMeasurementGoalFromNotification(organizationalGoalPointer);
-			}
-			String measurementGoalId = null;
-			Event event = new Event(ArtifactScope.MGOAL, measurementGoalId, "New measurement goal created");
-			notificationServiceController.publish("EXPERT", event);
+				MeasurementGoalDTO dto = measurementGoalCrudController.createMeasurementGoalFromNotification(organizationalGoalPointer);
+				String measurementGoalId = dto.getMetadata().getId();
+				Event event = new Event(EventPhase.PHASE2_1, null, ArtifactScope.MGOAL, measurementGoalId, "New measurement goal created");
+				notificationServiceController.publish("EXPERT", event);
+			}			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

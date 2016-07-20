@@ -127,10 +127,6 @@ public class NotificationRestController {
 				responseDTO = notificationController.getNotificationForUserById(authUsername, id);				
 			} else if (!authorId.equals("NA")) {
 				responseDTO = notificationController.getNotificationsForUserByAuthorId(authUsername, authorId);
-			} else if (!eventScope.equals("NA")) {
-				responseDTO = notificationController.getNotificationsForUserByEventScope(authUsername, eventScope);
-			} else if (!eventScopeId.equals("NA")) {
-				responseDTO = notificationController.getNotificationsForUserByEventScopeId(authUsername, eventScopeId);
 			} else if (!artifactScope.equals("NA")) {
 				responseDTO = notificationController.getNotificationsForUserByArtifactScope(authUsername, artifactScope);
 			} else if (!artifactId.equals("NA")) {

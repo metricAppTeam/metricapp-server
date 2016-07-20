@@ -14,8 +14,6 @@ public interface NotificationCRUDInterface {
 	public NotificationCrudDTO getAllNotificationsForUser(String username) throws BadInputException, NotFoundException;	
 	public NotificationCrudDTO getNotificationForUserById(String username, String id) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO getNotificationsForUserByAuthorId(String username, String authorId) throws BadInputException, NotFoundException;
-	public NotificationCrudDTO getNotificationsForUserByEventScope(String username, String eventScope) throws BadInputException, NotFoundException;
-	public NotificationCrudDTO getNotificationsForUserByEventScopeId(String username, String eventScopeId) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO getNotificationsForUserByArtifactScope(String username, String artifactScope) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO getNotificationsForUserByArtifactId(String username, String artifactId) throws BadInputException, NotFoundException;
 	public NotificationCrudDTO getNotificationsForUserByRead(String username, String read) throws BadInputException, NotFoundException;

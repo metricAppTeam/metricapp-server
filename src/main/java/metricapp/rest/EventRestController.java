@@ -56,8 +56,6 @@ public class EventRestController {
 	public ResponseEntity<EventCrudDTO> getEvent(
 			@RequestParam(value = "id", 		defaultValue = "NA") String id,
 			@RequestParam(value = "authorId", 	defaultValue = "NA") String authorId,
-			@RequestParam(value = "eventScope", 	defaultValue = "NA") String eventScope,
-			@RequestParam(value = "eventScopeId", 	defaultValue = "NA") String eventScopeId,
 			@RequestParam(value = "artifactScope", 	defaultValue = "NA") String artifactScope,
 			@RequestParam(value = "artifactId", 	defaultValue = "NA") String artifactId) {
 		
@@ -69,10 +67,6 @@ public class EventRestController {
 				responseDTO = eventController.getEventById(id);
 			} else if (!authorId.equals("NA")) {
 				responseDTO = eventController.getEventsByAuthorId(authorId);
-			} else if (!eventScope.equals("NA")) {
-				responseDTO = eventController.getEventsByEventScope(eventScope);
-			} else if (!eventScopeId.equals("NA")) {
-				responseDTO = eventController.getEventsByEventScopeId(eventScopeId);
 			} else if (!artifactScope.equals("NA")) {
 				responseDTO = eventController.getEventsByArtifactScope(artifactScope);
 			} else if (!artifactId.equals("NA")) {
@@ -99,7 +93,9 @@ public class EventRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<EventCrudDTO> createEvent(@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
+	public ResponseEntity<EventCrudDTO> createEvent(
+			@RequestHeader(value = "Authorization", defaultValue = "NA") String auth,
+			@RequestParam(value = "topicName", defaultValue = "NA") String topicName,
 			@RequestBody EventDTO requestDTO) {
 		
 		EventCrudDTO responseDTO = new EventCrudDTO();
@@ -112,7 +108,12 @@ public class EventRestController {
 			
 			String username = authController.authenticate(auth);
 			
-			responseDTO = eventController.createEvent(username, requestDTO);
+			if (topicName.equals("NA")) {
+				responseDTO.setMessage("topicName cannot be null");
+				return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.BAD_REQUEST);
+			}
+			
+			responseDTO = eventController.createEvent(username, topicName, requestDTO);
 			
 			return new ResponseEntity<EventCrudDTO>(responseDTO, HttpStatus.CREATED);
 			

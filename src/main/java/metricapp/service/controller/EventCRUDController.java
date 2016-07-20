@@ -12,7 +12,7 @@ import metricapp.dto.event.EventCrudDTO;
 import metricapp.dto.event.EventDTO;
 import metricapp.entity.event.ArtifactScope;
 import metricapp.entity.event.Event;
-import metricapp.entity.event.EventScope;
+import metricapp.entity.event.EventPhase;
 import metricapp.entity.notification.Notification;
 import metricapp.entity.notification.box.NotificationBox;
 import metricapp.entity.topic.Topic;
@@ -40,9 +40,13 @@ public class EventCRUDController implements EventCRUDInterface {
 	private ModelMapperFactoryInterface modelMapperFactory;
 	
 	@Override
-	public EventCrudDTO createEvent(String username, @Nonnull EventDTO dto) throws BadInputException {
+	public EventCrudDTO createEvent(String username, String topicName, @Nonnull EventDTO dto) throws BadInputException {
 		if (username == null) {
-			throw new BadInputException("Username cannot be set manually");
+			throw new BadInputException("Username cannot be null");
+		}
+		
+		if (topicName == null) {
+			throw new BadInputException("Topic name cannot be null");
 		}
 		
 		if (dto.getId() != null) {
@@ -53,16 +57,8 @@ public class EventCRUDController implements EventCRUDInterface {
 			throw new BadInputException("Event creation date cannot be set manually");
 		}
 		
-		if (dto.getAuthorId() == null) {
-			throw new BadInputException("Event must have an author id");
-		}
-		
-		if (dto.getEventScope() == null) {
-			throw new BadInputException("Event must have an event scope");
-		}
-		
-		if (dto.getEventScopeId() == null) {
-			throw new BadInputException("Event must have an event scope id");
+		if (dto.getEventPhase().equals(EventPhase.PHASE2_2) && dto.getAuthorId() == null) {
+			throw new BadInputException("Event from Phase2.2 must have an author id");
 		}
 		
 		if (dto.getArtifactScope() == null) {
@@ -82,8 +78,6 @@ public class EventCRUDController implements EventCRUDInterface {
 		
 		event = eventRepo.insert(event);
 		
-		String topicName = event.getTopicName();
-		
 		Topic topic = topicRepo.findTopicByName(topicName);
 		
 		if (topic == null) {
@@ -95,7 +89,9 @@ public class EventCRUDController implements EventCRUDInterface {
 			//implement topic queue
 		} else {
 			for (String subscriber : topic.getSubscribers()) {
-				if (subscriber.equals(event.getAuthorId())) continue;
+				if (event.getAuthorId() != null) {
+					if (subscriber.equals(event.getAuthorId())) continue;
+				}				
 				Notification notification = Notification.fromEvent(event, subscriber);
 				NotificationBox nbox = nboxRepo.findByOwnerId(subscriber);
 				// MODIFIED FOR BACKWARD COMPATIBILITY (TEMPORARY)
@@ -167,44 +163,6 @@ public class EventCRUDController implements EventCRUDInterface {
 		EventCrudDTO crud = new EventCrudDTO();
 		crud.setRequest("GET Event WITH authorId=" + authorId);
 		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());
-		
-		return crud;
-	}
-
-	@Override
-	public EventCrudDTO getEventsByEventScope(String eventScope) throws BadInputException, NotFoundException {
-		if (eventScope == null) {
-			throw new BadInputException("Event eventScope cannot be null");
-		}
-		
-		List<Event> events = eventRepo.findEventByEventScope(EventScope.valueOf(eventScope));
-		
-		if (events.isEmpty()) {
-			throw new NotFoundException("Cannot find Event with eventScope=" + eventScope);
-		}
-		
-		EventCrudDTO crud = new EventCrudDTO();
-		crud.setRequest("GET Event WITH eventScope=" + eventScope);
-		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());		
-		
-		return crud;
-	}
-	
-	@Override
-	public EventCrudDTO getEventsByEventScopeId(String eventScopeId) throws BadInputException, NotFoundException {
-		if (eventScopeId == null) {
-			throw new BadInputException("Event eventScopeIdd cannot be null");
-		}
-		
-		List<Event> events = eventRepo.findEventByEventScopeId(eventScopeId);
-		
-		if (events.isEmpty()) {
-			throw new NotFoundException("Cannot find Event with eventScopeId=" + eventScopeId);
-		}
-		
-		EventCrudDTO crud = new EventCrudDTO();
-		crud.setRequest("GET Event WITH eventScopeId=" + eventScopeId);
-		crud.addAllEvent(events, modelMapperFactory.getStandardModelMapper());		
 		
 		return crud;
 	}

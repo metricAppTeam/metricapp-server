@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import metricapp.dto.notification.NotificationCrudDTO;
 import metricapp.dto.notification.NotificationDTO;
 import metricapp.entity.event.ArtifactScope;
-import metricapp.entity.event.EventScope;
+import metricapp.entity.event.EventPhase;
 import metricapp.entity.notification.Notification;
 import metricapp.entity.notification.box.NotificationBox;
 import metricapp.entity.stakeholders.User;
@@ -55,16 +55,8 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 			throw new BadInputException("Notification creation date cannot be set manually");
 		}
 		
-		if (dto.getAuthorId() == null) {
-			throw new BadInputException("Notification must have an author id");
-		}
-		
-		if (dto.getEventScope() == null) {
-			throw new BadInputException("Notification must have an event scope");
-		}
-		
-		if (dto.getEventScopeId() == null) {
-			throw new BadInputException("Notification must have an event scope id");
+		if (dto.getEventPhase().equals(EventPhase.PHASE2_2) && dto.getAuthorId() == null) {
+			throw new BadInputException("Notification from Phase2.2 must have an author id");
 		}
 		
 		if (dto.getArtifactScope() == null) {
@@ -176,54 +168,6 @@ public class NotificationCRUDController implements NotificationCRUDInterface {
 		
 		String request = "GET Notification WITH authorId=" + authorId + " for user WITH username=" + username;
 		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
-		
-		return crud;
-	}
-
-	@Override
-	public NotificationCrudDTO getNotificationsForUserByEventScope(String username, String eventScope) throws BadInputException, NotFoundException {
-		if (username == null) {
-			throw new BadInputException("Username cannot be null");
-		}
-		
-		if (eventScope == null) {
-			throw new BadInputException("Notification eventScope cannot be null");
-		}
-		
-		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndEventScope(username, EventScope.valueOf(eventScope));
-		
-		/* SILENT ERROR
-		if (notifications.isEmpty()) {
-			throw new NotFoundException("Cannot find Notification with eventScope=" + eventScope);
-		}
-		*/
-		
-		String request = "GET Notification WITH eventScope=" + eventScope + " for user WITH username=" + username;
-		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);
-		
-		return crud;
-	}
-	
-	@Override
-	public NotificationCrudDTO getNotificationsForUserByEventScopeId(String username, String eventScopeId) throws BadInputException, NotFoundException {
-		if (username == null) {
-			throw new BadInputException("Username cannot be null");
-		}
-		
-		if (eventScopeId == null) {
-			throw new BadInputException("Notification eventScopeId cannot be null");
-		}
-		
-		List<Notification> notifications = notificationRepo.findNotificationByRecipientAndEventScopeId(username, eventScopeId);
-		
-		/* SILENT ERROR
-		if (notifications.isEmpty()) {
-			throw new NotFoundException("Cannot find Notification with eventScopeId=" + eventScopeId);
-		}
-		*/
-		
-		String request = "GET Notification WITH eventScopeId=" + eventScopeId + " for user WITH username=" + username;
-		NotificationCrudDTO crud = this.generateCompositeCrudDTO(request, notifications);	
 		
 		return crud;
 	}

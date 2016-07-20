@@ -6,9 +6,9 @@ import metricapp.entity.event.Event;
 
 public interface NotificationServiceInterface {
 	
-	public boolean addTopic(String topicName);
+	public void addTopic(String topicName);
 	
-	public boolean removeTopic(String topicName);
+	public void removeTopic(String topicName);
 	
 	public boolean addSubscribers(String topicName, List<String> subscribers);
 	
